@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:08:12 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/01/30 20:17:26 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/01/30 20:25:06 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,20 @@ char	*prompt_loop(void)
 	return (line);
 }
 
+bool	is_whitespace_line(char *line)
+{
+	size_t	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (!ft_isspace(line[i]))
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 int	main(int argc, char **argv)
 {
 	char	*line;
@@ -93,8 +107,11 @@ int	main(int argc, char **argv)
 	line = prompt_loop();
 	while (line)
 	{
-		add_history(line);
-		ft_printf("%s\n", line);
+		if (!is_whitespace_line(line))
+		{
+			add_history(line);
+			ft_printf("%s\n", line);
+		}
 		free(line);
 		line = prompt_loop();
 	}
