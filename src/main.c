@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:08:12 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/01/30 20:09:43 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/01/30 20:13:19 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,24 +63,20 @@ char	*ft_strsjoin(char **strs)
 char	*prompt_loop(void)
 {
 	char	*prompt;
-	char	*prompt_items[7];
+	char	*prompt_items[5];
 	char	*line;
 
 	prompt_items[0] = getenv("USER");
-	prompt_items[1] = "@";
-	// prompt_items[2] = getenv("HOSTNAME");
-	prompt_items[2] = "lol";
-	prompt_items[3] = ":";
-	prompt_items[4] = NULL;
-	prompt_items[4] = (char *)malloc(PATH_MAX * sizeof(char));
-	if (!prompt_items[4])
+	prompt_items[1] = ":";
+	prompt_items[2] = (char *)malloc(PATH_MAX * sizeof(char));
+	if (!prompt_items[2])
 		perror("allocation failed, quitting...");
-	if (!getcwd(prompt_items[4], PATH_MAX))
-		return (free(prompt_items[4]), NULL);
-	prompt_items[5] = "$";
-	prompt_items[6] = NULL;
+	if (!getcwd(prompt_items[2], PATH_MAX))
+		return (free(prompt_items[2]), NULL);
+	prompt_items[3] = "$ ";
+	prompt_items[4] = NULL;
 	prompt = ft_strsjoin(prompt_items);
-	free(prompt_items[4]);
+	free(prompt_items[2]);
 	if (!prompt)
 		return (NULL);
 	line = readline(prompt);
