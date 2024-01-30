@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:08:12 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/01/30 20:13:19 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/01/30 20:17:26 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int	main(int argc, char **argv)
 	line = prompt_loop();
 	while (line)
 	{
+		add_history(line);
 		ft_printf("%s\n", line);
 		free(line);
 		line = prompt_loop();
