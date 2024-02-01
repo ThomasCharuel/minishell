@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/01/30 19:32:29 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/01 11:40:09 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../libft/includes/libft.h"
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -35,16 +36,11 @@ typedef enum e_metacharacters
 	META_STAR = '*'
 }		t_metacharacters;
 
-# define ANSI_COLOR_RED "\x1b[31m"
-# define ANSI_COLOR_GREEN "\x1b[32m"
-# define ANSI_COLOR_YELLOW "\x1b[33m"
-# define ANSI_COLOR_BLUE "\x1b[34m"
-# define ANSI_COLOR_MAGENTA "\x1b[35m"
-# define ANSI_COLOR_CYAN "\x1b[36m"
-# define ANSI_COLOR_RESET "\x1b[0m"
-
 int		echo(int ac, char **av);
 char	*pwd(void);
 int		cd(int ac, char **av);
+
+char	*prompt_loop(void);
+bool	is_whitespace_line(char *line);
 
 #endif
