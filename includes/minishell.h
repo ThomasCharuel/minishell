@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/01 11:40:09 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/02 18:53:30 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,7 @@ int		cd(int ac, char **av);
 
 char	*prompt_loop(void);
 bool	is_whitespace_line(char *line);
+
+void	signal_init(void);
 
 #endif

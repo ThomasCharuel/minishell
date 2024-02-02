@@ -6,54 +6,77 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:08:12 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/01 14:43:54 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/02 20:11:23 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Ctrl + C
-void	sigint_handler(int signum)
+void	ft_input_redirect(char *in_file_path)
 {
-	(void)signum;
-	ft_printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	int	in;
+
+	in = open(in_file_path, O_RDONLY);
+	if (dup2(in, STDIN_FILENO) == -1)
+	{
+		close(in);
+		exit(EXIT_FAILURE);
+	}
+	close(in);
 }
 
-// Ctrl + D
-void	sigterm_handler(int signum)
+struct dirent	*read_dir(char **path, char *cmd)
 {
-	(void)signum;
-	exit(EXIT_SUCCESS);
+	struct dirent	*file;
+	DIR				*dir;
+	int				i;
+
+	i = 0;
+	dir = opendir(path[i++]);
+	while (dir)
+	{
+		file = readdir(dir);
+		while (file)
+		{
+			if (!ft_strncmp(file->d_name, cmd, ft_strlen(file->d_name)))
+				return (file);
+			file = readdir(dir);
+		}
+		dir = opendir(path[i++]);
+	}
+	return (NULL);
 }
 
-// Ctrl + backslash
-void	sigquit_handler(int signum)
+void	ft_exec(char *command, char **envp)
 {
-	(void)signum;
+	char			*argv[] = {command, NULL};
+	char			**path;
+	struct dirent	*file;
+
+	path = ft_split(get_var(data, "PATH")->value, ':');
+	file = read_dir(path, command);
+	execve(file->d_name, argv, envp);
 }
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
 
 	(void)argc;
 	(void)argv;
-	signal(SIGTERM, &sigterm_handler);
-	signal(SIGINT, &sigint_handler);
-	signal(SIGQUIT, &sigquit_handler);
+	signal_init();
 	while (true)
 	{
 		line = prompt_loop();
+		if (!line)
+			break ;
 		if (!is_whitespace_line(line))
 		{
 			add_history(line);
-			ft_printf("%s\n", line);
+			ft_exec(line, envp);
 		}
 		free(line);
 	}
-	ft_printf("\nexit\n");
+	ft_printf("exit\n");
 	return (0);
 }

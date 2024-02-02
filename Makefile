@@ -6,7 +6,7 @@
 #    By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/06 13:51:51 by tcharuel          #+#    #+#              #
-#    Updated: 2024/02/01 11:39:24 by tcharuel         ###   ########.fr        #
+#    Updated: 2024/02/02 18:51:05 by tcharuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ HEADER_DIR = includes
 SRC_DIR = src
 OBJ_DIR = obj
 
-SRC_FILES = main.c builtins.c prompt.c
+SRC_FILES = main.c builtins.c prompt.c signals.c
 
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
