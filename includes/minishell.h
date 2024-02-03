@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/03 19:20:23 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/03 19:26:32 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,7 @@ const char						*envp_get(const char **envp, const char *key);
 t_return_code					envp_set(char **envp, const char *key,
 									const char *value);
 t_return_code					envp_delete(char **envp, const char *key);
+
+t_return_code					ft_exec(t_state *state, const char *command);
 
 #endif
