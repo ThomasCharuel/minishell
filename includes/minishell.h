@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/03 16:16:46 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/03 19:20:23 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 
 typedef enum e_exit_code
 {

@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:08:12 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/03 19:05:37 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/03 19:24:23 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ t_return_code	ft_exec(t_state *state, const char *command)
 {
 	const char	*path;
 	char		*argv[2] = {NULL, NULL};
+	pid_t		pid;
+	int			status;
 
 	path = envp_get((const char **)state->envp, "PATH");
 	if (!path)
@@ -64,8 +66,17 @@ t_return_code	ft_exec(t_state *state, const char *command)
 		state->last_exit_code = COMMAND_NOT_FOUND;
 		return (SUCCESS);
 	}
-	if (!fork())
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("bash");
+		return (free(argv[0]), ERROR);
+	}
+	if (pid == 0)
 		execve(argv[0], argv, state->envp);
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		state->last_exit_code = WEXITSTATUS(status);
 	free(argv[0]);
 	return (SUCCESS);
 }
