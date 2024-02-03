@@ -6,7 +6,7 @@
 #    By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/02 13:33:40 by tcharuel          #+#    #+#              #
-#    Updated: 2024/01/09 17:55:39 by tcharuel         ###   ########.fr        #
+#    Updated: 2024/02/03 12:25:33 by tcharuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ HEADER_DIR = includes
 SRC_DIR = src
 OBJ_DIR = obj
 
-SRC_FILES = ft_isalpha.c \
+SRC_FILES = ft_dict.c \
+	ft_isalpha.c \
 	ft_isdigit.c \
 	ft_isalnum.c \
 	ft_isascii.c \

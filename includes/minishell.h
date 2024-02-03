@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/02 18:53:30 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/03 12:15:41 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,28 +21,23 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-typedef enum e_metacharacters
+typedef struct s_state
 {
-	META_SINGLE_QUOTE = '\'',
-	META_DOUBLE_QUOTE = '"',
-	META_DOLLAR_SIGN = '$',
-	META_QUESTION_MARK = '?',
-	META_LESS_THAN = '<',
-	META_GREATER_THAN = '>',
-	META_PIPE = '|',
-	META_AMPERSAND = '&',
-	META_LEFT_PARENTHESIS = '(',
-	META_RIGHT_PARENTHESIS = ')',
-	META_STAR = '*'
-}		t_metacharacters;
+	t_dict						*vars;
+}								t_state;
 
-int		echo(int ac, char **av);
-char	*pwd(void);
-int		cd(int ac, char **av);
+extern volatile sig_atomic_t	g_signal_code;
 
-char	*prompt_loop(void);
-bool	is_whitespace_line(char *line);
+int								echo(int ac, char **av);
+char							*pwd(void);
+int								cd(int ac, char **av);
 
-void	signal_init(void);
+char							*prompt_loop(void);
+bool							is_whitespace_line(char *line);
+
+void							signal_init(void);
+
+t_state							*state_init(char **envp);
+void							state_cleanup(t_state *state);
 
 #endif
