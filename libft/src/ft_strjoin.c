@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 15:50:16 by tcharuel          #+#    #+#             */
-/*   Updated: 2023/11/08 15:39:40 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/03 18:59:44 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,50 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
-	buffer = (char *)malloc(
-			(s1_len + s2_len + 1) * sizeof(char));
+	buffer = (char *)malloc((s1_len + s2_len + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
 	ft_strlcpy(buffer, s1, s1_len + 1);
 	ft_strlcat(buffer, s2, s1_len + s2_len + 1);
 	return (buffer);
+}
+
+static size_t	calculate_total_length(char *str, va_list args)
+{
+	size_t	length;
+	size_t	i;
+
+	length = 0;
+	i = 0;
+	while (str)
+	{
+		length += ft_strlen(str);
+		str = va_arg(args, char *);
+	}
+	return (length);
+}
+
+char	*ft_strsjoin(char *str, ...)
+{
+	va_list	args;
+	char	*res;
+	size_t	len;
+
+	if (!str)
+		return (NULL);
+	va_start(args, str);
+	len = calculate_total_length(str, args);
+	va_end(args);
+	res = (char *)malloc((len + 1) * sizeof(char));
+	if (!res)
+		return (NULL);
+	res[0] = 0;
+	va_start(args, str);
+	while (str)
+	{
+		ft_strcat(res, str);
+		str = va_arg(args, char *);
+	}
+	va_end(args);
+	return (res);
 }
