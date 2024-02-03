@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:08:12 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/03 14:17:02 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/03 16:01:17 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,18 @@ void	ft_input_redirect(char *in_file_path)
 	close(in);
 }
 
-struct dirent	*read_dir(char **path, char *cmd)
+struct dirent	*read_dir(const char *path, const char *cmd)
 {
+	char			**paths;
 	struct dirent	*file;
 	DIR				*dir;
 	int				i;
 
+	paths = ft_split(path, ':');
+	if (!paths)
+		return (NULL);
 	i = 0;
-	dir = opendir(path[i++]);
+	dir = opendir(paths[i++]);
 	while (dir)
 	{
 		file = readdir(dir);
@@ -44,27 +48,34 @@ struct dirent	*read_dir(char **path, char *cmd)
 				return (file);
 			file = readdir(dir);
 		}
-		dir = opendir(path[i++]);
+		dir = opendir(paths[i++]);
 	}
 	return (NULL);
 }
 
-t_return_code	ft_exec(t_state *state, char *command)
+t_return_code	ft_exec(t_state *state, const char *command)
 {
-	char			*argv[] = {command, NULL};
-	char			**path;
+	const char		*path;
 	struct dirent	*file;
+	char			*argv[] = {(char *)command, NULL};
 
-	path = ft_split(ft_dict_get(state->vars, "PATH"), ':');
+	path = envp_get((const char **)state->envp, "PATH");
 	if (!path)
 		return (ERROR);
 	file = read_dir(path, command);
+	if (!file)
+	{
+		write(STDERR_FILENO, command, ft_strlen(command));
+		write(STDERR_FILENO, ": command not found\n", 20);
+		state->last_exit_code = COMMAND_NOT_FOUND;
+		return (SUCCESS);
+	}
 	if (fork())
-		execve(file->d_name, argv, envp);
+		execve(file->d_name, argv, state->envp);
 	return (SUCCESS);
 }
 
-int	main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, const char **envp)
 {
 	char	*line;
 	t_state	*state;

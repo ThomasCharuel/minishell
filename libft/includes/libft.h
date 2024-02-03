@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:01:58 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/03 14:09:03 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/03 16:03:32 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,23 +55,6 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }					t_list;
-
-typedef struct s_item
-{
-	char			*key;
-	char			*value;
-}					t_item;
-
-typedef struct s_dict
-{
-	t_list			*list;
-}					t_dict;
-
-t_dict				*ft_dict_init(void);
-char				*ft_dict_get(t_dict *dict, char *key);
-t_return_code		ft_dict_set(t_dict *dict, char *key, char *value);
-void				ft_dict_delete(t_dict *dict, char *key);
-void				ft_dict_destroy(t_dict **dict);
 
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);
