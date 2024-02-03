@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 14:57:45 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/01/05 14:58:31 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/03 21:00:53 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	ft_free_strs(char **strs)
 {
 	int	i;
 
+	if (!strs)
+		return ;
 	i = 0;
 	while (strs[i])
 	{

@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/03 19:26:32 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/03 20:58:44 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ typedef enum e_exit_code
 	COMMAND_NOT_FOUND = 127
 }								t_exit_code;
 
+typedef struct s_command
+{
+	char						**argv;
+}								t_command;
+
 typedef struct s_state
 {
 	char						**envp;
@@ -55,6 +60,9 @@ const char						*envp_get(const char **envp, const char *key);
 t_return_code					envp_set(char **envp, const char *key,
 									const char *value);
 t_return_code					envp_delete(char **envp, const char *key);
+
+t_command						*command_create(const char *command_str);
+void							command_destroy(t_command **command);
 
 t_return_code					ft_exec(t_state *state, const char *command);
 

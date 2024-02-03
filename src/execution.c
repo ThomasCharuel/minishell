@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/03 20:43:16 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/03 21:03:43 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,15 @@ t_return_code	handle_path_command(const char *command, char **command_path)
 	return (SUCCESS);
 }
 
-t_return_code	ft_exec(t_state *state, const char *command)
+t_return_code	ft_exec(t_state *state, const char *command_str)
 {
-	char	*argv[2] = {NULL, NULL};
-	pid_t	pid;
-	int		status;
+	t_command	*command;
+	pid_t		pid;
+	int			status;
 
+	command = command_create(command_str);
+	if (!command)
+		return (ERROR);
 	if (ft_strchr(command, '/'))
 	{
 		if (!handle_path_command(command, &argv[0]))
