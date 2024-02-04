@@ -6,7 +6,7 @@
 #    By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/06 13:51:51 by tcharuel          #+#    #+#              #
-#    Updated: 2024/02/03 20:58:55 by tcharuel         ###   ########.fr        #
+#    Updated: 2024/02/04 17:32:16 by tcharuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC_FILES = builtins.c \
 	envp.c \
 	execution.c \
 	main.c \
+	parsing.c \
 	command.c \
 	prompt.c \
 	signals.c \

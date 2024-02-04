@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:37:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/03 18:47:53 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/04 16:42:20 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ char	*prompt_loop(void)
 
 	pwd = (char *)malloc(PATH_MAX * sizeof(char));
 	if (!pwd)
-		perror("allocation failed, quitting...");
+		return (perror("minishell"), NULL);
 	if (!getcwd(pwd, PATH_MAX))
 		return (free(pwd), NULL);
 	prompt = ft_strsjoin(getenv("USER"), ":", pwd, "$ ", NULL);
-	free(pwd);
 	if (!prompt)
-		return (NULL);
+		return (perror("minishell"), free(pwd), NULL);
+	free(pwd);
 	line = readline(prompt);
 	free(prompt);
 	return (line);

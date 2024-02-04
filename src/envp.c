@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 14:13:29 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/03 18:47:36 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/04 15:51:27 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ char	**envp_copy(const char **envp)
 		i++;
 	copy = (char **)malloc((i + 1) * sizeof(char *));
 	if (!copy)
-		return (NULL);
+		return (perror("minishell"), NULL);
 	i = 0;
 	while (envp[i])
 	{
 		copy[i] = ft_strdup(envp[i]);
 		if (!copy[i])
-			return (ft_free_strs(copy), NULL);
+			return (perror("minishell"), ft_free_strs(copy), NULL);
 		i++;
 	}
 	copy[i] = NULL;
@@ -60,7 +60,7 @@ const char	*envp_get(const char **envp, const char *key)
 	return (NULL);
 }
 
-t_return_code	envp_set(char **envp, const char *key, const char *value)
+t_return_status	envp_set(char **envp, const char *key, const char *value)
 {
 	(void)(envp);
 	(void)(key);
@@ -68,7 +68,7 @@ t_return_code	envp_set(char **envp, const char *key, const char *value)
 	return (SUCCESS);
 }
 
-t_return_code	envp_delete(char **envp, const char *key)
+t_return_status	envp_delete(char **envp, const char *key)
 {
 	(void)(envp);
 	(void)(key);

@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:01:58 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/03 18:30:38 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/04 14:46:19 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,6 @@
 
 # define BUFFER_SIZE 40
 
-typedef enum e_return_code
-{
-	SUCCESS = 1,
-	ERROR = 0,
-}					t_return_code;
-
 typedef struct s_substring
 {
 	char			*format;
@@ -63,6 +57,7 @@ int					ft_isascii(int c);
 int					ft_isprint(int c);
 int					ft_isspace(const char c);
 size_t				ft_strlen(const char *s);
+size_t				ft_strslen(const char **strs);
 void				*ft_memset(void *s, int c, size_t n);
 void				ft_bzero(void *s, size_t n);
 void				*ft_memcpy(void *dest, const void *src, size_t n);
