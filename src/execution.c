@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/04 20:29:59 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/04 20:42:00 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,28 +25,22 @@ void	ft_input_redirect(char *in_file_path)
 	close(in);
 }
 
-t_command_status	exec_command(t_state *state, t_command *command)
+t_return_status	exec_command(t_state *state, t_command *command)
 {
-	t_command_status	parsing_status;
-
-	parsing_status = COMMAND_SUCCESS;
 	command->pid = fork();
 	if (command->pid == -1)
-		return (perror("minishell"), command_destroy(&command), COMMAND_ERROR);
+		return (perror("minishell"), ERROR);
 	if (command->pid == 0)
 	{
-		// dup2(fd[IN_FD], STDIN_FILENO);
-		// dup2(fd[OUT_FD], STDOUT_FILENO);
-		// if (fd[IN_FD] != STDIN_FILENO)
-		// 	close(fd[IN_FD]);
-		// if (fd[OUT_FD] != STDIN_FILENO)
-		// 	close(fd[OUT_FD]);
+		dup2(command->fd[IN_FD], STDIN_FILENO);
+		dup2(command->fd[OUT_FD], STDOUT_FILENO);
+		if (command->fd[IN_FD] != STDIN_FILENO)
+			close(command->fd[IN_FD]);
+		if (command->fd[OUT_FD] != STDOUT_FILENO)
+			close(command->fd[OUT_FD]);
 		execve(command->argv[0], command->argv, state->envp);
 	}
-	waitpid(command->pid, &command->status, 0);
-	if (WIFEXITED(command->status))
-		parsing_status = WEXITSTATUS(command->status);
-	return (parsing_status);
+	return (SUCCESS);
 }
 
 t_command	**parsing(t_state *state, const char *line)
@@ -96,9 +90,16 @@ t_command_status	exec_line(t_state *state, const char *line)
 		// 	exec_command(state, commands[i++], &pipefd[i * 2 + 1]);
 		// }
 		// ft_free_strs(commands);
-		status = exec_command(state, commands[i]);
+		if (!exec_command(state, commands[i]))
+			printf("TODO\n"); // TODO: il faut cleanup tout correctement
 		i++;
 	}
+	i--;
+	waitpid(commands[i]->pid, &(commands[i]->status), 0);
+	if (WIFEXITED(commands[i]->status))
+		status = WEXITSTATUS(commands[i]->status);
+	while (wait(NULL) != -1)
+		continue ;
 	i = 0;
 	while (commands[i])
 		command_destroy(&commands[i++]);
