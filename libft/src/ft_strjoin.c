@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 15:50:16 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/03 18:59:44 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/04 18:22:20 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 static size_t	calculate_total_length(char *str, va_list args)
 {
 	size_t	length;
-	size_t	i;
 
 	length = 0;
-	i = 0;
 	while (str)
 	{
 		length += ft_strlen(str);
