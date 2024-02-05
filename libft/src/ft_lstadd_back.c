@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:19:29 by tcharuel          #+#    #+#             */
-/*   Updated: 2023/11/08 17:50:01 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/05 19:42:15 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,15 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 		}
 		node->next = new;
 	}
+}
+
+t_list	*ft_append(t_list **lst, void *content)
+{
+	t_list	*new_node;
+
+	new_node = ft_lstnew(content);
+	if (!new_node)
+		return (NULL);
+	ft_lstadd_back(lst, new_node);
+	return (*lst);
 }

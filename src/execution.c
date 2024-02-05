@@ -6,24 +6,11 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/05 18:20:37 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/05 19:36:20 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	ft_input_redirect(char *in_file_path)
-{
-	int	in;
-
-	in = open(in_file_path, O_RDONLY);
-	if (dup2(in, STDIN_FILENO) == -1)
-	{
-		close(in);
-		exit(EXIT_FAILURE);
-	}
-	close(in);
-}
 
 void	handle_redirections(t_command *command)
 {

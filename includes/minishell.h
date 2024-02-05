@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/05 17:34:10 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/05 19:36:22 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef enum e_command_status
 {
 	COMMAND_SUCCESS = 0,
 	COMMAND_ERROR = -1,
+	COMMAND_PARSING_ERROR = 2,
 	COMMAND_NOT_FOUND = 127
 }								t_command_status;
 
@@ -46,7 +47,7 @@ typedef enum e_redirection_type
 {
 	WRITE = 1,
 	APPEND = 2,
-	READ = 3
+	READ = 3,
 }								t_redirection_type;
 
 typedef struct s_redirection
@@ -58,8 +59,8 @@ typedef struct s_redirection
 typedef struct s_command
 {
 	char						*command_str;
-	char						**argv;
-	t_redirection				**redirections;
+	t_list						*argv;
+	t_list						*redirections;
 	int							in_fd;
 	int							out_fd;
 	int							status;
