@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/05 15:05:38 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/05 15:40:29 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_redirection
 
 typedef struct s_command
 {
+	char						*command_str;
 	char						**argv;
 	t_redirection				**redirections;
 	int							in_fd;

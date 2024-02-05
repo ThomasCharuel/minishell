@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/05 15:09:50 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/05 16:57:59 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,16 @@ t_return_status	exec_command(t_state *state, t_command *command)
 		return (perror("minishell"), ERROR);
 	if (command->pid == 0)
 	{
-		dup2(command->in_fd, STDIN_FILENO);
-		dup2(command->out_fd, STDOUT_FILENO);
 		if (command->in_fd != STDIN_FILENO)
+		{
+			dup2(command->in_fd, STDIN_FILENO);
 			close(command->in_fd);
+		}
 		if (command->out_fd != STDOUT_FILENO)
+		{
+			dup2(command->out_fd, STDOUT_FILENO);
 			close(command->out_fd);
+		}
 		handle_redirections(command);
 		execve(command->argv[0], command->argv, state->envp);
 	}
