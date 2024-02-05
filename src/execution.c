@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/05 15:08:37 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/05 15:09:50 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,7 @@ t_command	**parsing(t_state *state, const char *line)
 	{
 		commands[i] = command_create(command_strs[i]);
 		if (!commands[i] || command_parse(state, commands[i]) == COMMAND_ERROR)
-			return (ft_clean_double_list((void **)tcharuel : / home / tcharuel
-					/ Desktop / minishell$ <./ run.sh cat | wc - lcommands,
-					command_destroy),
+			return (ft_clean_double_list((void **)commands, command_destroy),
 				ft_clean_double_list((void **)command_strs, free), NULL);
 		i++;
 	}
