@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/05 16:57:59 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/05 18:20:37 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,16 @@ void	handle_redirections(t_command *command)
 	}
 }
 
-t_return_status	exec_command(t_state *state, t_command *command)
+t_return_status	exec_command(t_state *state, t_command *command,
+		int fd_to_close)
 {
 	command->pid = fork();
 	if (command->pid == -1)
 		return (perror("minishell"), ERROR);
 	if (command->pid == 0)
 	{
+		if (fd_to_close != STDIN_FILENO && fd_to_close != STDOUT_FILENO)
+			close(fd_to_close);
 		if (command->in_fd != STDIN_FILENO)
 		{
 			dup2(command->in_fd, STDIN_FILENO);
@@ -136,7 +139,8 @@ t_command_status	exec_line(t_state *state, const char *line)
 		}
 		if (i > 0)
 			commands[i]->in_fd = pipes[i - 1].fd[IN_FD];
-		if (!exec_command(state, commands[i]))
+		if (!exec_command(state, commands[i],
+				i < len ? pipes[i].fd[IN_FD] : STDIN_FILENO))
 			printf("TODO\n"); // TODO: il faut cleanup tout correctement
 		i++;
 	}
