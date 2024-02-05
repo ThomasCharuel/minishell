@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/05 11:08:29 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/05 15:05:48 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,24 @@ t_command	*command_create(const char *command_str)
 	command->argv = ft_split(command_str, ' ');
 	if (!command->argv)
 		return (perror("minishell"), free(command), NULL);
+	command->redirections = NULL;
 	command->in_fd = STDIN_FILENO;
 	command->out_fd = STDOUT_FILENO;
 	return (command);
 }
 
-void	command_destroy(t_command **command)
+void	command_destroy(void *ptr)
 {
-	if (*command)
+	t_command	*command;
+
+	command = ptr;
+	if (command)
 	{
-		ft_free_strs((void **)(*command)->argv);
-		free(*command);
-		*command = NULL;
+		printf("Command destroy %s\n", command->argv[0]);
+		ft_clean_double_list((void **)command->argv, free);
+		ft_clean_double_list((void **)command->redirections,
+			redirection_destroy);
+		free(command);
 	}
 }
 

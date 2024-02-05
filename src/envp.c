@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 14:13:29 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/04 15:51:27 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/05 14:39:42 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ char	**envp_copy(const char **envp)
 	{
 		copy[i] = ft_strdup(envp[i]);
 		if (!copy[i])
-			return (perror("minishell"), ft_free_strs(copy), NULL);
+			return (perror("minishell"), ft_clean_double_list((void **)copy,
+					free), NULL);
 		i++;
 	}
 	copy[i] = NULL;
@@ -39,7 +40,7 @@ void	envp_cleanup(char ***envp)
 {
 	if (*envp)
 	{
-		ft_free_strs(*envp);
+		ft_clean_double_list((void **)*envp, free);
 		*envp = NULL;
 	}
 }

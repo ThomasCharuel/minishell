@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_strs.c                                     :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/05 14:57:45 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/05 11:02:20 by tcharuel         ###   ########.fr       */
+/*   Created: 2024/02/05 13:59:02 by tcharuel          #+#    #+#             */
+/*   Updated: 2024/02/05 15:03:05 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_free_strs(void **strs)
+void	ft_clean_double_list(void **list, void (*destroy)(void *))
 {
-	int	i;
+	void	**temp;
 
-	if (!strs)
-		return ;
-	i = 0;
-	while (strs[i])
+	temp = list;
+	if (list)
 	{
-		free(strs[i]);
-		i++;
+		while (*temp)
+		{
+			destroy(*temp);
+			temp++;
+		}
+		free(list);
 	}
-	free(strs);
 }

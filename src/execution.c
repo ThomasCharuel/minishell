@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/05 11:42:12 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/05 15:08:37 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,39 @@ void	ft_input_redirect(char *in_file_path)
 	close(in);
 }
 
+void	handle_redirections(t_command *command)
+{
+	size_t	i;
+
+	if (!command->redirections)
+		return ;
+	i = 0;
+	while (command->redirections[i])
+	{
+		if (command->redirections[i]->type == WRITE
+			|| command->redirections[i]->type == APPEND)
+		{
+			if (command->redirections[i]->type == WRITE)
+				command->out_fd = open(command->redirections[i]->file,
+						O_WRONLY);
+			else if (command->redirections[i]->type == APPEND)
+				command->out_fd = open(command->redirections[i]->file,
+						O_APPEND);
+			dup2(command->out_fd, STDOUT_FILENO);
+			if (command->out_fd != STDOUT_FILENO)
+				close(command->out_fd);
+		}
+		else if (command->redirections[i]->type == READ)
+		{
+			command->in_fd = open(command->redirections[i]->file, O_RDONLY);
+			dup2(command->in_fd, STDIN_FILENO);
+			if (command->in_fd != STDIN_FILENO)
+				close(command->in_fd);
+		}
+		i++;
+	}
+}
+
 t_return_status	exec_command(t_state *state, t_command *command)
 {
 	command->pid = fork();
@@ -38,6 +71,7 @@ t_return_status	exec_command(t_state *state, t_command *command)
 			close(command->in_fd);
 		if (command->out_fd != STDOUT_FILENO)
 			close(command->out_fd);
+		handle_redirections(command);
 		execve(command->argv[0], command->argv, state->envp);
 	}
 	if (command->in_fd != STDIN_FILENO)
@@ -59,14 +93,16 @@ t_command	**parsing(t_state *state, const char *line)
 	commands = ft_calloc(ft_strslen((const void **)command_strs) + 1,
 			sizeof(t_command *));
 	if (!commands)
-		return (ft_free_strs((void **)command_strs), NULL);
+		return (ft_clean_double_list((void **)command_strs, free), NULL);
 	i = 0;
 	while (command_strs[i])
 	{
 		commands[i] = command_create(command_strs[i]);
 		if (!commands[i] || command_parse(state, commands[i]) == COMMAND_ERROR)
-			return (ft_free_strs((void **)commands),
-				ft_free_strs((void **)command_strs), NULL);
+			return (ft_clean_double_list((void **)tcharuel : / home / tcharuel
+					/ Desktop / minishell$ <./ run.sh cat | wc - lcommands,
+					command_destroy),
+				ft_clean_double_list((void **)command_strs, free), NULL);
 		i++;
 	}
 	return (commands);
@@ -86,7 +122,8 @@ t_command_status	exec_line(t_state *state, const char *line)
 	len = ft_strslen((const void **)commands);
 	pipes = calloc(len, sizeof(t_pipe));
 	if (!pipes)
-		return (ft_free_strs((void **)commands), COMMAND_ERROR);
+		return (ft_clean_double_list((void **)commands, command_destroy),
+			COMMAND_ERROR);
 	i = 0;
 	while (commands[i])
 	{
@@ -106,9 +143,6 @@ t_command_status	exec_line(t_state *state, const char *line)
 	status = WIFEXITED(commands[i]->status) && WEXITSTATUS(commands[i]->status);
 	while (wait(NULL) != -1)
 		continue ;
-	i = 0;
-	while (commands[i])
-		command_destroy(&commands[i++]);
-	ft_free_strs((void **)commands);
+	ft_clean_double_list((void **)commands, command_destroy);
 	return (status);
 }

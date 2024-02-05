@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/05 10:55:28 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/05 15:05:38 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,23 @@ typedef enum e_return_status
 	ERROR = 0,
 }								t_return_status;
 
+typedef enum e_redirection_type
+{
+	WRITE = 1,
+	APPEND = 2,
+	READ = 3
+}								t_redirection_type;
+
+typedef struct s_redirection
+{
+	char						*file;
+	t_redirection_type			type;
+}								t_redirection;
+
 typedef struct s_command
 {
 	char						**argv;
+	t_redirection				**redirections;
 	int							in_fd;
 	int							out_fd;
 	int							status;
@@ -80,9 +94,13 @@ t_return_status					envp_set(char **envp, const char *key,
 t_return_status					envp_delete(char **envp, const char *key);
 
 t_command						*command_create(const char *command_str);
-void							command_destroy(t_command **command);
+void							command_destroy(void *ptr);
 t_command_status				command_parse(t_state *state,
 									t_command *command);
+
+t_redirection					*redirection_create(const char *file,
+									t_redirection_type type);
+void							redirection_destroy(void *ptr);
 
 char							*get_command_file(const char *path,
 									const char *cmd);
@@ -92,5 +110,8 @@ t_command_status				handle_path_command(t_command *command);
 
 t_command_status				exec_line(t_state *state,
 									const char *command_str);
+
+void							ft_clean_double_list(void **list,
+									void (*destroy)(void *));
 
 #endif

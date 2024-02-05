@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:41:51 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/05 11:05:48 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/05 14:39:42 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,14 @@ char	*get_command_file(const char *path, const char *cmd)
 	{
 		command_file = ft_strsjoin(paths[i], "/", cmd, NULL);
 		if (!command_file)
-			return (perror("minishell"), ft_free_strs((void **)paths), NULL);
+			return (perror("minishell"), ft_clean_double_list((void **)paths,
+					free), NULL);
 		if (!access(command_file, X_OK))
-			return (ft_free_strs((void **)paths), command_file);
+			return (ft_clean_double_list((void **)paths, free), command_file);
 		free(command_file);
 		i++;
 	}
-	return (ft_free_strs((void **)paths), NULL);
+	return (ft_clean_double_list((void **)paths, free), NULL);
 }
 
 t_command_status	handle_command(t_state *state, t_command *command)
@@ -53,17 +54,18 @@ t_command_status	handle_command(t_state *state, t_command *command)
 	{
 		command_path = ft_strsjoin(paths[i], "/", command->argv[0], NULL);
 		if (!command_path)
-			return (perror("minishell"), ft_free_strs((void **)paths),
-				COMMAND_ERROR);
+			return (perror("minishell"), ft_clean_double_list((void **)paths,
+					free), COMMAND_ERROR);
 		if (!access(command_path, X_OK))
-			return (ft_free_strs((void **)paths), free(command->argv[0]),
-				command->argv[0] = command_path, COMMAND_SUCCESS);
+			return (ft_clean_double_list((void **)paths, free),
+				free(command->argv[0]), command->argv[0] = command_path,
+				COMMAND_SUCCESS);
 		free(command_path);
 		i++;
 	}
 	write(STDERR_FILENO, command->argv[0], ft_strlen(command->argv[0]));
 	write(STDERR_FILENO, ": command not found\n", 21);
-	return (ft_free_strs((void **)paths), COMMAND_NOT_FOUND);
+	return (ft_clean_double_list((void **)paths, free), COMMAND_NOT_FOUND);
 }
 
 t_command_status	handle_path_command(t_command *command)
