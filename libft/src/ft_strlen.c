@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 17:07:13 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/04 18:21:35 by romain           ###   ########.fr       */
+/*   Updated: 2024/02/05 11:02:43 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ size_t	ft_strlen(const char *s)
 	return (size);
 }
 
-size_t	ft_strslen(const char **strs)
+size_t	ft_strslen(const void **strs)
 {
 	size_t	size;
 

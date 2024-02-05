@@ -6,13 +6,13 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 14:57:45 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/03 21:00:53 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/05 11:02:20 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_free_strs(char **strs)
+void	ft_free_strs(void **strs)
 {
 	int	i;
 

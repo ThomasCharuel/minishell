@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:01:58 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/04 14:46:19 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/05 11:02:42 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int					ft_isascii(int c);
 int					ft_isprint(int c);
 int					ft_isspace(const char c);
 size_t				ft_strlen(const char *s);
-size_t				ft_strslen(const char **strs);
+size_t				ft_strslen(const void **strs);
 void				*ft_memset(void *s, int c, size_t n);
 void				ft_bzero(void *s, size_t n);
 void				*ft_memcpy(void *dest, const void *src, size_t n);
@@ -135,6 +135,6 @@ char				*ft_strdup_lf(const char *src);
 int					ft_str_has_lf(char const *s);
 void				ft_strcpy(char *dst, const char *src);
 
-void				ft_free_strs(char **strs);
+void				ft_free_strs(void **strs);
 
 #endif

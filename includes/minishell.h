@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/04 20:32:07 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/05 10:55:28 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,16 @@ typedef enum e_return_status
 typedef struct s_command
 {
 	char						**argv;
-	int							fd[2];
+	int							in_fd;
+	int							out_fd;
 	int							status;
 	pid_t						pid;
 }								t_command;
+
+typedef struct s_pipe
+{
+	int							fd[2];
+}								t_pipe;
 
 typedef struct s_state
 {
