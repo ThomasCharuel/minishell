@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/06 18:00:00 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/06 18:23:53 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,27 @@ void	command_destroy(void *ptr)
 		ft_lstclear(&command->argv, free);
 		ft_lstclear(&command->redirections, redirection_destroy);
 		free(command);
+	}
+}
+
+void	command_display(t_command *command)
+{
+	t_list			*node;
+	t_redirection	*redirection;
+
+	node = command->argv;
+	while (node)
+	{
+		ft_printf("Argv: \"%s\"\n", node->content);
+		node = node->next;
+	}
+	node = command->redirections;
+	while (node)
+	{
+		redirection = node->content;
+		ft_printf("Redirections: \"%s\" (%d)\n", redirection->file,
+			redirection->type);
+		node = node->next;
 	}
 }
 
@@ -83,7 +104,6 @@ t_return_status	append_word(t_command *command, const char *word, size_t len)
 	str = ft_strndup(word, len);
 	if (!str)
 		return (ERROR);
-	ft_printf("str: %s len: %d\n", str, ft_strlen(str));
 	if (!ft_append(&(command->argv), str))
 		return (free(str), ERROR);
 	return (SUCCESS);
@@ -211,54 +231,6 @@ t_command_status	command_parse(t_state *state, t_command *command)
 			new_cursor++;
 		}
 	}
-	ft_printf("HELLO %s\n", command->argv->content);
+	command_display(command);
 	return (set_command_command(state, command));
 }
-
-// t_command_status	command_parse(t_state *state, t_command *command)
-// {
-// 	size_t			i;
-// 	char			**words;
-// 	t_redirection	*redirection;
-
-// 	words = ft_split(command->command_str, ' ');
-// 	if (!words)
-// 		return (COMMAND_ERROR);
-// 	i = 0;
-// 	while (words[i])
-// 	{
-// 		if (is_redirection_char(words[i][0]))
-// 		{
-// 			if (!words[i][1])
-// 			{
-// 				i++;
-// 				if (!words[i] || is_redirection_char(words[i][0]))
-// 					return (COMMAND_PARSING_ERROR);
-// 				redirection = redirection_create(words[i],
-// 						get_redirection_type(words[i - 1]));
-// 			}
-// 			else if (!is_redirection_char(words[i][1]))
-// 			{
-// 				redirection = redirection_create(&words[i][1],
-// 						get_redirection_type(words[i]));
-// 			}
-// 			else if (words[i][0] == words[i][1])
-// 			{
-// 				// Concat ou heredoc
-// 			}
-// 			else
-// 				return (ft_clean_double_list((void **)words, free),
-// 					COMMAND_PARSING_ERROR);
-// 			if (!redirection || !ft_append(&(command->redirections),
-// 					redirection))
-// 				return (ft_clean_double_list((void **)words, free),
-// 					COMMAND_ERROR);
-// 		}
-// 		else if (!ft_append(&(command->argv), ft_strdup(words[i])))
-// 			return (ft_clean_double_list((void **)words, free),
-// 				COMMAND_PARSING_ERROR);
-// 		i++;
-// 	}
-// 	ft_clean_double_list((void **)words, free);
-// 	return (set_command_command(state, command));
-// }

@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/06 12:12:53 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/06 18:25:46 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	handle_redirections(t_command *command)
 	while (node)
 	{
 		redirection = node->content;
-		ft_printf("type:%d file:%s\n", redirection->type, redirection->file);
 		if (redirection->type == WRITE || redirection->type == APPEND)
 		{
 			if (redirection->type == WRITE)
@@ -29,7 +28,9 @@ void	handle_redirections(t_command *command)
 						O_WRONLY | O_CREAT | O_TRUNC,
 						S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 			else if (redirection->type == APPEND)
-				command->out_fd = open(redirection->file, O_APPEND);
+				command->out_fd = open(redirection->file,
+						O_WRONLY | O_CREAT | O_APPEND,
+						S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 			dup2(command->out_fd, STDOUT_FILENO);
 			ft_close_fd(command->out_fd);
 		}
