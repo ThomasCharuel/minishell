@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 11:45:39 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/04 17:01:02 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/06 10:38:34 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ t_state	*state_init(const char **envp)
 	state->envp = envp_copy(envp);
 	if (!state->envp)
 		return (free(state), state = NULL, NULL);
+	state->pipes = NULL;
+	state->commands = NULL;
 	return (state);
 }
 
@@ -31,6 +33,7 @@ void	state_cleanup(t_state *state)
 	if (state)
 	{
 		envp_cleanup(&state->envp);
+		ast_cleanup(state);
 		free(state);
 		state = NULL;
 	}

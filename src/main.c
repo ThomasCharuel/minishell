@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:08:12 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/04 18:45:33 by romain           ###   ########.fr       */
+/*   Updated: 2024/02/06 10:15:59 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 volatile sig_atomic_t	g_signal_code;
- 
+
 int	main(int argc, char **argv, const char **envp)
 {
 	int		exit_code;
@@ -34,7 +34,7 @@ int	main(int argc, char **argv, const char **envp)
 		if (is_whitespace_line(line))
 			continue ;
 		add_history(line);
-		state->last_exit_code = exec_line(state, line);
+		state->last_exit_code = line_exec(state, line);
 		if (state->last_exit_code == COMMAND_ERROR)
 		{
 			free(line);

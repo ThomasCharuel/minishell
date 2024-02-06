@@ -1,4 +1,4 @@
-make && valgrind --leak-check=full --show-leak-kinds=all ./minishell
+clear && make && valgrind --leak-check=full ./minishell
 #clear && make && ./minishell
 
 ## more lines

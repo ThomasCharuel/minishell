@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/05 19:45:46 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/06 11:17:05 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ t_command	*command_create(const char *command_str)
 	command = (t_command *)malloc(sizeof(t_command));
 	if (!command)
 		return (perror("minishell"), NULL);
-	command->command_str = (char *)command_str;
+	command->command_str = ft_strdup(command_str);
+	if (!command->command_str)
+		return (perror("minishell"), free(command), NULL);
 	command->argv = NULL;
 	command->redirections = NULL;
 	command->in_fd = STDIN_FILENO;
@@ -106,12 +108,12 @@ t_command_status	command_parse(t_state *state, t_command *command)
 			else
 				return (ft_clean_double_list((void **)words, free),
 					COMMAND_PARSING_ERROR);
-			if (!redirection || !lst_append_content(&(command->redirections),
+			if (!redirection || !ft_append(&(command->redirections),
 					redirection))
 				return (ft_clean_double_list((void **)words, free),
 					COMMAND_ERROR);
 		}
-		else if (!lst_append_content(&(command->argv), words[i]))
+		else if (!ft_append(&(command->argv), ft_strdup(words[i])))
 			return (ft_clean_double_list((void **)words, free),
 				COMMAND_PARSING_ERROR);
 		i++;

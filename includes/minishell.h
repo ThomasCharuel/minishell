@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/05 19:36:22 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/06 10:48:42 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ typedef struct s_state
 {
 	char						**envp;
 	t_command_status			last_exit_code;
+	t_pipe						*pipes;
+	t_command					**commands;
 }								t_state;
 
 extern volatile sig_atomic_t	g_signal_code;
@@ -110,10 +112,12 @@ t_command_status				handle_command(t_state *state,
 									t_command *command);
 t_command_status				handle_path_command(t_command *command);
 
-t_command_status				exec_line(t_state *state,
-									const char *command_str);
+t_command_status				line_exec(t_state *state, const char *line);
 
 void							ft_clean_double_list(void **list,
 									void (*destroy)(void *));
+void							ft_close_fd(int fd);
+
+void							ast_cleanup(t_state *state);
 
 #endif

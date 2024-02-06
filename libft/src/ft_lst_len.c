@@ -1,35 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_lst_len.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/05 13:59:02 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/06 10:28:03 by tcharuel         ###   ########.fr       */
+/*   Created: 2024/02/06 10:42:47 by tcharuel          #+#    #+#             */
+/*   Updated: 2024/02/06 10:43:29 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	ft_clean_double_list(void **list, void (*destroy)(void *))
+size_t	ft_lst_len(t_list *lst)
 {
-	void	**temp;
+	size_t	len;
 
-	temp = list;
-	if (list)
+	len = 0;
+	while (lst)
 	{
-		while (*temp)
-		{
-			destroy(*temp);
-			temp++;
-		}
-		free(list);
+		lst = lst->next;
+		len++;
 	}
-}
-
-void	ft_close_fd(int fd)
-{
-	if (fd != STDIN_FILENO && fd != STDOUT_FILENO && fd != STDERR_FILENO)
-		close(fd);
+	return (len);
 }

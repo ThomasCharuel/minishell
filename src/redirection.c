@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:34:15 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/05 19:22:46 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/06 11:03:01 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ t_redirection	*redirection_create(const char *file, t_redirection_type type)
 	redirection = malloc(sizeof(t_redirection));
 	if (!redirection)
 		return (perror("minishell"), NULL);
-	redirection->file = (char *)file;
+	redirection->file = ft_strdup(file);
+	if (!redirection->file)
+		return (perror("minishell"), free(redirection), NULL);
 	redirection->type = type;
 	return (redirection);
 }

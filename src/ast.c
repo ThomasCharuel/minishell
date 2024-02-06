@@ -1,35 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/05 13:59:02 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/06 10:28:03 by tcharuel         ###   ########.fr       */
+/*   Created: 2024/02/06 10:37:41 by tcharuel          #+#    #+#             */
+/*   Updated: 2024/02/06 10:38:21 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_clean_double_list(void **list, void (*destroy)(void *))
+void	ast_cleanup(t_state *state)
 {
-	void	**temp;
-
-	temp = list;
-	if (list)
+	if (state->pipes)
 	{
-		while (*temp)
-		{
-			destroy(*temp);
-			temp++;
-		}
-		free(list);
+		free(state->pipes);
+		state->pipes = NULL;
 	}
-}
-
-void	ft_close_fd(int fd)
-{
-	if (fd != STDIN_FILENO && fd != STDOUT_FILENO && fd != STDERR_FILENO)
-		close(fd);
+	ft_clean_double_list((void **)state->commands, command_destroy);
+	state->commands = NULL;
 }

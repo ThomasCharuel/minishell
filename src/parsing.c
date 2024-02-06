@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:41:51 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/05 19:46:25 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/06 12:01:52 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_command_status	handle_command(t_state *state, t_command *command)
 	char		*command_path;
 	char		*command_str;
 
-	command_str = (char *)command->argv->data;
+	command_str = command->argv->content;
 	path = envp_get((const char **)state->envp, "PATH");
 	if (!path)
 		return (COMMAND_NOT_FOUND);
@@ -60,7 +60,8 @@ t_command_status	handle_command(t_state *state, t_command *command)
 					free), COMMAND_ERROR);
 		if (!access(command_path, X_OK))
 			return (ft_clean_double_list((void **)paths, free),
-				free(command_str), command_str = command_path, COMMAND_SUCCESS);
+				free(command->argv->content),
+				command->argv->content = command_path, COMMAND_SUCCESS);
 		free(command_path);
 		i++;
 	}
@@ -71,18 +72,12 @@ t_command_status	handle_command(t_state *state, t_command *command)
 
 t_command_status	handle_path_command(t_command *command)
 {
-	char	*err_message;
 	char	*command_str;
 
-	command_str = (char *)command->argv->data;
-	if (access(command_str, X_OK))
+	command_str = command->argv->content;
+	if (access(command_str, R_OK) || access(command_str, X_OK))
 	{
-		err_message = ft_strsjoin("minishell: ", command_str,
-				": No such file or directory\n", NULL);
-		if (!err_message)
-			return (perror("minishell"), COMMAND_ERROR);
-		write(STDERR_FILENO, err_message, ft_strlen(err_message));
-		free(err_message);
+		perror(command_str);
 		return (COMMAND_NOT_FOUND);
 	}
 	return (COMMAND_SUCCESS);
