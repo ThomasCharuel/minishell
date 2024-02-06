@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:01:58 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/06 14:44:56 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/06 16:15:12 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,6 @@ size_t				ft_strlen_delimiter(const char *s, char c);
 char				*ft_strdup_lf(const char *src);
 int					ft_str_has_lf(char const *s);
 void				ft_strcpy(char *dst, const char *src);
-const char			*ft_strrchrs(const char *s, const char *set);
+const char			*ft_strchrs(const char *s, const char *set);
 int					ft_charinset(const char c, const char *s);
 #endif

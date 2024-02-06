@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:23:26 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/06 14:44:49 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/06 16:13:56 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_charinset(const char c, const char *s)
 	return (0);
 }
 
-const char	*ft_strrchrs(const char *s, const char *set)
+const char	*ft_strchrs(const char *s, const char *set)
 {
 	while (*s)
 	{
