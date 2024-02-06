@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:41:51 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/06 12:01:52 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/06 19:18:22 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,43 @@ t_command_status	handle_path_command(t_command *command)
 		perror(command_str);
 		return (COMMAND_NOT_FOUND);
 	}
+	return (COMMAND_SUCCESS);
+}
+
+t_command_status	get_next_word(const char **ptr, char **word)
+{
+	const char	*cursor;
+	const char	*new_cursor;
+
+	cursor = *ptr;
+	new_cursor = cursor;
+	while (*cursor)
+	{
+		new_cursor = ft_strchrs(new_cursor, "><\"\' ");
+		if (!new_cursor)
+		{
+			*word = ft_strdup(cursor);
+			if (!word)
+				return (COMMAND_ERROR);
+			cursor += ft_strlen(cursor);
+			break ;
+		}
+		else if (ft_is_char_in_set(new_cursor[0], "<> "))
+		{
+			*word = ft_strndup(cursor, new_cursor - cursor);
+			if (!word)
+				return (COMMAND_ERROR);
+			cursor = new_cursor;
+			break ;
+		}
+		else
+		{
+			new_cursor = ft_strchr(&new_cursor[1], new_cursor[0]);
+			if (!new_cursor)
+				return (COMMAND_PARSING_ERROR);
+			new_cursor++;
+		}
+	}
+	*ptr = cursor;
 	return (COMMAND_SUCCESS);
 }

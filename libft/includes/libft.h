@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:01:58 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/06 16:15:12 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/06 19:18:00 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <fcntl.h>
 # include <limits.h>
 # include <stdarg.h>
+# include <stdbool.h>
 # include <stdint.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -137,5 +138,5 @@ char				*ft_strdup_lf(const char *src);
 int					ft_str_has_lf(char const *s);
 void				ft_strcpy(char *dst, const char *src);
 const char			*ft_strchrs(const char *s, const char *set);
-int					ft_charinset(const char c, const char *s);
+bool				ft_is_char_in_set(const char c, const char *s);
 #endif

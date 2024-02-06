@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/06 10:48:42 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/06 19:17:29 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
-# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/types.h>
@@ -105,12 +104,15 @@ t_command_status				command_parse(t_state *state,
 t_redirection					*redirection_create(const char *file,
 									t_redirection_type type);
 void							redirection_destroy(void *ptr);
+t_command_status				handle_redirection(const char **cmd,
+									t_command *command);
 
 char							*get_command_file(const char *path,
 									const char *cmd);
 t_command_status				handle_command(t_state *state,
 									t_command *command);
 t_command_status				handle_path_command(t_command *command);
+t_command_status				get_next_word(const char **ptr, char **word);
 
 t_command_status				line_exec(t_state *state, const char *line);
 
