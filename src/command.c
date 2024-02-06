@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/06 18:23:53 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/06 18:52:24 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,16 +221,16 @@ t_command_status	command_parse(t_state *state, t_command *command)
 				if (status)
 					return (status);
 			}
-			cursor = ++new_cursor;
+			cursor = new_cursor;
 		}
 		else
 		{
 			new_cursor = ft_strchr(&new_cursor[1], new_cursor[0]);
 			if (!new_cursor)
 				return (COMMAND_PARSING_ERROR);
-			new_cursor++;
 		}
+		new_cursor++;
 	}
-	command_display(command);
+	// command_display(command);
 	return (set_command_command(state, command));
 }
