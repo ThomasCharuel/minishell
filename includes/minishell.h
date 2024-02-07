@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/07 18:27:40 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/07 22:42:56 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <stdlib.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <unistd.h>
 
 typedef enum e_command_status
 {
@@ -66,6 +67,13 @@ typedef struct s_command
 	pid_t						pid;
 }								t_command;
 
+typedef struct s_heredoc
+{
+	int							fd;
+	char						*file;
+	bool						should_be_interpreted;
+}								t_heredoc;
+
 typedef struct s_pipe
 {
 	int							fd[2];
@@ -77,6 +85,7 @@ typedef struct s_state
 	t_command_status			last_exit_code;
 	t_pipe						*pipes;
 	t_command					**commands;
+	t_list						*heredocs;
 }								t_state;
 
 extern volatile sig_atomic_t	g_signal_code;
@@ -100,6 +109,9 @@ t_command						*command_create(const char *command_str);
 void							command_destroy(void *ptr);
 t_command_status				command_parse(t_state *state,
 									t_command *command);
+
+t_heredoc						*heredoc_create(const char *eof, size_t id);
+void							heredoc_destroy(void *ptr);
 
 t_redirection					*redirection_create(const char *file,
 									t_redirection_type type);
@@ -126,10 +138,12 @@ char							*get_var_value(t_state *state,
 									const char **ptr);
 char							*ft_strsjoin_from_list(t_list *list);
 void							ft_free(void **ptr);
+void							ft_free_str(char **str);
 
 t_return_status					str_list_append(t_list **word_list, char *str);
 
 t_command_status				handle_word_interpretation(t_state *state,
 									char **str);
-t_command_status				handle_heredocs(t_command *command);
+t_command_status				command_handle_heredocs(t_state *state,
+									t_command *command);
 #endif
