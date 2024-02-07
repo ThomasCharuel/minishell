@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/07 13:31:13 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/07 16:59:24 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,8 @@ t_command_status	line_parsing(t_state *state, const char *line)
 	while (command_strs[i])
 	{
 		state->commands[i] = command_create(command_strs[i]);
-		if (!state->commands[i] || command_parse(state,
-				state->commands[i]) == COMMAND_ERROR)
+		if (!state->commands[i] || handle_heredocs(state->commands[i])
+			|| command_parse(state, state->commands[i]) == COMMAND_ERROR)
 			return (ft_clean_double_list((void **)command_strs, free),
 				COMMAND_ERROR);
 		i++;

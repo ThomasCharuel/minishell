@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:34:15 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/07 13:07:53 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/07 17:03:22 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,10 @@ t_command_status	handle_redirection(t_state *state, const char **cmd,
 		cursor++;
 	if (!*cursor || ft_is_char_in_set(*cursor, "<>"))
 		return (COMMAND_PARSING_ERROR);
-	status = get_next_word(state, &cursor, &file);
+	status = get_next_word(&cursor, &file);
 	if (status != COMMAND_SUCCESS)
 		return (status);
+	status = handle_word_interpretation(state, &file);
 	redirection = redirection_create(file, type);
 	free(file);
 	if (!redirection || !ft_append(&command->redirections, redirection))

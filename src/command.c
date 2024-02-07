@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/07 14:48:28 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/07 17:02:47 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,12 @@ t_command_status	command_parse(t_state *state, t_command *command)
 		}
 		else
 		{
-			status = get_next_word(state, &cursor, &word);
+			status = get_next_word(&cursor, &word);
+			if (status)
+				return (status);
+			if (!word)
+				break ;
+			status = handle_word_interpretation(state, &word);
 			if (status)
 				return (status);
 			if (!word)
