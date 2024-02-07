@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/06 19:31:47 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/07 14:48:28 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,26 +77,6 @@ t_command_status	set_command_command(t_state *state, t_command *command)
 	return (COMMAND_SUCCESS);
 }
 
-t_return_status	append_word(t_command *command, const char *word, size_t len)
-{
-	char	*str;
-
-	if (!len)
-		return (SUCCESS);
-	str = ft_strndup(word, len);
-	if (!str)
-		return (ERROR);
-	if (!ft_append(&(command->argv), str))
-		return (free(str), ERROR);
-	return (SUCCESS);
-}
-
-// ls"truc" --> lstruc
-// ls'"truc' --> ls"truc
-// "a"b"c" --> abc
-// echo te>st --> echo te > st
-// "af" "ff     " --> af "ff     "
-// Pour les quotes, il faut les enlever
 t_command_status	command_parse(t_state *state, t_command *command)
 {
 	char				*word;
@@ -112,21 +92,21 @@ t_command_status	command_parse(t_state *state, t_command *command)
 			break ;
 		if (ft_is_char_in_set(*cursor, "<>"))
 		{
-			status = handle_redirection(&cursor, command);
+			status = handle_redirection(state, &cursor, command);
 			if (status)
 				return (status);
 		}
 		else
 		{
-			status = get_next_word(&cursor, &word);
+			status = get_next_word(state, &cursor, &word);
 			if (status)
 				return (status);
 			if (!word)
 				break ;
-			if (!ft_append(&command->argv, word))
+			if (!str_list_append(&command->argv, word))
 				return (free(word), COMMAND_ERROR);
 		}
 	}
-	// command_display(command);
+	command_display(command);
 	return (set_command_command(state, command));
 }

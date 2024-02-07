@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/06 18:55:57 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/07 13:31:13 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ t_return_status	command_exec(t_state *state, t_command *command,
 		ft_close_fd(command->out_fd);
 		handle_redirections(command);
 		execve(argv[0], argv, state->envp);
+		// state cleanup
 	}
 	free(argv);
 	ft_close_fd(command->in_fd);

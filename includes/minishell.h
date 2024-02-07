@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/06 19:17:29 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/07 14:50:07 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,15 +104,16 @@ t_command_status				command_parse(t_state *state,
 t_redirection					*redirection_create(const char *file,
 									t_redirection_type type);
 void							redirection_destroy(void *ptr);
-t_command_status				handle_redirection(const char **cmd,
-									t_command *command);
+t_command_status				handle_redirection(t_state *state,
+									const char **cmd, t_command *command);
 
 char							*get_command_file(const char *path,
 									const char *cmd);
 t_command_status				handle_command(t_state *state,
 									t_command *command);
 t_command_status				handle_path_command(t_command *command);
-t_command_status				get_next_word(const char **ptr, char **word);
+t_command_status				get_next_word(t_state *state, const char **ptr,
+									char **word);
 
 t_command_status				line_exec(t_state *state, const char *line);
 
@@ -121,5 +122,12 @@ void							ft_clean_double_list(void **list,
 void							ft_close_fd(int fd);
 
 void							ast_cleanup(t_state *state);
+
+char							*get_var_value(t_state *state,
+									const char **ptr);
+char							*ft_strsjoin_from_list(t_list *list);
+void							ft_free(void **ptr);
+
+t_return_status					str_list_append(t_list **word_list, char *str);
 
 #endif

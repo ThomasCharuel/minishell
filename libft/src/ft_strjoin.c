@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 15:50:16 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/04 18:22:20 by romain           ###   ########.fr       */
+/*   Updated: 2024/02/07 11:36:51 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,25 @@ char	*ft_strsjoin(char *str, ...)
 	}
 	va_end(args);
 	return (res);
+}
+
+char	*ft_strsjoin_array(const char **strs)
+{
+	char	*str;
+	size_t	len;
+	size_t	i;
+
+	len = 0;
+	i = 0;
+	while (strs[i])
+	{
+		len += ft_strlen(strs[i++]);
+	}
+	str = calloc(len + 1, sizeof(char));
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (strs[i])
+		ft_strcat(str, strs[i++]);
+	return (str);
 }

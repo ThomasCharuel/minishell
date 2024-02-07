@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:41:51 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/06 19:18:22 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/07 14:49:15 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,110 @@ t_command_status	handle_path_command(t_command *command)
 	return (COMMAND_SUCCESS);
 }
 
-t_command_status	get_next_word(const char **ptr, char **word)
+// ls"truc" --> lstruc
+// ls'"truc' --> ls"truc
+// "a"b"c" --> abc
+// echo te>st --> echo te > st
+// "af" "ff     " --> af "ff     "
+// Pour les quotes, il faut les enlever
+t_command_status	get_interpreted_word(t_state *state, const char *cursor,
+		size_t n, char **str)
 {
-	const char	*cursor;
+	t_list		*words;
+	char		*word;
 	const char	*new_cursor;
+	bool		is_double_quote;
+	char		*raw_word;
+
+	word = NULL;
+	raw_word = ft_strndup(cursor, n);
+	if (!raw_word)
+		return (COMMAND_ERROR);
+	is_double_quote = false;
+	words = NULL;
+	cursor = raw_word;
+	new_cursor = cursor;
+	while (*cursor)
+	{
+		if (is_double_quote)
+			new_cursor = ft_strchrs(new_cursor, "\"$");
+		else
+			new_cursor = ft_strchrs(new_cursor, "\"\'$");
+		if (!new_cursor)
+		{
+			word = ft_strdup(cursor);
+			if (!word)
+				return (free(raw_word), ft_lstclear(&words, free),
+					COMMAND_ERROR);
+			if (!str_list_append(&words, word))
+				return (free(raw_word), free(word), ft_lstclear(&words, free),
+					COMMAND_ERROR);
+			break ;
+		}
+		word = ft_strndup(cursor, new_cursor - cursor);
+		if (!word)
+			return (free(raw_word), ft_lstclear(&words, free), COMMAND_ERROR);
+		if (!str_list_append(&words, word))
+			return (free(raw_word), free(word), ft_lstclear(&words, free),
+				COMMAND_ERROR);
+		cursor = new_cursor;
+		if (*new_cursor == '\'')
+		{
+			new_cursor = ft_strchr(++cursor, '\'');
+			if (!new_cursor)
+				return (free(raw_word), ft_lstclear(&words, free),
+					COMMAND_PARSING_ERROR);
+			word = ft_strndup(cursor, new_cursor - cursor);
+			if (!word)
+				return (free(raw_word), ft_lstclear(&words, free),
+					COMMAND_ERROR);
+			if (!str_list_append(&words, word))
+				return (free(raw_word), free(word), ft_lstclear(&words, free),
+					COMMAND_ERROR);
+			cursor = new_cursor++;
+		}
+		else if (*new_cursor == '\"')
+		{
+			if (is_double_quote)
+			{
+				word = ft_strndup(cursor, new_cursor - cursor);
+				if (!word)
+					return (free(raw_word), ft_lstclear(&words, free),
+						COMMAND_ERROR);
+				if (!str_list_append(&words, word))
+					return (free(raw_word), free(word), ft_lstclear(&words,
+							free), COMMAND_ERROR);
+				is_double_quote = false;
+			}
+			else
+				is_double_quote = true;
+			cursor = ++new_cursor;
+			continue ;
+		}
+		else if (*new_cursor++ == '$')
+		{
+			word = get_var_value(state, &new_cursor);
+			if (!word)
+				return (free(raw_word), ft_lstclear(&words, free),
+					COMMAND_ERROR);
+			if (!str_list_append(&words, word))
+				return (free(raw_word), free(word), ft_lstclear(&words, free),
+					COMMAND_ERROR);
+		}
+	}
+	ft_free((void **)&raw_word);
+	*str = ft_strsjoin_from_list(words);
+	ft_lstclear(&words, free);
+	if (!*str)
+		return (COMMAND_ERROR);
+	return (COMMAND_SUCCESS);
+}
+
+t_command_status	get_next_word(t_state *state, const char **ptr, char **word)
+{
+	const char			*cursor;
+	const char			*new_cursor;
+	t_command_status	status;
 
 	cursor = *ptr;
 	new_cursor = cursor;
@@ -95,16 +195,18 @@ t_command_status	get_next_word(const char **ptr, char **word)
 		new_cursor = ft_strchrs(new_cursor, "><\"\' ");
 		if (!new_cursor)
 		{
-			*word = ft_strdup(cursor);
-			if (!word)
-				return (COMMAND_ERROR);
+			status = get_interpreted_word(state, cursor, ft_strlen(cursor),
+					word);
+			if (status != COMMAND_SUCCESS)
+				return (status);
 			cursor += ft_strlen(cursor);
 			break ;
 		}
 		else if (ft_is_char_in_set(new_cursor[0], "<> "))
 		{
-			*word = ft_strndup(cursor, new_cursor - cursor);
-			if (!word)
+			status = get_interpreted_word(state, cursor, new_cursor - cursor,
+					word);
+			if (status != COMMAND_SUCCESS)
 				return (COMMAND_ERROR);
 			cursor = new_cursor;
 			break ;
