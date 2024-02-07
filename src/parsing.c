@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:41:51 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/07 14:49:15 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/07 14:56:04 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,6 @@ t_command_status	get_interpreted_word(t_state *state, const char *cursor,
 			else
 				is_double_quote = true;
 			cursor = ++new_cursor;
-			continue ;
 		}
 		else if (*new_cursor++ == '$')
 		{
@@ -172,6 +171,7 @@ t_command_status	get_interpreted_word(t_state *state, const char *cursor,
 			if (!str_list_append(&words, word))
 				return (free(raw_word), free(word), ft_lstclear(&words, free),
 					COMMAND_ERROR);
+			cursor = new_cursor;
 		}
 	}
 	ft_free((void **)&raw_word);
