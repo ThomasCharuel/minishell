@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:41:51 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/07 14:56:04 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/07 15:01:28 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,7 @@ t_command_status	handle_path_command(t_command *command)
 	return (COMMAND_SUCCESS);
 }
 
-// ls"truc" --> lstruc
 // ls'"truc' --> ls"truc
-// "a"b"c" --> abc
-// echo te>st --> echo te > st
-// "af" "ff     " --> af "ff     "
-// Pour les quotes, il faut les enlever
 t_command_status	get_interpreted_word(t_state *state, const char *cursor,
 		size_t n, char **str)
 {
@@ -143,7 +138,7 @@ t_command_status	get_interpreted_word(t_state *state, const char *cursor,
 			if (!str_list_append(&words, word))
 				return (free(raw_word), free(word), ft_lstclear(&words, free),
 					COMMAND_ERROR);
-			cursor = new_cursor++;
+			cursor = ++new_cursor;
 		}
 		else if (*new_cursor == '\"')
 		{
