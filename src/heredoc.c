@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:13:26 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/07 23:05:06 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:26:56 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ t_heredoc	*heredoc_create(const char *eof, size_t id)
 {
 	t_heredoc	*heredoc;
 	char		*id_str;
+	char		*heredoc_addr;
 	char		*tty_name;
 
 	heredoc = malloc(sizeof(t_heredoc));
@@ -25,21 +26,25 @@ t_heredoc	*heredoc_create(const char *eof, size_t id)
 		heredoc->should_be_interpreted = false;
 	else
 		heredoc->should_be_interpreted = true;
+	heredoc_addr = ft_lutoa((unsigned long)heredoc, "0123456789abcdef");
+	if (!heredoc_addr)
+		return (free(heredoc), NULL);
+	id_str = ft_lutoa(id, "0123456789abcdef");
+	if (!id_str)
+		return (free(heredoc_addr), free(heredoc), NULL);
 	tty_name = ttyname(STDIN_FILENO);
 	if (!tty_name)
-		return (free(heredoc), NULL);
-	id_str = ft_lutoa(id, "0123456789");
-	if (!id_str)
-		return (free(tty_name), free(heredoc), NULL);
-	ft_printf("ID: %d, %s, TTY: %s\n", id, id_str, tty_name);
-	heredoc->file = ft_strsjoin("/tmp/minishell", tty_name, "/", id_str);
+		return (free(id_str), free(heredoc_addr), free(heredoc), NULL);
+	heredoc->file = ft_strsjoin("/tmp/minishell", tty_name, heredoc_addr, "-",
+			id_str, NULL);
 	free(tty_name);
+	free(heredoc_addr);
 	free(id_str);
 	if (!heredoc->file)
-		return (free(tty_name), free(id_str), free(heredoc), NULL);
-	ft_printf("ID: %d, Filename: %s\n", id, heredoc->file);
-	heredoc->fd = open(heredoc->file, O_RDWR);
-	unlink(heredoc->file);
+		return (free(heredoc), NULL);
+	heredoc->fd = open(heredoc->file, O_CREAT | O_RDWR);
+	ft_printf("FD: %d\n", heredoc->fd);
+	// unlink(heredoc->file);
 	return (heredoc);
 }
 
@@ -128,7 +133,7 @@ t_command_status	handle_heredoc(t_state *state, const char **cursor,
 	if (!ft_append(&state->heredocs, heredoc))
 		return (free(eof), heredoc_destroy(heredoc), COMMAND_ERROR);
 	free(eof);
-	*res = ft_strsjoin("< ", heredoc->file);
+	*res = ft_strsjoin("< ", heredoc->file, NULL);
 	return (COMMAND_SUCCESS);
 }
 
