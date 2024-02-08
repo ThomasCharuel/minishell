@@ -6,26 +6,16 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:13:26 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/08 16:26:56 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:36:45 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_heredoc	*heredoc_create(const char *eof, size_t id)
+char	*get_heredoc_file_name(t_heredoc *heredoc)
 {
-	t_heredoc	*heredoc;
-	char		*id_str;
-	char		*heredoc_addr;
-	char		*tty_name;
+	char	*file;
 
-	heredoc = malloc(sizeof(t_heredoc));
-	if (!heredoc)
-		return (NULL);
-	if (ft_strchrs(eof, "\'\""))
-		heredoc->should_be_interpreted = false;
-	else
-		heredoc->should_be_interpreted = true;
 	heredoc_addr = ft_lutoa((unsigned long)heredoc, "0123456789abcdef");
 	if (!heredoc_addr)
 		return (free(heredoc), NULL);
@@ -35,16 +25,33 @@ t_heredoc	*heredoc_create(const char *eof, size_t id)
 	tty_name = ttyname(STDIN_FILENO);
 	if (!tty_name)
 		return (free(id_str), free(heredoc_addr), free(heredoc), NULL);
-	heredoc->file = ft_strsjoin("/tmp/minishell", tty_name, heredoc_addr, "-",
-			id_str, NULL);
+	file = ft_strsjoin("/tmp/minishell", tty_name, heredoc_addr, "-", id_str,
+			NULL);
 	free(tty_name);
 	free(heredoc_addr);
 	free(id_str);
+	return (file);
+}
+
+t_heredoc	*heredoc_create(const char *eof, size_t id)
+{
+	t_heredoc	*heredoc;
+
+	heredoc = malloc(sizeof(t_heredoc));
+	if (!heredoc)
+		return (NULL);
+	if (ft_strchrs(eof, "\'\""))
+		heredoc->should_be_interpreted = false;
+	else
+		heredoc->should_be_interpreted = true;
+	heredoc->file = get_heredoc_file_name(heredoc);
 	if (!heredoc->file)
 		return (free(heredoc), NULL);
 	heredoc->fd = open(heredoc->file, O_CREAT | O_RDWR);
 	ft_printf("FD: %d\n", heredoc->fd);
-	// unlink(heredoc->file);
+	if (heredoc->fd < 0)
+		return (free(heredoc), NULL);
+	unlink(heredoc->file);
 	return (heredoc);
 }
 
