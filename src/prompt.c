@@ -6,24 +6,29 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:37:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/04 16:42:20 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/08 19:19:45 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*prompt_loop(void)
+char	*prompt_loop(t_state *state)
 {
-	char	*pwd;
-	char	*prompt;
-	char	*line;
+	char		*pwd;
+	char		*prompt;
+	char		*line;
+	const char	*user;
 
 	pwd = (char *)malloc(PATH_MAX * sizeof(char));
 	if (!pwd)
 		return (perror("minishell"), NULL);
 	if (!getcwd(pwd, PATH_MAX))
 		return (free(pwd), NULL);
-	prompt = ft_strsjoin(getenv("USER"), ":", pwd, "$ ", NULL);
+	user = envp_get((const char **)state->envp, "USER");
+	if (!user)
+		prompt = ft_strsjoin("$ ", NULL);
+	else
+		prompt = ft_strsjoin((char *)user, ":", pwd, "$ ", NULL);
 	if (!prompt)
 		return (perror("minishell"), free(pwd), NULL);
 	free(pwd);

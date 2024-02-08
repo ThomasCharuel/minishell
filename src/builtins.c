@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:23:44 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/04 15:56:22 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/08 19:15:47 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	cd(int ac, char **av)
 {
 	char	*home;
 
-	home = getenv("HOME");
+	home = getenv("HOME"); // To refacto
 	if (ac == 1)
 		return (chdir(home));
 	if (ac > 2)

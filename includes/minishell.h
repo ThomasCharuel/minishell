@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/08 18:34:56 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/08 19:16:25 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ typedef struct s_state
 
 extern volatile sig_atomic_t	g_signal_code;
 
-char							*prompt_loop(void);
+char							*prompt_loop(t_state *state);
 bool							is_whitespace_line(char *line);
 
 void							signal_init(void);
