@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:13:26 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/08 17:16:36 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/08 18:54:54 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ char	*get_heredoc_file_name(void)
 	id_str = ft_lutoa(id, "0123456789abcdef");
 	if (!id_str)
 		return (free(pid_str), NULL);
-	file = ft_strsjoin("/tmp/minishell-", pid_str, "-", id_str, NULL);
+	file = ft_strsjoin("/tmp/.minishell-", pid_str, "-", id_str, NULL);
 	free(pid_str);
 	free(id_str);
 	return (file);
 }
 
-t_heredoc	*heredoc_create(const char *eof)
+t_heredoc	*heredoc_create(char *eof)
 {
 	t_heredoc	*heredoc;
 
@@ -56,13 +56,8 @@ t_heredoc	*heredoc_create(const char *eof)
 		heredoc->should_be_interpreted = true;
 	heredoc->file = get_heredoc_file_name();
 	if (!heredoc->file)
-		return (free(heredoc), NULL);
-	heredoc->fd = open(heredoc->file, O_WRONLY | O_CREAT | O_TRUNC,
-			S_IRUSR | S_IWUSR);
-	ft_printf("FD: %s\n", heredoc->file);
-	if (heredoc->fd < 0)
-		return (free(heredoc), NULL);
-	unlink(heredoc->file);
+		return (free(heredoc->file), free(heredoc), NULL);
+	heredoc->eof = eof;
 	return (heredoc);
 }
 
@@ -73,8 +68,9 @@ void	heredoc_destroy(void *ptr)
 	heredoc = ptr;
 	if (heredoc)
 	{
-		close(heredoc->fd);
+		unlink(heredoc->file);
 		free(heredoc->file);
+		free(heredoc->eof);
 		free(heredoc);
 	}
 }
@@ -130,6 +126,28 @@ t_command_status	heredoc_get_eof(const char **cursor, char **eof)
 	return (ft_lstclear(&words, free), COMMAND_SUCCESS);
 }
 
+t_return_status	write_heredoc(t_heredoc *heredoc)
+{
+	char	*line;
+	int		fd;
+
+	fd = open(heredoc->file, O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR);
+	if (fd < 0)
+		return (perror(heredoc->file), ERROR);
+	line = readline(">");
+	while (line && ft_strcmp(line, heredoc->eof))
+	{
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
+		free(line);
+		line = readline(">");
+	}
+	if (line)
+		free(line);
+	close(fd);
+	return (SUCCESS);
+}
+
 t_command_status	handle_heredoc(t_state *state, const char **cursor,
 		char **res)
 {
@@ -147,11 +165,12 @@ t_command_status	handle_heredoc(t_state *state, const char **cursor,
 		return (ft_free_str(&eof), COMMAND_PARSING_ERROR);
 	heredoc = heredoc_create(eof);
 	if (!heredoc)
-		return (free(eof), COMMAND_ERROR);
+		return (ft_free_str(&eof), COMMAND_ERROR);
 	if (!ft_append(&state->heredocs, heredoc))
-		return (free(eof), heredoc_destroy(heredoc), COMMAND_ERROR);
-	free(eof);
+		return (heredoc_destroy(heredoc), COMMAND_ERROR);
 	*res = ft_strsjoin("< ", heredoc->file, NULL);
+	if (!write_heredoc(heredoc))
+		return (COMMAND_ERROR);
 	return (COMMAND_SUCCESS);
 }
 
@@ -178,8 +197,9 @@ t_command_status	command_handle_heredocs(t_state *state, t_command *command)
 			return (ft_lstclear(&words, free), status);
 		if (!str_list_append(&words, word))
 			return (ft_lstclear(&words, free), COMMAND_ERROR);
-		ft_printf("Heredoc Word is: %s\n", word);
 	}
+	ft_free_str(&command->command_str);
+	command->command_str = ft_strsjoin_from_list(words);
 	ft_lstclear(&words, free);
 	return (COMMAND_SUCCESS);
 }

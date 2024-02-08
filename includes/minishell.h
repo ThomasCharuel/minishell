@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/08 16:59:13 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/08 18:34:56 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ typedef struct s_command
 
 typedef struct s_heredoc
 {
-	int							fd;
 	char						*file;
+	char						*eof;
 	bool						should_be_interpreted;
 }								t_heredoc;
 
@@ -110,7 +110,6 @@ void							command_destroy(void *ptr);
 t_command_status				command_parse(t_state *state,
 									t_command *command);
 
-t_heredoc						*heredoc_create(const char *eof);
 void							heredoc_destroy(void *ptr);
 
 t_redirection					*redirection_create(const char *file,

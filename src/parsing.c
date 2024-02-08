@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:41:51 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/07 17:27:43 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/08 17:44:15 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,5 @@ t_command_status	get_next_word(const char **ptr, char **word)
 		}
 	}
 	*ptr = cursor;
-	ft_printf("Word is: %s\n", *word);
 	return (COMMAND_SUCCESS);
 }

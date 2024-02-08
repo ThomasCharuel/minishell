@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/07 22:42:28 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/08 18:53:42 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,5 +155,6 @@ t_command_status	line_exec(t_state *state, const char *line)
 	while (wait(NULL) != -1)
 		continue ;
 	ast_cleanup(state);
+	ft_lstclear(&state->heredocs, &heredoc_destroy);
 	return (status);
 }
