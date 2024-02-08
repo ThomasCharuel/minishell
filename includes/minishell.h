@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/07 22:42:56 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:59:13 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void							command_destroy(void *ptr);
 t_command_status				command_parse(t_state *state,
 									t_command *command);
 
-t_heredoc						*heredoc_create(const char *eof, size_t id);
+t_heredoc						*heredoc_create(const char *eof);
 void							heredoc_destroy(void *ptr);
 
 t_redirection					*redirection_create(const char *file,

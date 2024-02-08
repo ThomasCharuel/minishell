@@ -6,34 +6,44 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:13:26 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/08 16:36:45 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/08 17:16:36 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_heredoc_file_name(t_heredoc *heredoc)
+char	*get_pid(void)
 {
-	char	*file;
+	char	*res;
+	pid_t	child_pid;
 
-	heredoc_addr = ft_lutoa((unsigned long)heredoc, "0123456789abcdef");
-	if (!heredoc_addr)
-		return (free(heredoc), NULL);
+	child_pid = fork();
+	if (child_pid < 0)
+		return (NULL);
+	if (!child_pid)
+		exit(0);
+	res = ft_itoa(child_pid);
+	return (res);
+}
+
+char	*get_heredoc_file_name(void)
+{
+	static size_t	id = 0;
+	char			*file;
+	char			*id_str;
+	char			*pid_str;
+
+	pid_str = get_pid();
 	id_str = ft_lutoa(id, "0123456789abcdef");
 	if (!id_str)
-		return (free(heredoc_addr), free(heredoc), NULL);
-	tty_name = ttyname(STDIN_FILENO);
-	if (!tty_name)
-		return (free(id_str), free(heredoc_addr), free(heredoc), NULL);
-	file = ft_strsjoin("/tmp/minishell", tty_name, heredoc_addr, "-", id_str,
-			NULL);
-	free(tty_name);
-	free(heredoc_addr);
+		return (free(pid_str), NULL);
+	file = ft_strsjoin("/tmp/minishell-", pid_str, "-", id_str, NULL);
+	free(pid_str);
 	free(id_str);
 	return (file);
 }
 
-t_heredoc	*heredoc_create(const char *eof, size_t id)
+t_heredoc	*heredoc_create(const char *eof)
 {
 	t_heredoc	*heredoc;
 
@@ -44,11 +54,12 @@ t_heredoc	*heredoc_create(const char *eof, size_t id)
 		heredoc->should_be_interpreted = false;
 	else
 		heredoc->should_be_interpreted = true;
-	heredoc->file = get_heredoc_file_name(heredoc);
+	heredoc->file = get_heredoc_file_name();
 	if (!heredoc->file)
 		return (free(heredoc), NULL);
-	heredoc->fd = open(heredoc->file, O_CREAT | O_RDWR);
-	ft_printf("FD: %d\n", heredoc->fd);
+	heredoc->fd = open(heredoc->file, O_WRONLY | O_CREAT | O_TRUNC,
+			S_IRUSR | S_IWUSR);
+	ft_printf("FD: %s\n", heredoc->file);
 	if (heredoc->fd < 0)
 		return (free(heredoc), NULL);
 	unlink(heredoc->file);
@@ -134,7 +145,7 @@ t_command_status	handle_heredoc(t_state *state, const char **cursor,
 		return (ft_free_str(&eof), status);
 	if (!ft_strlen(eof))
 		return (ft_free_str(&eof), COMMAND_PARSING_ERROR);
-	heredoc = heredoc_create(eof, ft_lst_len(state->heredocs));
+	heredoc = heredoc_create(eof);
 	if (!heredoc)
 		return (free(eof), COMMAND_ERROR);
 	if (!ft_append(&state->heredocs, heredoc))
