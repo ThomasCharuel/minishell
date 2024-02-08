@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 14:13:29 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/08 19:12:36 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/08 20:19:07 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,18 @@ char	**envp_copy(const char **envp)
 	i = 0;
 	while (envp[i])
 		i++;
-	copy = (char **)malloc((i + 1) * sizeof(char *));
+	copy = calloc(i + 1, sizeof(char *));
 	if (!copy)
 		return (perror("minishell"), NULL);
 	i = 0;
 	while (envp[i])
 	{
-		ft_printf("%d: %s\n", i, envp[i]);
 		copy[i] = ft_strdup(envp[i]);
 		if (!copy[i])
 			return (perror("minishell"), ft_clean_double_list((void **)copy,
 					free), NULL);
 		i++;
 	}
-	copy[i] = NULL;
 	return (copy);
 }
 
