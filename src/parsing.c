@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:41:51 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/09 10:25:10 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:25:52 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_command_status	handle_command(t_state *state, t_command *command)
 	char		*command_str;
 
 	command_str = command->argv->content;
-	path = envp_get((const char **)state->envp, "PATH");
+	path = envp_get(state, "PATH");
 	if (!path)
 		return (COMMAND_NOT_FOUND);
 	paths = ft_split(path, ':');

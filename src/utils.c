@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:59:02 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/07 20:56:17 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:32:57 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,7 @@ void	ft_clean_double_list(void **list, void (*destroy)(void *))
 	if (list)
 	{
 		while (*temp)
-		{
-			destroy(*temp);
-			temp++;
-		}
+			destroy(*temp++);
 		free(list);
 	}
 }

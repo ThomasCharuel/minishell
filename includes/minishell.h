@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/09 21:15:35 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:36:39 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,12 +116,11 @@ void							signal_init(void);
 t_state							*state_init(const char **envp);
 void							state_cleanup(t_state *state);
 
-char							**envp_copy(const char **envp);
-void							envp_cleanup(char ***envp);
-const char						*envp_get(const char **envp, const char *key);
-t_return_status					envp_set(char **envp, const char *key,
+char							**envp_copy(t_state *state);
+const char						*envp_get(t_state *state, const char *key);
+t_return_status					envp_set(t_state *state, const char *key,
 									const char *value);
-t_return_status					envp_delete(char **envp, const char *key);
+void							envp_delete(t_state *state, const char *key);
 
 t_command						*command_create(const char *command_str);
 void							command_destroy(void *ptr);

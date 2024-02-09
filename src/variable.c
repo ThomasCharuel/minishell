@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:38:57 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/07 14:53:46 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:26:16 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*get_var_value(t_state *state, const char **ptr)
 	if (!var_str)
 		return (NULL);
 	*ptr = cursor;
-	value = envp_get((const char **)state->envp, var_str);
+	value = envp_get(state, var_str);
 	free(var_str);
 	if (!value)
 		return (calloc(1, 1));
