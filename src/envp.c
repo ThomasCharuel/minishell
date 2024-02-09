@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 14:13:29 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/08 20:19:07 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:13:34 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,29 @@ const char	*envp_get(const char **envp, const char *key)
 	return (NULL);
 }
 
-t_return_status	envp_set(char **envp, const char *key, const char *value)
+t_return_status	envp_set(t_state *state, const char *key, const char *value)
 {
-	(void)(envp);
-	(void)(key);
-	(void)(value);
+	size_t	i;
+	size_t	key_len;
+	char	*str;
+
+	key_len = ft_strlen(key);
+	i = 0;
+	while (state->envp[i])
+	{
+		if (!ft_strncmp(state->envp[i], key, key_len)
+			&& state->envp[i][key_len] == '=')
+			break ;
+		i++;
+	}
+	str = ft_strsjoin(key, "=", value, NULL);
+	if (!str)
+		return (ERROR);
+	if (state->envp[i])
+		free(state->envp[i]);
+	else if (!ft_realloc(&state->envp, i, i + 1))
+		return (free(str), ERROR);
+	state->envp[i] = str;
 	return (SUCCESS);
 }
 
