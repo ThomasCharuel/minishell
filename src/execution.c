@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/09 19:58:41 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/09 20:08:11 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,9 +212,6 @@ t_command_status	command_generation_handling(const char **ptr,
 		*daddy = node_create(PIPE, NULL);
 		(*daddy)->left = node_create(COMMAND, command);
 		cursor++;
-		status = parse_next_line_command(&cursor, &word);
-		command = command_create(word);
-		free(word);
 		status = command_generation_handling(&cursor, &(*daddy)->right);
 	}
 	else
