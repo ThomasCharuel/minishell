@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/09 15:14:02 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/09 21:15:35 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef enum e_command_status
 	COMMAND_SUCCESS = 0,
 	COMMAND_ERROR = -1,
 	COMMAND_PARSING_ERROR = 2,
-	COMMAND_NOT_FOUND = 127
+	COMMAND_NOT_FOUND = 127,
 }								t_command_status;
 
 typedef enum e_return_status
@@ -65,6 +65,7 @@ typedef struct s_command
 	int							out_fd;
 	int							status;
 	pid_t						pid;
+	t_command_status			exit_code;
 }								t_command;
 
 typedef struct s_heredoc
@@ -163,11 +164,16 @@ t_command_status				handle_heredocs(t_state *state,
 
 t_node							*node_create(t_node_type type, void *content);
 void							node_destroy(t_node **node);
-void							tree_dfs(t_node *node, void (*f)(t_node *));
+void							tree_dfs(t_state *state, t_node *node,
+									void (*f)(t_state *, t_node *));
 void							display_node(t_node *node);
+t_command_status				ast_execute(t_state *state, t_node *node);
 
 t_command_status				get_next_word_new(const char **cursor,
 									char **res, const char *charset,
 									bool delim);
+
+t_return_status					command_exec(t_state *state, t_command *command,
+									int fd_to_close);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/09 20:08:11 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/09 21:26:03 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,6 @@ t_return_status	command_exec(t_state *state, t_command *command,
 // 	char	**command_strs;
 // 	size_t	i;
 
-// 	command_strs = ft_split(line, '|');
-// 	if (!command_strs)
-// 		return (COMMAND_ERROR);
 // 	state->commands = ft_calloc(ft_strslen((const void **)command_strs) + 1,
 // 			sizeof(t_command *));
 // 	if (!state->commands)
@@ -263,7 +260,6 @@ t_command_status	line_parsing(t_state *state, const char *line)
 	cursor = state->line;
 	status = ast_generate(state, &cursor, NULL);
 	ft_free_str(&state->line);
-	tree_dfs(state->ast, &display_node);
 	return (COMMAND_SUCCESS);
 }
 
@@ -271,12 +267,16 @@ t_command_status	line_exec(t_state *state, const char *line)
 {
 	t_command_status	status;
 
-	// size_t				i;
-	// size_t				len;
-	// int					fd_to_close;
 	status = line_parsing(state, line);
 	if (status)
 		return (status);
+	ast_execute(state, state->ast);
+	node_destroy(&state->ast);
+	ft_lstclear(&state->heredocs, &heredoc_destroy);
+	return (status);
+	// size_t				i;
+	// size_t				len;
+	// int					fd_to_close;
 	// len = ft_strslen((const void **)state->commands);
 	// state->pipes = calloc(len, sizeof(t_pipe));
 	// if (!state->pipes)
@@ -304,7 +304,4 @@ t_command_status	line_exec(t_state *state, const char *line)
 	// 	&& WEXITSTATUS(state->commands[i]->status);
 	// while (wait(NULL) != -1)
 	// 	continue ;
-	node_destroy(&state->ast);
-	ft_lstclear(&state->heredocs, &heredoc_destroy);
-	return (status);
 }

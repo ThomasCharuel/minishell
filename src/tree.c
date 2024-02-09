@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 10:56:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/09 16:53:44 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/09 20:47:18 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ void	node_destroy(t_node **node)
 	}
 }
 
-void	tree_dfs(t_node *node, void (*f)(t_node *))
+void	tree_dfs(t_state *state, t_node *node, void (*f)(t_state *, t_node *))
 {
 	if (!node)
 		return ;
-	f(node);
+	f(state, node);
 	if (node->left)
-		tree_dfs(node->left, f);
+		tree_dfs(state, node->left, f);
 	if (node->right)
-		tree_dfs(node->right, f);
+		tree_dfs(state, node->right, f);
 }
