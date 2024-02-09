@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:08:12 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/08 19:16:28 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:44:18 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ int	main(int argc, char **argv, const char **envp)
 		line = prompt_loop(state);
 		if (!line)
 			break ;
+		if (*line)
+			add_history(line);
 		if (is_whitespace_line(line))
 			continue ;
-		add_history(line);
 		state->last_exit_code = line_exec(state, line);
 		if (state->last_exit_code == COMMAND_ERROR)
 		{
