@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 10:56:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/09 15:17:30 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/09 16:53:44 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_node	*node_create(t_node_type type, void *content)
 		return (NULL);
 	node->type = type;
 	node->content = content;
+	node->daddy = NULL;
 	node->left = NULL;
 	node->right = NULL;
 	return (node);

@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/09 16:51:58 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/09 19:58:41 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,21 +124,28 @@ t_command_status	parse_next_line_block(const char **ptr, char **res)
 	t_list				*words;
 	char				*word;
 	const char			*cursor;
+	bool				parenthesis;
 
+	parenthesis = false;
 	cursor = *ptr;
 	words = NULL;
 	while (*cursor)
 	{
-		if (!ft_strncmp(cursor, "||", 2) || !ft_strncmp(cursor, "&&", 2))
+		if (!parenthesis && (!ft_strncmp(cursor, "||", 2) || !ft_strncmp(cursor,
+					"&&", 2)))
 			break ;
 		if (*cursor == '\"')
 			status = get_next_word_new(&cursor, &word, "\"", true);
 		else if (*cursor == '\'')
 			status = get_next_word_new(&cursor, &word, "\'", true);
-		else if (*cursor == '(')
-			status = get_next_word_new(&cursor, &word, ")", true);
 		else
-			status = get_next_word_new(&cursor, &word, "\'\"(&|", false);
+		{
+			if (*cursor == '(')
+				parenthesis = true;
+			else if (*cursor == ')')
+				parenthesis = false;
+			status = get_next_word_new(&cursor, &word, "\'\"()&|", false);
+		}
 		if (status)
 			return (ft_lstclear(&words, free), status);
 		if (!str_list_append(&words, word))
@@ -150,55 +157,114 @@ t_command_status	parse_next_line_block(const char **ptr, char **res)
 	return (COMMAND_SUCCESS);
 }
 
-t_command_status	ast_generate(t_state *state, const char *cursor,
-		t_node **left_child)
+t_command_status	parse_next_line_command(const char **ptr, char **res)
 {
-	char				*word;
 	t_command_status	status;
-	t_command			*command;
+	t_list				*words;
+	char				*word;
+	const char			*cursor;
+	bool				parenthesis;
 
-	status = parse_next_line_block(&cursor, &word);
-	if (status)
-		return (status);
-	if (!ft_strncmp(cursor, "||", 2))
+	parenthesis = false;
+	cursor = *ptr;
+	words = NULL;
+	while (*cursor)
 	{
-		*dad = node_create(OR, NULL);
-		cursor += 2;
-		ast_generate(word, &(*dad)->left); // handle status
-		ast_generate(cursor, &(*dad)->right);
+		if (!parenthesis && *cursor == '|')
+			break ;
+		if (*cursor == '\"')
+			status = get_next_word_new(&cursor, &word, "\"", true);
+		else if (*cursor == '\'')
+			status = get_next_word_new(&cursor, &word, "\'", true);
+		else
+		{
+			if (*cursor == '(')
+				parenthesis = true;
+			else if (*cursor == ')')
+				parenthesis = false;
+			status = get_next_word_new(&cursor, &word, "\'\"()|", false);
+		}
+		if (status)
+			return (ft_lstclear(&words, free), status);
+		if (!str_list_append(&words, word))
+			return (ft_lstclear(&words, free), COMMAND_ERROR);
 	}
-	else if (!ft_strncmp(cursor, "&&", 2))
+	*res = ft_strsjoin_from_list(words);
+	ft_lstclear(&words, free);
+	*ptr = cursor;
+	return (COMMAND_SUCCESS);
+}
+
+t_command_status	command_generation_handling(const char **ptr,
+		t_node **daddy)
+{
+	t_command_status	status;
+	char				*word;
+	t_command			*command;
+	const char			*cursor;
+
+	cursor = *ptr;
+	status = parse_next_line_command(&cursor, &word);
+	command = command_create(word);
+	free(word);
+	if (*cursor == '|')
 	{
-		*dad = node_create(AND, NULL);
-		cursor += 2;
-		ast_generate(word, &(*dad)->left);
-		ast_generate(cursor, &(*dad)->right);
+		*daddy = node_create(PIPE, NULL);
+		(*daddy)->left = node_create(COMMAND, command);
+		cursor++;
+		status = parse_next_line_command(&cursor, &word);
+		command = command_create(word);
+		free(word);
+		status = command_generation_handling(&cursor, &(*daddy)->right);
 	}
-	else if (*cursor == '|')
+	else
+		*daddy = node_create(COMMAND, command);
+	return (COMMAND_SUCCESS);
+}
+
+t_command_status	ast_generate(t_state *state, const char **cursor,
+		t_node *left_child)
+{
+	t_command_status	status;
+	t_node				*node;
+	char				*word;
+
+	if (!left_child)
 	{
-		*dad = node_create(PIPE, calloc(sizeof(t_pipe), 1));
-		(cursor)++;
-		ast_generate(word, &(*dad)->left);
-		ast_generate(cursor, &(*dad)->right);
+		status = parse_next_line_block(cursor, &word);
+		status = command_generation_handling((const char **)&word, &node);
 	}
 	else
 	{
-		command = command_create(word);
-		*dad = node_create(COMMAND, command);
+		if (!ft_strncmp(*cursor, "||", 2))
+			node = node_create(OR, NULL);
+		else if (!ft_strncmp(*cursor, "&&", 2))
+			node = node_create(AND, NULL);
+		else
+			return (COMMAND_PARSING_ERROR);
+		*cursor += 2;
+		status = parse_next_line_block(cursor, &word);
+		status = command_generation_handling((const char **)&word,
+				&node->right);
+		node->left = left_child;
 	}
-	ft_free_str(&word);
+	state->ast = node;
+	free(word);
+	if (**cursor)
+		return (ast_generate(state, cursor, node));
 	return (COMMAND_SUCCESS);
 }
 
 t_command_status	line_parsing(t_state *state, const char *line)
 {
 	t_command_status	status;
+	const char			*cursor;
 
 	status = handle_heredocs(state, line);
 	if (status)
 		return (status);
-	status = ast_generate(state, state->line, NULL);
-	ft_printf("Line: %s\n", state->line);
+	cursor = state->line;
+	status = ast_generate(state, &cursor, NULL);
 	ft_free_str(&state->line);
 	tree_dfs(state->ast, &display_node);
 	return (COMMAND_SUCCESS);
