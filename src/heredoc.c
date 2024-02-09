@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:13:26 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/08 18:54:54 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/09 14:36:12 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,13 @@ void	heredoc_destroy(void *ptr)
 }
 
 t_command_status	get_next_word_new(const char **cursor, char **res,
-		const char *charset)
+		const char *charset, bool delim)
 {
 	const char	*new_cursor;
 
 	new_cursor = ft_strchrs((*cursor) + 1, charset);
+	if (delim)
+		new_cursor++;
 	if (!new_cursor)
 	{
 		*res = strndup(*cursor, ft_strlen(*cursor));
@@ -110,11 +112,11 @@ t_command_status	heredoc_get_eof(const char **cursor, char **eof)
 		if (ft_is_char_in_set(**cursor, "<> "))
 			break ;
 		else if (**cursor == '\"')
-			status = get_next_word_new(cursor, &word, "\"");
+			status = get_next_word_new(cursor, &word, "\"", true);
 		else if (**cursor == '\'')
-			status = get_next_word_new(cursor, &word, "\'");
+			status = get_next_word_new(cursor, &word, "\'", true);
 		else
-			status = get_next_word_new(cursor, &word, "\'\"<> ");
+			status = get_next_word_new(cursor, &word, "\'\"<> ", false);
 		if (status)
 			return (ft_lstclear(&words, free), status);
 		if (!str_list_append(&words, word))
@@ -174,7 +176,7 @@ t_command_status	handle_heredoc(t_state *state, const char **cursor,
 	return (COMMAND_SUCCESS);
 }
 
-t_command_status	command_handle_heredocs(t_state *state, t_command *command)
+t_command_status	handle_heredocs(t_state *state, const char *line)
 {
 	t_command_status	status;
 	const char			*cursor;
@@ -182,24 +184,25 @@ t_command_status	command_handle_heredocs(t_state *state, t_command *command)
 	char				*word;
 
 	words = NULL;
-	cursor = command->command_str;
+	cursor = line;
 	while (*cursor)
 	{
 		if (*cursor == '\"')
-			status = get_next_word_new(&cursor, &word, "\"");
+			status = get_next_word_new(&cursor, &word, "\"", true);
 		else if (*cursor == '\'')
-			status = get_next_word_new(&cursor, &word, "\'");
+			status = get_next_word_new(&cursor, &word, "\'", true);
 		else if (!ft_strncmp(cursor, "<<", 2))
 			status = handle_heredoc(state, &cursor, &word);
 		else
-			status = get_next_word_new(&cursor, &word, "\'\"<");
+			status = get_next_word_new(&cursor, &word, "\'\"<", false);
 		if (status)
 			return (ft_lstclear(&words, free), status);
 		if (!str_list_append(&words, word))
 			return (ft_lstclear(&words, free), COMMAND_ERROR);
 	}
-	ft_free_str(&command->command_str);
-	command->command_str = ft_strsjoin_from_list(words);
+	state->line = ft_strsjoin_from_list(words);
 	ft_lstclear(&words, free);
+	if (!state->line)
+		return (COMMAND_ERROR);
 	return (COMMAND_SUCCESS);
 }

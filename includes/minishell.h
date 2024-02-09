@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/08 19:16:25 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/09 15:14:02 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,29 @@ typedef struct s_pipe
 	int							fd[2];
 }								t_pipe;
 
+typedef enum e_node_type
+{
+	AND,
+	OR,
+	PIPE,
+	COMMAND
+}								t_node_type;
+
+typedef struct s_node
+{
+	t_node_type					type;
+	void						*content;
+	struct s_node				*daddy;
+	struct s_node				*left;
+	struct s_node				*right;
+}								t_node;
+
 typedef struct s_state
 {
 	char						**envp;
+	char						*line;
 	t_command_status			last_exit_code;
-	t_pipe						*pipes;
-	t_command					**commands;
+	t_node						*ast;
 	t_list						*heredocs;
 }								t_state;
 
@@ -131,8 +148,6 @@ void							ft_clean_double_list(void **list,
 									void (*destroy)(void *));
 void							ft_close_fd(int fd);
 
-void							ast_cleanup(t_state *state);
-
 char							*get_var_value(t_state *state,
 									const char **ptr);
 char							*ft_strsjoin_from_list(t_list *list);
@@ -143,6 +158,16 @@ t_return_status					str_list_append(t_list **word_list, char *str);
 
 t_command_status				handle_word_interpretation(t_state *state,
 									char **str);
-t_command_status				command_handle_heredocs(t_state *state,
-									t_command *command);
+t_command_status				handle_heredocs(t_state *state,
+									const char *line);
+
+t_node							*node_create(t_node_type type, void *content);
+void							node_destroy(t_node **node);
+void							tree_dfs(t_node *node, void (*f)(t_node *));
+void							display_node(t_node *node);
+
+t_command_status				get_next_word_new(const char **cursor,
+									char **res, const char *charset,
+									bool delim);
+
 #endif

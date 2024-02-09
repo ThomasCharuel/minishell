@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/08 18:53:42 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/09 16:51:58 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,71 +90,158 @@ t_return_status	command_exec(t_state *state, t_command *command,
 	return (SUCCESS);
 }
 
+// t_command_status	line_parsing_old(t_state *state, const char *line)
+// {
+// 	char	**command_strs;
+// 	size_t	i;
+
+// 	command_strs = ft_split(line, '|');
+// 	if (!command_strs)
+// 		return (COMMAND_ERROR);
+// 	state->commands = ft_calloc(ft_strslen((const void **)command_strs) + 1,
+// 			sizeof(t_command *));
+// 	if (!state->commands)
+// 		return (ft_clean_double_list((void **)command_strs, free),
+// 			COMMAND_ERROR);
+// 	i = 0;
+// 	while (command_strs[i])
+// 	{
+// 		state->commands[i] = command_create(command_strs[i]);
+// 		if (!state->commands[i] || command_handle_heredocs(state,
+// 				state->commands[i]) || command_parse(state,
+// 				state->commands[i]) == COMMAND_ERROR)
+// 			return (ft_clean_double_list((void **)command_strs, free),
+// 				COMMAND_ERROR);
+// 		i++;
+// 	}
+// 	ft_clean_double_list((void **)command_strs, free);
+// 	return (COMMAND_SUCCESS);
+// }
+
+t_command_status	parse_next_line_block(const char **ptr, char **res)
+{
+	t_command_status	status;
+	t_list				*words;
+	char				*word;
+	const char			*cursor;
+
+	cursor = *ptr;
+	words = NULL;
+	while (*cursor)
+	{
+		if (!ft_strncmp(cursor, "||", 2) || !ft_strncmp(cursor, "&&", 2))
+			break ;
+		if (*cursor == '\"')
+			status = get_next_word_new(&cursor, &word, "\"", true);
+		else if (*cursor == '\'')
+			status = get_next_word_new(&cursor, &word, "\'", true);
+		else if (*cursor == '(')
+			status = get_next_word_new(&cursor, &word, ")", true);
+		else
+			status = get_next_word_new(&cursor, &word, "\'\"(&|", false);
+		if (status)
+			return (ft_lstclear(&words, free), status);
+		if (!str_list_append(&words, word))
+			return (ft_lstclear(&words, free), COMMAND_ERROR);
+	}
+	*res = ft_strsjoin_from_list(words);
+	ft_lstclear(&words, free);
+	*ptr = cursor;
+	return (COMMAND_SUCCESS);
+}
+
+t_command_status	ast_generate(t_state *state, const char *cursor,
+		t_node **left_child)
+{
+	char				*word;
+	t_command_status	status;
+	t_command			*command;
+
+	status = parse_next_line_block(&cursor, &word);
+	if (status)
+		return (status);
+	if (!ft_strncmp(cursor, "||", 2))
+	{
+		*dad = node_create(OR, NULL);
+		cursor += 2;
+		ast_generate(word, &(*dad)->left); // handle status
+		ast_generate(cursor, &(*dad)->right);
+	}
+	else if (!ft_strncmp(cursor, "&&", 2))
+	{
+		*dad = node_create(AND, NULL);
+		cursor += 2;
+		ast_generate(word, &(*dad)->left);
+		ast_generate(cursor, &(*dad)->right);
+	}
+	else if (*cursor == '|')
+	{
+		*dad = node_create(PIPE, calloc(sizeof(t_pipe), 1));
+		(cursor)++;
+		ast_generate(word, &(*dad)->left);
+		ast_generate(cursor, &(*dad)->right);
+	}
+	else
+	{
+		command = command_create(word);
+		*dad = node_create(COMMAND, command);
+	}
+	ft_free_str(&word);
+	return (COMMAND_SUCCESS);
+}
+
 t_command_status	line_parsing(t_state *state, const char *line)
 {
-	char	**command_strs;
-	size_t	i;
+	t_command_status	status;
 
-	command_strs = ft_split(line, '|');
-	if (!command_strs)
-		return (COMMAND_ERROR);
-	state->commands = ft_calloc(ft_strslen((const void **)command_strs) + 1,
-			sizeof(t_command *));
-	if (!state->commands)
-		return (ft_clean_double_list((void **)command_strs, free),
-			COMMAND_ERROR);
-	i = 0;
-	while (command_strs[i])
-	{
-		state->commands[i] = command_create(command_strs[i]);
-		if (!state->commands[i] || command_handle_heredocs(state,
-				state->commands[i]) || command_parse(state,
-				state->commands[i]) == COMMAND_ERROR)
-			return (ft_clean_double_list((void **)command_strs, free),
-				COMMAND_ERROR);
-		i++;
-	}
-	ft_clean_double_list((void **)command_strs, free);
+	status = handle_heredocs(state, line);
+	if (status)
+		return (status);
+	status = ast_generate(state, state->line, NULL);
+	ft_printf("Line: %s\n", state->line);
+	ft_free_str(&state->line);
+	tree_dfs(state->ast, &display_node);
 	return (COMMAND_SUCCESS);
 }
 
 t_command_status	line_exec(t_state *state, const char *line)
 {
-	size_t				i;
 	t_command_status	status;
-	size_t				len;
-	int					fd_to_close;
 
-	if (line_parsing(state, line) == COMMAND_ERROR || !state->commands)
-		return (COMMAND_ERROR);
-	len = ft_strslen((const void **)state->commands);
-	state->pipes = calloc(len, sizeof(t_pipe));
-	if (!state->pipes)
-		return (COMMAND_ERROR);
-	i = 0;
-	while (state->commands[i])
-	{
-		if (i < len - 1)
-		{
-			pipe(state->pipes[i].fd);
-			state->commands[i]->out_fd = state->pipes[i].fd[OUT_FD];
-			fd_to_close = state->pipes[i].fd[IN_FD];
-		}
-		else
-			fd_to_close = STDIN_FILENO;
-		if (i > 0)
-			state->commands[i]->in_fd = state->pipes[i - 1].fd[IN_FD];
-		if (!command_exec(state, state->commands[i], fd_to_close))
-			printf("TODO\n"); // TODO: il faut cleanup tout correctement
-		i++;
-	}
-	i--;
-	waitpid(state->commands[i]->pid, &(state->commands[i]->status), 0);
-	status = WIFEXITED(state->commands[i]->status)
-		&& WEXITSTATUS(state->commands[i]->status);
-	while (wait(NULL) != -1)
-		continue ;
-	ast_cleanup(state);
+	// size_t				i;
+	// size_t				len;
+	// int					fd_to_close;
+	status = line_parsing(state, line);
+	if (status)
+		return (status);
+	// len = ft_strslen((const void **)state->commands);
+	// state->pipes = calloc(len, sizeof(t_pipe));
+	// if (!state->pipes)
+	// 	return (COMMAND_ERROR);
+	// i = 0;
+	// while (state->commands[i])
+	// {
+	// 	if (i < len - 1)
+	// 	{
+	// 		pipe(state->pipes[i].fd);
+	// 		state->commands[i]->out_fd = state->pipes[i].fd[OUT_FD];
+	// 		fd_to_close = state->pipes[i].fd[IN_FD];
+	// 	}
+	// 	else
+	// 		fd_to_close = STDIN_FILENO;
+	// 	if (i > 0)
+	// 		state->commands[i]->in_fd = state->pipes[i - 1].fd[IN_FD];
+	// 	if (!command_exec(state, state->commands[i], fd_to_close))
+	// 		printf("TODO\n"); // TODO: il faut cleanup tout correctement
+	// 	i++;
+	// }
+	// i--;
+	// waitpid(state->commands[i]->pid, &(state->commands[i]->status), 0);
+	// status = WIFEXITED(state->commands[i]->status)
+	// 	&& WEXITSTATUS(state->commands[i]->status);
+	// while (wait(NULL) != -1)
+	// 	continue ;
+	node_destroy(&state->ast);
 	ft_lstclear(&state->heredocs, &heredoc_destroy);
 	return (status);
 }

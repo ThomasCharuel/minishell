@@ -6,7 +6,7 @@
 #    By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/06 13:51:51 by tcharuel          #+#    #+#              #
-#    Updated: 2024/02/07 16:59:48 by tcharuel         ###   ########.fr        #
+#    Updated: 2024/02/09 11:10:01 by tcharuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRC_FILES = ast.c \
 	signals.c \
 	state.c \
 	str_list.c \
+	tree.c \
 	utils.c \
 	variable.c \
 	heredoc.c

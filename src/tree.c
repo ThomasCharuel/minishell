@@ -1,0 +1,55 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tree.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/09 10:56:52 by tcharuel          #+#    #+#             */
+/*   Updated: 2024/02/09 15:17:30 by tcharuel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+t_node	*node_create(t_node_type type, void *content)
+{
+	t_node	*node;
+
+	node = malloc(sizeof(t_node));
+	if (!node)
+		return (NULL);
+	node->type = type;
+	node->content = content;
+	node->left = NULL;
+	node->right = NULL;
+	return (node);
+}
+
+void	node_destroy(t_node **node)
+{
+	if (*node)
+	{
+		if ((*node)->left)
+			node_destroy(&(*node)->left);
+		if ((*node)->right)
+			node_destroy(&(*node)->right);
+		if ((*node)->type == PIPE)
+			free((*node)->content);
+		else if ((*node)->type == COMMAND)
+			command_destroy((*node)->content);
+		free(*node);
+		*node = NULL;
+	}
+}
+
+void	tree_dfs(t_node *node, void (*f)(t_node *))
+{
+	if (!node)
+		return ;
+	f(node);
+	if (node->left)
+		tree_dfs(node->left, f);
+	if (node->right)
+		tree_dfs(node->right, f);
+}

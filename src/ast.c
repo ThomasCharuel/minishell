@@ -6,19 +6,20 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 10:37:41 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/06 10:38:21 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/09 15:23:06 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ast_cleanup(t_state *state)
+void	display_node(t_node *node)
 {
-	if (state->pipes)
-	{
-		free(state->pipes);
-		state->pipes = NULL;
-	}
-	ft_clean_double_list((void **)state->commands, command_destroy);
-	state->commands = NULL;
+	if (node->type == COMMAND)
+		printf("command node: %s\n", ((t_command *)node->content)->command_str);
+	if (node->type == PIPE)
+		printf("PIPE\n");
+	if (node->type == AND)
+		printf("AND\n");
+	if (node->type == OR)
+		printf("OR\n");
 }
