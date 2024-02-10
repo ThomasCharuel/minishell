@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/09 20:19:59 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/10 12:37:50 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ t_command_status	set_command_command(t_state *state, t_command *command)
 		status = handle_path_command(command);
 	else
 		status = handle_command(state, command);
+	(void)status; // handle status
 	return (COMMAND_SUCCESS);
 }
 

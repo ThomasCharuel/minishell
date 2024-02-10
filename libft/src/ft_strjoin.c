@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 15:50:16 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/07 11:36:51 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/10 12:32:30 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (buffer);
 }
 
-static size_t	calculate_total_length(char *str, va_list args)
+static size_t	calculate_total_length(const char *str, va_list args)
 {
 	size_t	length;
 
@@ -49,12 +49,12 @@ static size_t	calculate_total_length(char *str, va_list args)
 	while (str)
 	{
 		length += ft_strlen(str);
-		str = va_arg(args, char *);
+		str = va_arg(args, const char *);
 	}
 	return (length);
 }
 
-char	*ft_strsjoin(char *str, ...)
+char	*ft_strsjoin(const char *str, ...)
 {
 	va_list	args;
 	char	*res;
@@ -73,7 +73,7 @@ char	*ft_strsjoin(char *str, ...)
 	while (str)
 	{
 		ft_strcat(res, str);
-		str = va_arg(args, char *);
+		str = va_arg(args, const char *);
 	}
 	va_end(args);
 	return (res);

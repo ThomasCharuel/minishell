@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:41:51 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/10 00:25:52 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/10 12:36:45 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ t_command_status	get_next_word(const char **ptr, char **word)
 		new_cursor = ft_strchrs(new_cursor, "><\"\' ");
 		if (!new_cursor)
 		{
-			*word = strndup(cursor, ft_strlen(cursor));
+			*word = ft_strndup(cursor, ft_strlen(cursor));
 			if (!*word)
 				return (COMMAND_ERROR);
 			cursor += ft_strlen(cursor);
@@ -182,7 +182,7 @@ t_command_status	get_next_word(const char **ptr, char **word)
 		}
 		else if (ft_is_char_in_set(new_cursor[0], "<> "))
 		{
-			*word = strndup(cursor, new_cursor - cursor);
+			*word = ft_strndup(cursor, new_cursor - cursor);
 			if (!*word)
 				return (COMMAND_ERROR);
 			cursor = new_cursor;

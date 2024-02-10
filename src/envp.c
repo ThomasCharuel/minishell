@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 14:13:29 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/10 00:39:15 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/10 12:34:36 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_return_status	envp_set(t_state *state, const char *key, const char *value)
 		return (ERROR);
 	if (state->envp[i])
 		free(state->envp[i]);
-	else if (!ft_realloc(&state->envp, i, i + 1))
+	else if (!ft_realloc((void **)&state->envp, i, i + 1))
 		return (free(str), ERROR);
 	state->envp[i] = str;
 	return (SUCCESS);
@@ -96,5 +96,8 @@ void	envp_delete(t_state *state, const char *key)
 		return ;
 	free(state->envp[i]);
 	while (state->envp[i])
-		state->envp[i] = state->envp[++i];
+	{
+		state->envp[i] = state->envp[i + 1];
+		i++;
+	}
 }

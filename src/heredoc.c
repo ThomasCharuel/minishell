@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:13:26 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/09 14:36:12 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/10 12:37:15 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,14 @@ t_command_status	get_next_word_new(const char **cursor, char **res,
 		new_cursor++;
 	if (!new_cursor)
 	{
-		*res = strndup(*cursor, ft_strlen(*cursor));
+		*res = ft_strndup(*cursor, ft_strlen(*cursor));
 		if (!*res)
 			return (COMMAND_ERROR);
 		*cursor += ft_strlen(*cursor);
 	}
 	else
 	{
-		*res = strndup(*cursor, new_cursor - *cursor);
+		*res = ft_strndup(*cursor, new_cursor - *cursor);
 		if (!*res)
 			return (COMMAND_ERROR);
 		*cursor = new_cursor;
@@ -170,7 +170,7 @@ t_command_status	handle_heredoc(t_state *state, const char **cursor,
 		return (ft_free_str(&eof), COMMAND_ERROR);
 	if (!ft_append(&state->heredocs, heredoc))
 		return (heredoc_destroy(heredoc), COMMAND_ERROR);
-	*res = ft_strsjoin("< ", heredoc->file, NULL);
+	*res = ft_strsjoin("<", heredoc->file, NULL);
 	if (!write_heredoc(heredoc))
 		return (COMMAND_ERROR);
 	return (COMMAND_SUCCESS);

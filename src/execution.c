@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/09 21:26:03 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/10 12:36:16 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,7 @@ t_command_status	command_generation_handling(const char **ptr,
 
 	cursor = *ptr;
 	status = parse_next_line_command(&cursor, &word);
+	(void)status; // handle status
 	command = command_create(word);
 	free(word);
 	if (*cursor == '|')
@@ -210,6 +211,7 @@ t_command_status	command_generation_handling(const char **ptr,
 		(*daddy)->left = node_create(COMMAND, command);
 		cursor++;
 		status = command_generation_handling(&cursor, &(*daddy)->right);
+		(void)status; // handle status
 	}
 	else
 		*daddy = node_create(COMMAND, command);
@@ -226,7 +228,9 @@ t_command_status	ast_generate(t_state *state, const char **cursor,
 	if (!left_child)
 	{
 		status = parse_next_line_block(cursor, &word);
+		(void)status; // Handle status
 		status = command_generation_handling((const char **)&word, &node);
+		(void)status; // Handle status
 	}
 	else
 	{
@@ -238,8 +242,10 @@ t_command_status	ast_generate(t_state *state, const char **cursor,
 			return (COMMAND_PARSING_ERROR);
 		*cursor += 2;
 		status = parse_next_line_block(cursor, &word);
+		(void)status; // Handle status
 		status = command_generation_handling((const char **)&word,
 				&node->right);
+		(void)status; // Handle status
 		node->left = left_child;
 	}
 	state->ast = node;
