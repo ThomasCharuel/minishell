@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:37:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/10 00:26:04 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/10 12:11:51 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,25 @@ bool	is_whitespace_line(char *line)
 		i++;
 	}
 	return (true);
+}
+t_command_status	repl(t_state *state)
+{
+	char				*line;
+	t_command_status	status;
+
+	while (g_signal_code != SIGTERM)
+	{
+		line = prompt_loop(state);
+		if (!line)
+			return (COMMAND_ERROR);
+		if (*line)
+			add_history(line);
+		if (is_whitespace_line(line))
+			continue ;
+		status = line_exec(state, line);
+		free(line);
+		if (status == COMMAND_ERROR)
+			return (status);
+	}
+	return (COMMAND_SIGINT);
 }

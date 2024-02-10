@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/10 00:36:39 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/10 12:12:29 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef enum e_command_status
 	COMMAND_ERROR = -1,
 	COMMAND_PARSING_ERROR = 2,
 	COMMAND_NOT_FOUND = 127,
+	COMMAND_SIGINT = 130
 }								t_command_status;
 
 typedef enum e_return_status
@@ -108,8 +109,7 @@ typedef struct s_state
 
 extern volatile sig_atomic_t	g_signal_code;
 
-char							*prompt_loop(t_state *state);
-bool							is_whitespace_line(char *line);
+t_command_status				repl(t_state *state);
 
 void							signal_init(void);
 
