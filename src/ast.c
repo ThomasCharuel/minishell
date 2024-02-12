@@ -6,16 +6,18 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 10:37:41 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/09 21:26:05 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 14:57:58 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	display_node(t_node *node)
+void	display_node(t_state *state, t_node *node)
 {
+	(void)state;
 	if (node->type == COMMAND)
-		printf("command node: %s\n", ((t_command *)node->content)->command_str);
+		printf("command node: %s, daddy: %p\n",
+			((t_command *)node->content)->command_str, node->daddy);
 	if (node->type == PIPE)
 		printf("PIPE\n");
 	if (node->type == AND)
@@ -44,7 +46,12 @@ t_command_status	ast_execute(t_state *state, t_node *node)
 	}
 	else if (node->type == PIPE)
 	{
-		// TODO
+		node->content = pipe_create();
+		if (!node->content)
+			return (COMMAND_ERROR);
+		node->left->read_fd = node->read_fd;
+		node->left->write_fd = ((t_pipe *)node->content)->fd[OUT_FD];
+		node->right->read_fd = ((t_pipe *)node->content)->fd[IN_FD];
 		status = ast_execute(state, node->left);
 		if (status)
 			return (status);
@@ -53,10 +60,7 @@ t_command_status	ast_execute(t_state *state, t_node *node)
 	status = command_parse(state, node->content);
 	if (status)
 		return (status);
-	if (!command_exec(state, node->content, STDIN_FILENO))
+	if (!command_exec(state, node))
 		return (COMMAND_ERROR);
-	while (wait(NULL) != -1)
-		// Mettre pid dans une liste chaine et get le derniere status
-		continue ;
 	return (COMMAND_SUCCESS);
 }

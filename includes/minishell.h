@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 11:58:24 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 14:25:43 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,6 @@ typedef struct s_command
 	char						*command_str;
 	t_list						*argv;
 	t_list						*redirections;
-	int							in_fd;
-	int							out_fd;
 	int							status;
 	pid_t						pid;
 	t_command_status			exit_code;
@@ -95,6 +93,8 @@ typedef struct s_node
 	struct s_node				*daddy;
 	struct s_node				*left;
 	struct s_node				*right;
+	int							read_fd;
+	int							write_fd;
 }								t_node;
 
 typedef struct s_state
@@ -164,14 +164,15 @@ t_node							*node_create(t_node_type type, void *content);
 void							node_destroy(t_node **node);
 void							tree_dfs(t_state *state, t_node *node,
 									void (*f)(t_state *, t_node *));
-void							display_node(t_node *node);
+void							display_node(t_state *state, t_node *node);
 t_command_status				ast_execute(t_state *state, t_node *node);
 
 t_command_status				get_next_word_new(const char **cursor,
 									char **res, const char *charset,
 									bool delim);
 
-t_return_status					command_exec(t_state *state, t_command *command,
-									int fd_to_close);
+t_return_status					command_exec(t_state *state, t_node *node);
+
+t_pipe							*pipe_create(void);
 
 #endif

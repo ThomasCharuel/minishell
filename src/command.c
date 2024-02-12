@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/10 12:37:50 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 13:44:34 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ t_command	*command_create(const char *command_str)
 		return (perror("minishell"), free(command), NULL);
 	command->argv = NULL;
 	command->redirections = NULL;
-	command->in_fd = STDIN_FILENO;
-	command->out_fd = STDOUT_FILENO;
 	return (command);
 }
 

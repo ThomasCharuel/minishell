@@ -6,41 +6,43 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/10 12:36:16 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 14:58:11 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_redirections(t_command *command)
+void	handle_redirections(t_node *node)
 {
-	t_list			*node;
+	t_list			*argv_node;
 	t_redirection	*redirection;
+	t_command		*command;
 
-	node = command->redirections;
-	while (node)
+	command = node->content;
+	argv_node = command->redirections;
+	while (argv_node)
 	{
-		redirection = node->content;
+		redirection = argv_node->content;
 		if (redirection->type == WRITE || redirection->type == APPEND)
 		{
 			if (redirection->type == WRITE)
-				command->out_fd = open(redirection->file,
+				node->write_fd = open(redirection->file,
 						O_WRONLY | O_CREAT | O_TRUNC,
 						S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 			else if (redirection->type == APPEND)
-				command->out_fd = open(redirection->file,
+				node->write_fd = open(redirection->file,
 						O_WRONLY | O_CREAT | O_APPEND,
 						S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-			dup2(command->out_fd, STDOUT_FILENO);
-			ft_close_fd(command->out_fd);
+			dup2(node->write_fd, STDOUT_FILENO);
+			ft_close_fd(node->write_fd);
 		}
 		else if (redirection->type == READ)
 		{
-			command->in_fd = open(redirection->file, O_RDONLY);
-			dup2(command->in_fd, STDIN_FILENO);
-			ft_close_fd(command->in_fd);
+			node->read_fd = open(redirection->file, O_RDONLY);
+			dup2(node->read_fd, STDIN_FILENO);
+			ft_close_fd(node->read_fd);
 		}
-		node = node->next;
+		argv_node = argv_node->next;
 	}
 }
 
@@ -62,11 +64,22 @@ char	**from_list_to_array(t_list *list)
 	return (strs);
 }
 
-t_return_status	command_exec(t_state *state, t_command *command,
-		int fd_to_close)
+int	get_fd_to_close(t_node *node)
 {
-	char	**argv;
+	t_node	*daddy;
 
+	daddy = node->daddy;
+	if (daddy && daddy->type == PIPE && daddy->right != node)
+		return (((t_pipe *)daddy->content)->fd[IN_FD]);
+	return (STDIN_FILENO);
+}
+
+t_return_status	command_exec(t_state *state, t_node *node)
+{
+	char		**argv;
+	t_command	*command;
+
+	command = node->content;
 	argv = from_list_to_array(command->argv);
 	if (!argv)
 		return (ERROR);
@@ -75,18 +88,21 @@ t_return_status	command_exec(t_state *state, t_command *command,
 		return (perror("minishell"), ERROR);
 	if (command->pid == 0)
 	{
-		ft_close_fd(fd_to_close);
-		dup2(command->in_fd, STDIN_FILENO);
-		ft_close_fd(command->in_fd);
-		dup2(command->out_fd, STDOUT_FILENO);
-		ft_close_fd(command->out_fd);
-		handle_redirections(command);
+		ft_printf("CMD: %s\n", argv[0]);
+		ft_printf("FD to close: %d, FD in: %d, FD out: %d\n",
+			get_fd_to_close(node), node->read_fd, node->write_fd);
+		ft_close_fd(get_fd_to_close(node));
+		dup2(node->read_fd, STDIN_FILENO);
+		ft_close_fd(node->read_fd);
+		dup2(node->write_fd, STDOUT_FILENO);
+		ft_close_fd(node->write_fd);
+		handle_redirections(node);
 		execve(argv[0], argv, state->envp);
 		// state cleanup
 	}
 	free(argv);
-	ft_close_fd(command->in_fd);
-	ft_close_fd(command->out_fd);
+	ft_close_fd(node->read_fd);
+	ft_close_fd(node->write_fd);
 	return (SUCCESS);
 }
 
@@ -209,8 +225,10 @@ t_command_status	command_generation_handling(const char **ptr,
 	{
 		*daddy = node_create(PIPE, NULL);
 		(*daddy)->left = node_create(COMMAND, command);
+		(*daddy)->left->daddy = *daddy;
 		cursor++;
 		status = command_generation_handling(&cursor, &(*daddy)->right);
+		(*daddy)->right->daddy = *daddy;
 		(void)status; // handle status
 	}
 	else
@@ -245,7 +263,9 @@ t_command_status	ast_generate(t_state *state, const char **cursor,
 		(void)status; // Handle status
 		status = command_generation_handling((const char **)&word,
 				&node->right);
+		node->right->daddy = node;
 		(void)status; // Handle status
+		left_child->daddy = node;
 		node->left = left_child;
 	}
 	state->ast = node;
@@ -277,6 +297,9 @@ t_command_status	line_exec(t_state *state, const char *line)
 	if (status)
 		return (status);
 	ast_execute(state, state->ast);
+	while (wait(NULL) != -1)
+		// Mettre pid dans une liste chaine et get le derniere status
+		continue ;
 	node_destroy(&state->ast);
 	ft_lstclear(&state->heredocs, &heredoc_destroy);
 	return (status);
