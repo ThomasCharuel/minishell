@@ -6,27 +6,27 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 14:13:29 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/10 12:34:36 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 11:18:40 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**envp_copy(t_state *state)
+char	**envp_copy(const char **envp)
 {
 	size_t	i;
 	char	**copy;
 
 	i = 0;
-	while (state->envp[i])
+	while (envp[i])
 		i++;
 	copy = calloc(i + 1, sizeof(char *));
 	if (!copy)
 		return (perror("minishell"), NULL);
 	i = 0;
-	while (state->envp[i])
+	while (envp[i])
 	{
-		copy[i] = ft_strdup(state->envp[i]);
+		copy[i] = ft_strdup(envp[i]);
 		if (!copy[i])
 			return (perror("minishell"), ft_clean_double_list((void **)copy,
 					free), NULL);

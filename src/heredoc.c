@@ -6,40 +6,25 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:13:26 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/10 12:37:15 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 12:00:32 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_pid(void)
+char	*get_heredoc_file_name(bool should_be_interpreted)
 {
-	char	*res;
-	pid_t	child_pid;
+	char	*file;
+	char	*uid;
 
-	child_pid = fork();
-	if (child_pid < 0)
+	uid = ft_rand_uuid();
+	if (!uid)
 		return (NULL);
-	if (!child_pid)
-		exit(0);
-	res = ft_itoa(child_pid);
-	return (res);
-}
-
-char	*get_heredoc_file_name(void)
-{
-	static size_t	id = 0;
-	char			*file;
-	char			*id_str;
-	char			*pid_str;
-
-	pid_str = get_pid();
-	id_str = ft_lutoa(id, "0123456789abcdef");
-	if (!id_str)
-		return (free(pid_str), NULL);
-	file = ft_strsjoin("/tmp/.minishell-", pid_str, "-", id_str, NULL);
-	free(pid_str);
-	free(id_str);
+	if (should_be_interpreted)
+		file = ft_strsjoin("/tmp/.minishell-hi-", uid, NULL);
+	else
+		file = ft_strsjoin("/tmp/.minishell-h-", uid, NULL);
+	free(uid);
 	return (file);
 }
 
@@ -51,12 +36,12 @@ t_heredoc	*heredoc_create(char *eof)
 	if (!heredoc)
 		return (NULL);
 	if (ft_strchrs(eof, "\'\""))
-		heredoc->should_be_interpreted = false;
+		heredoc->file = get_heredoc_file_name(false);
 	else
-		heredoc->should_be_interpreted = true;
-	heredoc->file = get_heredoc_file_name();
+		heredoc->file = get_heredoc_file_name(true);
 	if (!heredoc->file)
 		return (free(heredoc->file), free(heredoc), NULL);
+	ft_printf("Heredoc name: %s\n", heredoc->file);
 	heredoc->eof = eof;
 	return (heredoc);
 }

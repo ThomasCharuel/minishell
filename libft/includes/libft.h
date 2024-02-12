@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:01:58 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/10 12:31:14 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 11:51:58 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,4 +142,7 @@ const char			*ft_strchrs(const char *s, const char *set);
 bool				ft_is_char_in_set(const char c, const char *s);
 
 void				*ft_realloc(void **ptr, size_t len, size_t new_len);
+int					ft_rand_int(void);
+char				*ft_rand_uuid(void);
+
 #endif

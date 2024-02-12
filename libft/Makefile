@@ -6,7 +6,7 @@
 #    By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/02 13:33:40 by tcharuel          #+#    #+#              #
-#    Updated: 2024/02/10 00:00:23 by tcharuel         ###   ########.fr        #
+#    Updated: 2024/02/12 12:01:00 by tcharuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,7 +68,8 @@ SRC_FILES = ft_isalpha.c \
 	ft_maths.c \
 	ft_realloc.c \
 	ft_get_next_line.c \
-	ft_lst_len.c
+	ft_lst_len.c \
+	ft_rand.c
 
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))

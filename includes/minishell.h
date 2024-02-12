@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/10 12:12:29 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 11:58:24 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ typedef struct s_heredoc
 {
 	char						*file;
 	char						*eof;
-	bool						should_be_interpreted;
 }								t_heredoc;
 
 typedef struct s_pipe
@@ -116,7 +115,7 @@ void							signal_init(void);
 t_state							*state_init(const char **envp);
 void							state_cleanup(t_state *state);
 
-char							**envp_copy(t_state *state);
+char							**envp_copy(const char **envp);
 const char						*envp_get(t_state *state, const char *key);
 t_return_status					envp_set(t_state *state, const char *key,
 									const char *value);
