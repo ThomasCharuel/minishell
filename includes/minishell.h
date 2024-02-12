@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 18:23:31 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 19:01:33 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ typedef struct s_node
 
 typedef struct s_state
 {
-	const char					*executable_path;
+	char						*executable_path;
 	char						**envp;
 	char						*line;
 	t_command_status			last_exit_code;

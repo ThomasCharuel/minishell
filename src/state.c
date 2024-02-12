@@ -6,11 +6,28 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 11:45:39 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 15:49:46 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 19:03:44 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*get_minishell_path(const char *executable_path)
+{
+	char	*path;
+	char	*pwd;
+
+	if (executable_path[0] == '/')
+		return (ft_strdup(executable_path));
+	pwd = calloc(PATH_MAX, sizeof(char));
+	if (!pwd)
+		return (NULL);
+	if (!getcwd(pwd, PATH_MAX))
+		return (free(pwd), NULL);
+	path = ft_strsjoin(pwd, "/", executable_path, NULL);
+	free(pwd);
+	return (path);
+}
 
 t_state	*state_init(const char *executable_path, const char **envp)
 {
@@ -27,7 +44,9 @@ t_state	*state_init(const char *executable_path, const char **envp)
 	state->ast = NULL;
 	state->heredocs = NULL;
 	state->last_child_pid = 0;
-	state->executable_path = executable_path;
+	state->executable_path = get_minishell_path(executable_path);
+	if (!state->executable_path)
+		return (free(state), NULL);
 	return (state);
 }
 
@@ -39,6 +58,7 @@ void	state_cleanup(t_state *state)
 		ft_clean_double_list((void **)state->envp, free);
 		node_destroy(&state->ast);
 		ft_lstclear(&state->heredocs, &heredoc_destroy);
+		ft_free_str(&state->executable_path);
 		free(state);
 	}
 }
