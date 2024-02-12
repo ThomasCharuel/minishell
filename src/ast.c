@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 10:37:41 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 18:25:54 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 18:32:04 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,14 @@ t_command_status	ast_execute(t_state *state, t_node *node)
 	else if (node->type == OR)
 	{
 		status = ast_execute(state, node->left);
-		if (!status)
-			return (status);
-		waitpid(state->last_child_pid, &command_status, 0);
-		state->last_exit_code = WIFEXITED(command_status)
-			&& WEXITSTATUS(command_status);
-		if (!state->last_exit_code)
-			return (COMMAND_SUCCESS);
+		if (status)
+		{
+			waitpid(state->last_child_pid, &command_status, 0);
+			state->last_exit_code = WIFEXITED(command_status)
+				&& WEXITSTATUS(command_status);
+			if (!state->last_exit_code)
+				return (COMMAND_SUCCESS);
+		}
 		return (ast_execute(state, node->right));
 	}
 	else if (node->type == PIPE)
