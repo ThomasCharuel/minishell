@@ -6,17 +6,17 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:34:20 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/07 20:36:11 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:20:57 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_return_status	str_list_append(t_list **word_list, char *str)
+t_return_status	str_list_append(t_list **word_list, const char *str)
 {
 	if (!str || !ft_strlen(str))
 		return (SUCCESS);
-	if (!ft_append(word_list, str))
+	if (!ft_append(word_list, (void *)str))
 		return (ERROR);
 	return (SUCCESS);
 }

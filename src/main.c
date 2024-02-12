@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:08:12 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/10 12:12:53 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 15:50:29 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	main(int argc, char **argv, const char **envp)
 	t_state	*state;
 
 	signal_init();
-	state = state_init(envp);
+	state = state_init(argv[0], envp);
 	if (!state)
 		return (EXIT_FAILURE);
 	if (argc == 2)

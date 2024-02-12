@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 15:45:18 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 16:30:07 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,83 +103,6 @@ t_return_status	command_exec(t_state *state, t_node *node)
 	return (SUCCESS);
 }
 
-t_command_status	parse_next_line_block(const char **ptr, char **res)
-{
-	t_command_status	status;
-	t_list				*words;
-	char				*word;
-	const char			*cursor;
-	bool				parenthesis;
-
-	parenthesis = false;
-	cursor = *ptr;
-	words = NULL;
-	while (*cursor)
-	{
-		if (!parenthesis && (!ft_strncmp(cursor, "||", 2) || !ft_strncmp(cursor,
-					"&&", 2)))
-			break ;
-		if (*cursor == '\"')
-			status = get_next_word_new(&cursor, &word, "\"", true);
-		else if (*cursor == '\'')
-			status = get_next_word_new(&cursor, &word, "\'", true);
-		else
-		{
-			if (*cursor == '(')
-				parenthesis = true;
-			else if (*cursor == ')')
-				parenthesis = false;
-			status = get_next_word_new(&cursor, &word, "\'\"()&|", false);
-		}
-		if (status)
-			return (ft_lstclear(&words, free), status);
-		if (!str_list_append(&words, word))
-			return (ft_lstclear(&words, free), COMMAND_ERROR);
-	}
-	*res = ft_strsjoin_from_list(words);
-	ft_lstclear(&words, free);
-	*ptr = cursor;
-	return (COMMAND_SUCCESS);
-}
-
-t_command_status	parse_next_line_command(const char **ptr, char **res)
-{
-	t_command_status	status;
-	t_list				*words;
-	char				*word;
-	const char			*cursor;
-	bool				parenthesis;
-
-	parenthesis = false;
-	cursor = *ptr;
-	words = NULL;
-	while (*cursor)
-	{
-		if (!parenthesis && *cursor == '|')
-			break ;
-		if (*cursor == '\"')
-			status = get_next_word_new(&cursor, &word, "\"", true);
-		else if (*cursor == '\'')
-			status = get_next_word_new(&cursor, &word, "\'", true);
-		else
-		{
-			if (*cursor == '(')
-				parenthesis = true;
-			else if (*cursor == ')')
-				parenthesis = false;
-			status = get_next_word_new(&cursor, &word, "\'\"()|", false);
-		}
-		if (status)
-			return (ft_lstclear(&words, free), status);
-		if (!str_list_append(&words, word))
-			return (ft_lstclear(&words, free), COMMAND_ERROR);
-	}
-	*res = ft_strsjoin_from_list(words);
-	ft_lstclear(&words, free);
-	*ptr = cursor;
-	return (COMMAND_SUCCESS);
-}
-
 t_command_status	command_generation_handling(const char **ptr,
 		t_node **daddy)
 {
@@ -189,7 +112,7 @@ t_command_status	command_generation_handling(const char **ptr,
 	const char			*cursor;
 
 	cursor = *ptr;
-	status = parse_next_line_command(&cursor, &word);
+	status = get_next_command(&cursor, &word);
 	(void)status; // handle status
 	command = command_create(word);
 	free(word);
@@ -217,7 +140,7 @@ t_command_status	ast_generate(t_state *state, const char **cursor,
 
 	if (!left_child)
 	{
-		status = parse_next_line_block(cursor, &word);
+		status = get_next_expression(cursor, &word);
 		(void)status; // Handle status
 		status = command_generation_handling((const char **)&word, &node);
 		(void)status; // Handle status
@@ -231,7 +154,7 @@ t_command_status	ast_generate(t_state *state, const char **cursor,
 		else
 			return (COMMAND_PARSING_ERROR);
 		*cursor += 2;
-		status = parse_next_line_block(cursor, &word);
+		status = get_next_expression(cursor, &word);
 		(void)status; // Handle status
 		status = command_generation_handling((const char **)&word,
 				&node->right);

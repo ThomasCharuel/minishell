@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 13:44:34 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:35:44 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,38 @@ t_command_status	set_command_command(t_state *state, t_command *command)
 	return (COMMAND_SUCCESS);
 }
 
+t_command_status	handle_subshell(t_state *state, t_command *command,
+		const char **cursor)
+{
+	char				*word;
+	char				*res;
+	t_command_status	status;
+
+	word = ft_strdup(state->executable_path);
+	if (!word)
+		return (COMMAND_ERROR);
+	if (!str_list_append(&command->argv, word))
+		return (COMMAND_ERROR);
+	status = get_next_parenthesis_expression(cursor, &res);
+	if (status)
+		return (status);
+	word = ft_strndup(&res[1], ft_strlen(res) - 3);
+	if (!word)
+		return (free(res), COMMAND_ERROR);
+	if (!str_list_append(&command->argv, word))
+		return (free(res), free(word), COMMAND_ERROR);
+	free(res);
+	return (COMMAND_SUCCESS);
+}
+
 t_command_status	command_parse(t_state *state, t_command *command)
 {
 	char				*word;
 	const char			*cursor;
 	t_command_status	status;
+	bool				first_run;
 
+	first_run = true;
 	cursor = command->command_str;
 	while (*cursor)
 	{
@@ -89,7 +115,13 @@ t_command_status	command_parse(t_state *state, t_command *command)
 			cursor++;
 		if (!*cursor)
 			break ;
-		if (ft_is_char_in_set(*cursor, "<>"))
+		if (first_run && *cursor == '(')
+		{
+			status = handle_subshell(state, command, &cursor);
+			if (status)
+				return (status);
+		}
+		else if (ft_is_char_in_set(*cursor, "<>"))
 		{
 			status = handle_redirection(state, &cursor, command);
 			if (status)
@@ -110,7 +142,8 @@ t_command_status	command_parse(t_state *state, t_command *command)
 			if (!str_list_append(&command->argv, word))
 				return (free(word), COMMAND_ERROR);
 		}
+		first_run = false;
 	}
-	// command_display(command);
+	// ft_printf("argv :%s\n", ft_strsjoin_from_list(command->argv));
 	return (set_command_command(state, command));
 }

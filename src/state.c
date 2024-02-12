@@ -6,13 +6,13 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 11:45:39 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 15:42:31 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 15:49:46 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_state	*state_init(const char **envp)
+t_state	*state_init(const char *executable_path, const char **envp)
 {
 	t_state	*state;
 
@@ -27,6 +27,7 @@ t_state	*state_init(const char **envp)
 	state->ast = NULL;
 	state->heredocs = NULL;
 	state->last_child_pid = 0;
+	state->executable_path = executable_path;
 	return (state);
 }
 

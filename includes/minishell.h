@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 15:41:54 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:20:31 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct s_node
 
 typedef struct s_state
 {
+	const char					*executable_path;
 	char						**envp;
 	char						*line;
 	t_command_status			last_exit_code;
@@ -112,7 +113,8 @@ t_command_status				repl(t_state *state);
 
 void							signal_init(void);
 
-t_state							*state_init(const char **envp);
+t_state							*state_init(const char *executable_path,
+									const char **envp);
 void							state_cleanup(t_state *state);
 
 char							**envp_copy(const char **envp);
@@ -153,7 +155,8 @@ char							*ft_strsjoin_from_list(t_list *list);
 void							ft_free(void **ptr);
 void							ft_free_str(char **str);
 
-t_return_status					str_list_append(t_list **word_list, char *str);
+t_return_status					str_list_append(t_list **word_list,
+									const char *str);
 
 t_command_status				handle_word_interpretation(t_state *state,
 									char **str);
@@ -167,12 +170,19 @@ void							tree_dfs(t_state *state, t_node *node,
 void							display_node(t_state *state, t_node *node);
 t_command_status				ast_execute(t_state *state, t_node *node);
 
-t_command_status				get_next_word_new(const char **cursor,
-									char **res, const char *charset,
-									bool delim);
-
 t_return_status					command_exec(t_state *state, t_node *node);
 
 t_pipe							*pipe_create(void);
+
+t_command_status				get_next_word_new(const char **cursor,
+									char **res, const char *charset,
+									bool delim);
+t_command_status				get_next_heredoc_eof(const char **cursor,
+									char **eof);
+t_command_status				get_next_expression(const char **ptr,
+									char **res);
+t_command_status				get_next_command(const char **ptr, char **res);
+t_command_status				get_next_parenthesis_expression(const char **ptr,
+									char **res);
 
 #endif
