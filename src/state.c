@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 11:45:39 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 11:19:23 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 15:42:31 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_state	*state_init(const char **envp)
 		return (free(state), state = NULL, NULL);
 	state->ast = NULL;
 	state->heredocs = NULL;
+	state->last_child_pid = 0;
 	return (state);
 }
 

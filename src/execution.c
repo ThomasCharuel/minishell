@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 14:58:11 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 15:45:18 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,11 @@ t_return_status	command_exec(t_state *state, t_node *node)
 	argv = from_list_to_array(command->argv);
 	if (!argv)
 		return (ERROR);
-	command->pid = fork();
-	if (command->pid == -1)
+	state->last_child_pid = fork();
+	if (state->last_child_pid == -1)
 		return (perror("minishell"), ERROR);
-	if (command->pid == 0)
+	if (state->last_child_pid == 0)
 	{
-		ft_printf("CMD: %s\n", argv[0]);
-		ft_printf("FD to close: %d, FD in: %d, FD out: %d\n",
-			get_fd_to_close(node), node->read_fd, node->write_fd);
 		ft_close_fd(get_fd_to_close(node));
 		dup2(node->read_fd, STDIN_FILENO);
 		ft_close_fd(node->read_fd);
@@ -105,31 +102,6 @@ t_return_status	command_exec(t_state *state, t_node *node)
 	ft_close_fd(node->write_fd);
 	return (SUCCESS);
 }
-
-// t_command_status	line_parsing_old(t_state *state, const char *line)
-// {
-// 	char	**command_strs;
-// 	size_t	i;
-
-// 	state->commands = ft_calloc(ft_strslen((const void **)command_strs) + 1,
-// 			sizeof(t_command *));
-// 	if (!state->commands)
-// 		return (ft_clean_double_list((void **)command_strs, free),
-// 			COMMAND_ERROR);
-// 	i = 0;
-// 	while (command_strs[i])
-// 	{
-// 		state->commands[i] = command_create(command_strs[i]);
-// 		if (!state->commands[i] || command_handle_heredocs(state,
-// 				state->commands[i]) || command_parse(state,
-// 				state->commands[i]) == COMMAND_ERROR)
-// 			return (ft_clean_double_list((void **)command_strs, free),
-// 				COMMAND_ERROR);
-// 		i++;
-// 	}
-// 	ft_clean_double_list((void **)command_strs, free);
-// 	return (COMMAND_SUCCESS);
-// }
 
 t_command_status	parse_next_line_block(const char **ptr, char **res)
 {
@@ -291,46 +263,19 @@ t_command_status	line_parsing(t_state *state, const char *line)
 
 t_command_status	line_exec(t_state *state, const char *line)
 {
+	int					command_status;
 	t_command_status	status;
 
 	status = line_parsing(state, line);
 	if (status)
 		return (status);
 	ast_execute(state, state->ast);
+	waitpid(state->last_child_pid, &command_status, 0);
+	state->last_exit_code = WIFEXITED(command_status)
+		&& WEXITSTATUS(command_status);
 	while (wait(NULL) != -1)
-		// Mettre pid dans une liste chaine et get le derniere status
 		continue ;
 	node_destroy(&state->ast);
 	ft_lstclear(&state->heredocs, &heredoc_destroy);
 	return (status);
-	// size_t				i;
-	// size_t				len;
-	// int					fd_to_close;
-	// len = ft_strslen((const void **)state->commands);
-	// state->pipes = calloc(len, sizeof(t_pipe));
-	// if (!state->pipes)
-	// 	return (COMMAND_ERROR);
-	// i = 0;
-	// while (state->commands[i])
-	// {
-	// 	if (i < len - 1)
-	// 	{
-	// 		pipe(state->pipes[i].fd);
-	// 		state->commands[i]->out_fd = state->pipes[i].fd[OUT_FD];
-	// 		fd_to_close = state->pipes[i].fd[IN_FD];
-	// 	}
-	// 	else
-	// 		fd_to_close = STDIN_FILENO;
-	// 	if (i > 0)
-	// 		state->commands[i]->in_fd = state->pipes[i - 1].fd[IN_FD];
-	// 	if (!command_exec(state, state->commands[i], fd_to_close))
-	// 		printf("TODO\n"); // TODO: il faut cleanup tout correctement
-	// 	i++;
-	// }
-	// i--;
-	// waitpid(state->commands[i]->pid, &(state->commands[i]->status), 0);
-	// status = WIFEXITED(state->commands[i]->status)
-	// 	&& WEXITSTATUS(state->commands[i]->status);
-	// while (wait(NULL) != -1)
-	// 	continue ;
 }

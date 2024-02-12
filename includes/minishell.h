@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 14:25:43 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 15:41:54 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ typedef struct s_command
 	t_list						*argv;
 	t_list						*redirections;
 	int							status;
-	pid_t						pid;
 	t_command_status			exit_code;
 }								t_command;
 
@@ -104,6 +103,7 @@ typedef struct s_state
 	t_command_status			last_exit_code;
 	t_node						*ast;
 	t_list						*heredocs;
+	pid_t						last_child_pid;
 }								t_state;
 
 extern volatile sig_atomic_t	g_signal_code;
