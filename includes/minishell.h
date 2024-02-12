@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 17:20:31 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 18:23:31 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,13 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-typedef enum e_command_status
-{
-	COMMAND_SUCCESS = 0,
-	COMMAND_ERROR = -1,
-	COMMAND_PARSING_ERROR = 2,
-	COMMAND_NOT_FOUND = 127,
-	COMMAND_SIGINT = 130
-}								t_command_status;
+# define COMMAND_SUCCESS 0
+# define COMMAND_ERROR -1
+# define COMMAND_PARSING_ERROR 2
+# define COMMAND_NOT_FOUND 127
+# define COMMAND_SIGINT 130
+
+typedef int						t_command_status;
 
 typedef enum e_return_status
 {

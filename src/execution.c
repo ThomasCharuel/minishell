@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 16:30:07 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/12 18:18:38 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,10 +192,15 @@ t_command_status	line_exec(t_state *state, const char *line)
 	status = line_parsing(state, line);
 	if (status)
 		return (status);
-	ast_execute(state, state->ast);
-	waitpid(state->last_child_pid, &command_status, 0);
-	state->last_exit_code = WIFEXITED(command_status)
-		&& WEXITSTATUS(command_status);
+	status = ast_execute(state, state->ast);
+	if (status)
+		state->last_exit_code = status;
+	else
+	{
+		waitpid(state->last_child_pid, &command_status, 0);
+		state->last_exit_code = WIFEXITED(command_status)
+			&& WEXITSTATUS(command_status);
+	}
 	while (wait(NULL) != -1)
 		continue ;
 	node_destroy(&state->ast);
