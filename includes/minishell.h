@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 19:01:33 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 16:13:16 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "../libft/includes/libft.h"
 # include <dirent.h>
 # include <errno.h>
+# include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
@@ -31,6 +32,7 @@
 
 # define COMMAND_SUCCESS 0
 # define COMMAND_ERROR -1
+# define COMMAND_TOO_MANY_ARGUMENTS 1
 # define COMMAND_PARSING_ERROR 2
 # define COMMAND_NOT_FOUND 127
 # define COMMAND_SIGINT 130
@@ -169,7 +171,7 @@ void							tree_dfs(t_state *state, t_node *node,
 void							display_node(t_state *state, t_node *node);
 t_command_status				ast_execute(t_state *state, t_node *node);
 
-t_return_status					command_exec(t_state *state, t_node *node);
+t_command_status				command_exec(t_state *state, t_node *node);
 
 t_pipe							*pipe_create(void);
 
@@ -183,5 +185,22 @@ t_command_status				get_next_expression(const char **ptr,
 t_command_status				get_next_command(const char **ptr, char **res);
 t_command_status				get_next_parenthesis_expression(const char **ptr,
 									char **res);
+char							**from_list_to_array(t_list *list);
+
+void							print_error(const char *str, ...);
+
+bool							is_builtin(const char *str);
+t_command_status				builtin_exec(t_state *state, t_node *node,
+									char **argv);
+// t_command_status				echo(t_state *state, int argc, char **argv);
+// t_command_status				cd(t_state *state, int argc, char **argv);
+// t_command_status				pwd(t_state *state, int argc, char **argv);
+// t_command_status				export(t_state *state, int argc, char **argv);
+// t_command_status				unset(t_state *state, int argc, char **argv);
+// t_command_status				env(t_state *state, int argc, char **argv);
+t_command_status				minishell_exit(t_state *state, int argc,
+									char **argv);
+void							handle_redirections(t_node *node);
+int								get_fd_to_close(t_node *node);
 
 #endif

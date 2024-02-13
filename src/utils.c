@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:59:02 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/10 00:32:57 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:34:03 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,19 @@ void	ft_close_fd(int fd)
 {
 	if (fd != STDIN_FILENO && fd != STDOUT_FILENO && fd != STDERR_FILENO)
 		close(fd);
+}
+
+void	print_error(const char *str, ...)
+{
+	va_list	ap;
+
+	write(STDERR_FILENO, "minishell: ", 12);
+	va_start(ap, str);
+	while (*str)
+	{
+		write(STDERR_FILENO, str, ft_strlen(str));
+		str = va_arg(ap, char *);
+	}
+	va_end(ap);
+	write(STDERR_FILENO, "\n", 1);
 }

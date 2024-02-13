@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 10:37:41 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 18:32:04 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 15:47:35 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,5 @@ t_command_status	ast_execute(t_state *state, t_node *node)
 	status = command_parse(state, node->content);
 	if (status)
 		return (status);
-	if (!command_exec(state, node))
-		return (COMMAND_ERROR);
-	return (COMMAND_SUCCESS);
+	return (command_exec(state, node));
 }

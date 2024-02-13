@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 18:18:38 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 16:25:49 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	get_fd_to_close(t_node *node)
 	return (STDIN_FILENO);
 }
 
-t_return_status	command_exec(t_state *state, t_node *node)
+t_command_status	command_exec(t_state *state, t_node *node)
 {
 	char		**argv;
 	t_command	*command;
@@ -82,10 +82,12 @@ t_return_status	command_exec(t_state *state, t_node *node)
 	command = node->content;
 	argv = from_list_to_array(command->argv);
 	if (!argv)
-		return (ERROR);
+		return (COMMAND_ERROR);
+	if (is_builtin(argv[0]))
+		return (state->last_child_pid = 0, builtin_exec(state, node, argv));
 	state->last_child_pid = fork();
 	if (state->last_child_pid == -1)
-		return (perror("minishell"), ERROR);
+		return (perror("minishell"), COMMAND_ERROR);
 	if (state->last_child_pid == 0)
 	{
 		ft_close_fd(get_fd_to_close(node));
@@ -100,7 +102,7 @@ t_return_status	command_exec(t_state *state, t_node *node)
 	free(argv);
 	ft_close_fd(node->read_fd);
 	ft_close_fd(node->write_fd);
-	return (SUCCESS);
+	return (COMMAND_SUCCESS);
 }
 
 t_command_status	command_generation_handling(const char **ptr,
@@ -197,9 +199,13 @@ t_command_status	line_exec(t_state *state, const char *line)
 		state->last_exit_code = status;
 	else
 	{
-		waitpid(state->last_child_pid, &command_status, 0);
-		state->last_exit_code = WIFEXITED(command_status)
-			&& WEXITSTATUS(command_status);
+		if (state->last_child_pid)
+		{
+			// To be refactored (check other waitpid codes)
+			waitpid(state->last_child_pid, &command_status, 0);
+			state->last_exit_code = WIFEXITED(command_status)
+				&& WEXITSTATUS(command_status);
+		}
 	}
 	while (wait(NULL) != -1)
 		continue ;

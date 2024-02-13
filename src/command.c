@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 17:35:44 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 14:29:58 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ t_command_status	set_command_command(t_state *state, t_command *command)
 
 	if (!command->argv)
 		return (COMMAND_NOT_FOUND);
+	if (is_builtin(command->argv->content))
+		return (COMMAND_SUCCESS);
 	if (ft_strchr((char *)command->argv->content, '/'))
 		status = handle_path_command(command);
 	else
@@ -144,6 +146,5 @@ t_command_status	command_parse(t_state *state, t_command *command)
 		}
 		first_run = false;
 	}
-	// ft_printf("argv :%s\n", ft_strsjoin_from_list(command->argv));
 	return (set_command_command(state, command));
 }
