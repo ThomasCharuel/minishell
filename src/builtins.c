@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:23:44 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 16:20:24 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 16:34:39 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ t_command_status	minishell_pwd(t_state *state, int argc, char **argv)
 	getcwd(wd, PATH_MAX);
 	write(STDOUT_FILENO, wd, ft_strlen(wd));
 	write(STDOUT_FILENO, "\n", 1);
+	free(wd);
 	return (COMMAND_SUCCESS);
 }
 
@@ -105,15 +106,20 @@ t_command_status	builtin_exec_decorator(t_state *state, t_node *node,
 		;
 	stdout_ = dup(STDOUT_FILENO);
 	stdin_ = dup(STDIN_FILENO);
-	//	if (node->daddy->type == pipe)
-	//	{
-	//		dup2()
-	//	}
+	if (node->daddy && node->daddy->type == PIPE)
+	{
+		dup2(node->write_fd, STDOUT_FILENO);
+		close(node->write_fd);
+		dup2(node->read_fd, STDIN_FILENO);
+		close(node->read_fd);
+	}
 	handle_redirections(node);
 	status = builtin(state, argc, argv);
 	state->last_exit_code = status;
 	dup2(stdin_, STDIN_FILENO);
 	dup2(stdout_, STDOUT_FILENO);
+	close(stdin_);
+	close(stdout_);
 	return (status);
 }
 
