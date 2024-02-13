@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:23:44 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 19:10:28 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 19:55:48 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,27 @@ t_command_status	minishell_echo(t_state *state, int argc, char **argv)
 	return (COMMAND_SUCCESS);
 }
 
-int	cd(int ac, char **av)
+t_command_status	minishell_cd(t_state *state, int argc, char **argv)
 {
-	char	*home;
+	const char	*path;
 
-	home = getenv("HOME"); // To refacto
-	if (ac == 1)
-		return (chdir(home));
-	if (ac > 2)
+	if (argc == 1)
 	{
-		write(2, "too many arguments", 19);
+		path = envp_get(state, "HOME");
+		if (!path || !*path)
+			return (print_error("cd: HOME not set", NULL),
+				COMMAND_TOO_MANY_ARGUMENTS);
 	}
-	else if (chdir(av[1]))
-		perror(av[1]);
-	return (1);
+	else if (argc == 2)
+		path = argv[1];
+	else
+		return (print_error("cd: too many arguments", NULL),
+			COMMAND_TOO_MANY_ARGUMENTS);
+	if (!path)
+		return (print_error("cd: execution error", NULL), COMMAND_ERROR);
+	if (chdir(path))
+		return (perror("minishell"), COMMAND_TOO_MANY_ARGUMENTS);
+	return (COMMAND_SUCCESS);
 }
 
 t_command_status	minishell_pwd(t_state *state, int argc, char **argv)
@@ -124,7 +131,7 @@ t_command_status	builtin_exec(t_state *state, t_node *node, char **argv)
 	if (!ft_strcmp(argv[0], "echo"))
 		return (builtin_exec_decorator(state, node, argv, &minishell_echo));
 	else if (!ft_strcmp(argv[0], "cd"))
-		return (COMMAND_SUCCESS);
+		return (builtin_exec_decorator(state, node, argv, &minishell_cd));
 	else if (!ft_strcmp(argv[0], "pwd"))
 		return (builtin_exec_decorator(state, node, argv, &minishell_pwd));
 	else if (!ft_strcmp(argv[0], "export"))
