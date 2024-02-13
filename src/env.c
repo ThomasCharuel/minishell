@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 17:17:41 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 18:29:54 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:38:59 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,17 @@ t_command_status	minishell_env(t_state *state, int argc, char **argv)
 {
 	size_t	i;
 
-	// N'affiche pas truc vide
 	(void)argv;
 	if (argc > 1)
 		return (print_error("env: too many arguments", NULL),
 			COMMAND_TOO_MANY_ARGUMENTS);
 	i = 0;
 	while (state->envp && state->envp[i])
-		ft_printf("%s\n", state->envp[i++]);
+	{
+		if (strchr(state->envp[i], '='))
+			ft_printf("%s\n", state->envp[i]);
+		i++;
+	}
 	return (COMMAND_SUCCESS);
 }
 
