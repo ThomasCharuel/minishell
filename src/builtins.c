@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:23:44 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 19:55:48 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 20:03:21 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,16 @@ t_command_status	minishell_cd(t_state *state, int argc, char **argv)
 
 t_command_status	minishell_pwd(t_state *state, int argc, char **argv)
 {
-	char	*wd;
+	char	*pwd;
 
+	(void)state;
 	(void)argc;
 	(void)argv;
-	(void)state;
-	wd = malloc(PATH_MAX * sizeof(char));
-	if (!wd)
+	pwd = get_working_directory();
+	if (!pwd)
 		return (COMMAND_ERROR);
-	getcwd(wd, PATH_MAX);
-	write(STDOUT_FILENO, wd, ft_strlen(wd));
-	write(STDOUT_FILENO, "\n", 1);
-	free(wd);
+	ft_printf("%s\n", pwd);
+	free(pwd);
 	return (COMMAND_SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 19:17:01 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 20:03:17 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,7 @@ t_command_status				get_next_parenthesis_expression(const char **ptr,
 char							**from_list_to_array(t_list *list);
 
 void							print_error(const char *str, ...);
+char							*get_working_directory(void);
 
 bool							is_builtin(const char *str);
 t_command_status				builtin_exec(t_state *state, t_node *node,

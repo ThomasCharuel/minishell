@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 11:45:39 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 19:03:44 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 20:07:34 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,9 @@ char	*get_minishell_path(const char *executable_path)
 
 	if (executable_path[0] == '/')
 		return (ft_strdup(executable_path));
-	pwd = calloc(PATH_MAX, sizeof(char));
+	pwd = get_working_directory();
 	if (!pwd)
 		return (NULL);
-	if (!getcwd(pwd, PATH_MAX))
-		return (free(pwd), NULL);
 	path = ft_strsjoin(pwd, "/", executable_path, NULL);
 	free(pwd);
 	return (path);

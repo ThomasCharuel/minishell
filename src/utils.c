@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:59:02 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 17:29:38 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 20:01:49 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,16 @@ void	print_error(const char *str, ...)
 	}
 	va_end(ap);
 	write(STDERR_FILENO, "\n", 1);
+}
+
+char	*get_working_directory(void)
+{
+	char	*pwd;
+
+	pwd = calloc(PATH_MAX, sizeof(char));
+	if (!pwd)
+		return (perror("minishell"), NULL);
+	if (!getcwd(pwd, PATH_MAX))
+		return (perror("minishell"), free(pwd), NULL);
+	return (pwd);
 }

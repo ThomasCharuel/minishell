@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:37:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 17:07:29 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 20:08:02 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,12 @@ char	*prompt_loop(t_state *state)
 	char		*line;
 	const char	*user;
 
-	pwd = (char *)malloc(PATH_MAX * sizeof(char));
+	pwd = get_working_directory();
 	if (!pwd)
-		return (perror("minishell"), NULL);
-	if (!getcwd(pwd, PATH_MAX))
-		return (free(pwd), NULL);
+		return (NULL);
 	user = envp_get(state, "USER");
 	if (!user)
-		prompt = ft_strsjoin("$ ", NULL);
+		prompt = ft_strsjoin(":", pwd, "$ ", NULL);
 	else
 		prompt = ft_strsjoin((char *)user, ":", pwd, "$ ", NULL);
 	if (!prompt)

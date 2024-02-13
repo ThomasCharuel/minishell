@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 10:37:41 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 15:47:35 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 20:02:47 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ void	display_node(t_state *state, t_node *node)
 {
 	(void)state;
 	if (node->type == COMMAND)
-		printf("command node: %s, daddy: %p\n",
+		ft_printf("command node: %s, daddy: %p\n",
 			((t_command *)node->content)->command_str, node->daddy);
 	if (node->type == PIPE)
-		printf("PIPE\n");
+		ft_printf("PIPE\n");
 	if (node->type == AND)
-		printf("AND\n");
+		ft_printf("AND\n");
 	if (node->type == OR)
-		printf("OR\n");
+		ft_printf("OR\n");
 }
 
 t_command_status	ast_execute(t_state *state, t_node *node)
