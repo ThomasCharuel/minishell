@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:42:06 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 15:37:00 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 17:35:42 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,12 @@ unsigned char	get_exit_code(const char *str)
 		return (COMMAND_ERROR);
 	str = ft_strchrs(str, "-0123456789");
 	if (!str)
-		return (COMMAND_PARSING_ERROR);
+		return (free(match), COMMAND_PARSING_ERROR);
 	end_str = ft_strchr(str, ' ');
 	if ((end_str && ft_strncmp(match, str, end_str - str)) || (!end_str
 			&& ft_strcmp(match, str)))
-		return (COMMAND_PARSING_ERROR);
+		return (free(match), COMMAND_PARSING_ERROR);
+	free(match);
 	return (l_str);
 }
 
@@ -65,7 +66,7 @@ t_command_status	minishell_exit(t_state *state, int argc, char **argv)
 		return (status);
 	else if (argc > 2)
 		status = COMMAND_TOO_MANY_ARGUMENTS;
-	if (!is_numeric_str(argv[1]))
+	if (argc > 2 && !is_numeric_str(argv[1]))
 		status = COMMAND_PARSING_ERROR;
 	else
 		status = get_exit_code(argv[1]);

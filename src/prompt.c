@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:37:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 11:07:09 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 17:07:29 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,6 @@ t_command_status	repl(t_state *state)
 		if (status == COMMAND_ERROR)
 			return (status);
 	}
-	return (COMMAND_SIGINT);
+	write(STDOUT_FILENO, "exit\n", 6);
+	return (state->last_exit_code);
 }

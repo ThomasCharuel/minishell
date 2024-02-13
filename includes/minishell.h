@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 16:13:16 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 17:21:00 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,12 +192,12 @@ void							print_error(const char *str, ...);
 bool							is_builtin(const char *str);
 t_command_status				builtin_exec(t_state *state, t_node *node,
 									char **argv);
-// t_command_status				echo(t_state *state, int argc, char **argv);
-// t_command_status				cd(t_state *state, int argc, char **argv);
-// t_command_status				pwd(t_state *state, int argc, char **argv);
-// t_command_status				export(t_state *state, int argc, char **argv);
-// t_command_status				unset(t_state *state, int argc, char **argv);
-// t_command_status				env(t_state *state, int argc, char **argv);
+t_command_status				minishell_export(t_state *state, int argc,
+									char **argv);
+t_command_status				minishell_unset(t_state *state, int argc,
+									char **argv);
+t_command_status				minishell_env(t_state *state, int argc,
+									char **argv);
 t_command_status				minishell_exit(t_state *state, int argc,
 									char **argv);
 void							handle_redirections(t_node *node);

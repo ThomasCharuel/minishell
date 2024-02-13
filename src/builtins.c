@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:23:44 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 16:34:39 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 17:21:53 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ t_command_status	builtin_exec_decorator(t_state *state, t_node *node,
 	t_command_status	status;
 
 	argc = 0;
-	while (argv[argc++])
-		;
+	while (argv[argc])
+		argc++;
 	stdout_ = dup(STDOUT_FILENO);
 	stdin_ = dup(STDIN_FILENO);
 	if (node->daddy && node->daddy->type == PIPE)
@@ -117,9 +117,10 @@ t_command_status	builtin_exec_decorator(t_state *state, t_node *node,
 	status = builtin(state, argc, argv);
 	state->last_exit_code = status;
 	dup2(stdin_, STDIN_FILENO);
-	dup2(stdout_, STDOUT_FILENO);
 	close(stdin_);
+	dup2(stdout_, STDOUT_FILENO);
 	close(stdout_);
+	free(argv);
 	return (status);
 }
 
@@ -132,11 +133,11 @@ t_command_status	builtin_exec(t_state *state, t_node *node, char **argv)
 	else if (!ft_strcmp(argv[0], "pwd"))
 		return (builtin_exec_decorator(state, node, argv, &minishell_pwd));
 	else if (!ft_strcmp(argv[0], "export"))
-		return (COMMAND_SUCCESS);
+		return (builtin_exec_decorator(state, node, argv, &minishell_export));
 	else if (!ft_strcmp(argv[0], "unset"))
-		return (COMMAND_SUCCESS);
+		return (builtin_exec_decorator(state, node, argv, &minishell_unset));
 	else if (!ft_strcmp(argv[0], "env"))
-		return (COMMAND_SUCCESS);
+		return (builtin_exec_decorator(state, node, argv, &minishell_env));
 	else if (!ft_strcmp(argv[0], "exit"))
 		return (builtin_exec_decorator(state, node, argv, &minishell_exit));
 	return (COMMAND_PARSING_ERROR);
