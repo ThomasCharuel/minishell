@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 17:17:41 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 18:02:35 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:29:54 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,20 +57,35 @@ t_command_status	minishell_export(t_state *state, int argc, char **argv)
 {
 	char	*key;
 	char	*value;
+	int		i;
 
 	if (argc == 1)
 		return (print_declare_statements(state->envp));
-	(void)argv;
-	if (!envp_set(state, key, value))
-		return (COMMAND_ERROR);
+	else
+	{
+		i = 0;
+		while (++i < argc)
+		{
+			value = ft_strchr(argv[i], '=');
+			if (!value)
+				return (envp_set(state, argv[i], NULL));
+			else
+			{
+				if (!envp_set(state, key, value))
+					return (COMMAND_ERROR);
+			}
+		}
+	}
 	return (COMMAND_SUCCESS);
 }
 
 t_command_status	minishell_unset(t_state *state, int argc, char **argv)
 {
-	(void)state;
+	size_t	i;
+
 	(void)argc;
-	(void)argv;
-	// envp_delete(t_state *state, const char *key)
+	i = 1;
+	while (argv[i])
+		envp_delete(state, argv[i++]);
 	return (COMMAND_SUCCESS);
 }

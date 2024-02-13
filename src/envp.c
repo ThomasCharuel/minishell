@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 14:13:29 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 11:18:40 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:36:11 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ t_return_status	envp_set(t_state *state, const char *key, const char *value)
 	return (SUCCESS);
 }
 
+// Revoir pour les set a rien du tout
 void	envp_delete(t_state *state, const char *key)
 {
 	size_t	i;
@@ -88,7 +89,7 @@ void	envp_delete(t_state *state, const char *key)
 	while (state->envp[i])
 	{
 		if (!ft_strncmp(state->envp[i], key, key_len)
-			&& state->envp[i][key_len] == '=')
+			&& (!state->envp[i][key_len] || state->envp[i][key_len] == '='))
 			break ;
 		i++;
 	}
