@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 14:13:29 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 18:36:11 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:42:37 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,13 @@ const char	*envp_get(t_state *state, const char *key)
 	i = 0;
 	while (state->envp[i])
 	{
-		if (!ft_strncmp(state->envp[i], key, key_len)
-			&& state->envp[i][key_len] == '=')
-			return (&state->envp[i][key_len + 1]);
+		if (!ft_strncmp(state->envp[i], key, key_len))
+		{
+			if (!state->envp[i][key_len])
+				return (state->envp[i][key_len]);
+			else if (state->envp[i][key_len] == '=')
+				return (&state->envp[i][key_len + 1]);
+		}
 		i++;
 	}
 	return (NULL);
@@ -63,11 +67,14 @@ t_return_status	envp_set(t_state *state, const char *key, const char *value)
 	while (state->envp[i])
 	{
 		if (!ft_strncmp(state->envp[i], key, key_len)
-			&& state->envp[i][key_len] == '=')
+			&& (!state->envp[i][key_len] || state->envp[i][key_len] == '='))
 			break ;
 		i++;
 	}
-	str = ft_strsjoin(key, "=", value, NULL);
+	if (value)
+		str = ft_strsjoin(key, "=", value, NULL);
+	else
+		str = ft_strdup(key);
 	if (!str)
 		return (ERROR);
 	if (state->envp[i])
@@ -78,7 +85,6 @@ t_return_status	envp_set(t_state *state, const char *key, const char *value)
 	return (SUCCESS);
 }
 
-// Revoir pour les set a rien du tout
 void	envp_delete(t_state *state, const char *key)
 {
 	size_t	i;
