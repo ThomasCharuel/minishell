@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 17:21:00 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 19:07:06 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,10 @@ void							print_error(const char *str, ...);
 
 bool							is_builtin(const char *str);
 t_command_status				builtin_exec(t_state *state, t_node *node,
+									char **argv);
+t_command_status				minishell_echo(t_state *state, int argc,
+									char **argv);
+t_command_status				minishell_pwd(t_state *state, int argc,
 									char **argv);
 t_command_status				minishell_export(t_state *state, int argc,
 									char **argv);

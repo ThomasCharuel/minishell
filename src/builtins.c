@@ -6,39 +6,34 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:23:44 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 17:21:53 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 19:10:28 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	echo(int ac, char **av)
+t_command_status	minishell_echo(t_state *state, int argc, char **argv)
 {
-	int	i;
+	int		i;
+	bool	should_print_new_line;
 
-	i = 0;
-	if (ac == 1)
-		write(1, "\n", 1);
-	if (ac >= 2 && !ft_strncmp("-n", av[1], 2))
+	(void)state;
+	should_print_new_line = true;
+	i = 1;
+	if (argc > 1 && !ft_strcmp("-n", argv[i]))
 	{
+		should_print_new_line = false;
 		i++;
-		while (++i < ac)
-		{
-			write(1, av[i], ft_strlen(av[i]));
-			if (i + 1 < ac)
-				write(1, " ", 1);
-		}
-		return (0);
 	}
-	if (ac >= 2)
-		while (++i < ac)
-		{
-			write(1, av[i], ft_strlen(av[i]));
-			if (i + 1 < ac)
-				write(1, " ", 1);
-		}
-	write(1, "\n", 1);
-	return (0);
+	while (argv[i])
+	{
+		ft_printf("%s", argv[i++]);
+		if (i < argc)
+			ft_printf(" ");
+	}
+	if (should_print_new_line)
+		ft_printf("\n");
+	return (COMMAND_SUCCESS);
 }
 
 int	cd(int ac, char **av)
@@ -127,7 +122,7 @@ t_command_status	builtin_exec_decorator(t_state *state, t_node *node,
 t_command_status	builtin_exec(t_state *state, t_node *node, char **argv)
 {
 	if (!ft_strcmp(argv[0], "echo"))
-		return (COMMAND_SUCCESS);
+		return (builtin_exec_decorator(state, node, argv, &minishell_echo));
 	else if (!ft_strcmp(argv[0], "cd"))
 		return (COMMAND_SUCCESS);
 	else if (!ft_strcmp(argv[0], "pwd"))

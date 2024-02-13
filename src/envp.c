@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 14:13:29 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 18:42:37 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/13 19:04:24 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ const char	*envp_get(t_state *state, const char *key)
 		if (!ft_strncmp(state->envp[i], key, key_len))
 		{
 			if (!state->envp[i][key_len])
-				return (state->envp[i][key_len]);
+				return (&state->envp[i][key_len]);
 			else if (state->envp[i][key_len] == '=')
 				return (&state->envp[i][key_len + 1]);
 		}
