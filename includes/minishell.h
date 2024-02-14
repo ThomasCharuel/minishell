@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 20:03:17 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/14 11:38:48 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,7 @@ char							*ft_strsjoin_from_list(t_list *list);
 void							ft_free(void **ptr);
 void							ft_free_str(char **str);
 
+void							display_str_list(t_list *word_list);
 t_return_status					str_list_append(t_list **word_list,
 									const char *str);
 
@@ -209,5 +210,7 @@ t_command_status				minishell_exit(t_state *state, int argc,
 									char **argv);
 void							handle_redirections(t_node *node);
 int								get_fd_to_close(t_node *node);
+
+t_list							*filter_files_based_on_pattern(const char *pattern);
 
 #endif

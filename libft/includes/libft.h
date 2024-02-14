@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:01:58 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 11:51:58 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/14 13:39:40 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@
 # define BASE_DECIMAL "0123456789"
 # define BASE_HEX_LOWERCASE "0123456789abcdef"
 # define BASE_HEX_UPPERCASE "0123456789ABCDEF"
+
+# define MIN(a, b) (((a) < (b)) ? (a) : (b))
 
 # define BUFFER_SIZE 40
 
@@ -71,6 +73,7 @@ int					ft_tolower(int c);
 char				*ft_strchr(const char *s, int c);
 char				*ft_strrchr(const char *s, int c);
 int					ft_strcmp(const char *s1, const char *s2);
+int					ft_strrcmp(const char *s1, const char *s2);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 void				*ft_memchr(const void *s, int c, size_t n);
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
@@ -144,5 +147,8 @@ bool				ft_is_char_in_set(const char c, const char *s);
 void				*ft_realloc(void **ptr, size_t len, size_t new_len);
 int					ft_rand_int(void);
 char				*ft_rand_uuid(void);
+
+const char			*ft_strstr(const char *str, const char *search_string);
+bool				ft_str_endswith(const char *str, const char *search_str);
 
 #endif

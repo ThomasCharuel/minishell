@@ -6,11 +6,20 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:34:20 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 17:20:57 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/14 11:37:54 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	display_str_list(t_list *word_list)
+{
+	while (word_list)
+	{
+		ft_printf("- %s\n", word_list->content);
+		word_list = word_list->next;
+	}
+}
 
 t_return_status	str_list_append(t_list **word_list, const char *str)
 {
