@@ -6,13 +6,13 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:38:57 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/10 00:26:16 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/14 17:56:14 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_var_value(t_state *state, const char **ptr)
+t_command_status	get_var_value(t_state *state, const char **ptr, char **word)
 {
 	const char	*value;
 	const char	*cursor;
@@ -20,16 +20,25 @@ char	*get_var_value(t_state *state, const char **ptr)
 
 	cursor = *ptr;
 	if (!ft_isalpha(*cursor) && *cursor != '_')
-		return (calloc(1, 1));
+	{
+		*word = calloc(1, 1);
+		if (!*word)
+			return (COMMAND_ERROR);
+		return (COMMAND_SUCCESS);
+	}
 	while (ft_isalnum(*cursor) || *cursor == '_')
 		cursor++;
 	var_str = ft_strndup(*ptr, cursor - *ptr);
 	if (!var_str)
-		return (NULL);
+		return (COMMAND_ERROR);
 	*ptr = cursor;
 	value = envp_get(state, var_str);
 	free(var_str);
 	if (!value)
-		return (calloc(1, 1));
-	return (ft_strdup(value));
+		*word = calloc(1, 1);
+	else
+		*word = ft_strdup(value);
+	if (!*word)
+		return (COMMAND_ERROR);
+	return (COMMAND_SUCCESS);
 }

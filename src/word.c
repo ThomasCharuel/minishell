@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:21:40 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 18:09:36 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/14 18:09:32 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,5 +175,109 @@ t_command_status	get_next_parenthesis_expression(const char **ptr,
 	*res = ft_strsjoin_from_list(words);
 	ft_lstclear(&words, free);
 	*ptr = cursor;
+	return (COMMAND_SUCCESS);
+}
+
+t_command_status	get_next_token(const char **ptr, char **res)
+{
+	t_command_status	status;
+	t_list				*words;
+	char				*word;
+	const char			*cursor;
+
+	cursor = *ptr;
+	words = NULL;
+	while (*cursor)
+	{
+		if (ft_is_char_in_set(*cursor, "<>&|() "))
+			break ;
+		else if (*cursor == '\"')
+			status = get_next_word_new(&cursor, &word, "\"", true);
+		else if (*cursor == '\'')
+			status = get_next_word_new(&cursor, &word, "\'", true);
+		else
+			status = get_next_word_new(&cursor, &word, "\'\"<>&|() ", false);
+		if (status)
+			return (ft_lstclear(&words, free), status);
+		if (!str_list_append(&words, word))
+			return (ft_lstclear(&words, free), COMMAND_ERROR);
+	}
+	*res = ft_strsjoin_from_list(words);
+	ft_lstclear(&words, free);
+	return (*ptr = cursor, COMMAND_SUCCESS);
+}
+
+t_command_status	handle_word_interpretation(t_state *state, char **ptr)
+{
+	t_command_status	status;
+	t_list				*words;
+	char				*word;
+	const char			*cursor;
+
+	cursor = *ptr;
+	words = NULL;
+	while (*cursor)
+	{
+		if (*cursor == '$')
+			status = get_var_value(state, &cursor, &word);
+		else if (*cursor == '\'')
+			status = get_next_word_new(&cursor, &word, "\'", true);
+		else
+			status = get_next_word_new(&cursor, &word, "\'$", false);
+		if (status)
+			return (ft_lstclear(&words, free), status);
+		if (!str_list_append(&words, word))
+			return (ft_lstclear(&words, free), COMMAND_ERROR);
+	}
+	free(*ptr);
+	*ptr = ft_strsjoin_from_list(words);
+	ft_lstclear(&words, free);
+	if (!*ptr)
+		return (COMMAND_ERROR);
+	return (COMMAND_SUCCESS);
+}
+
+t_command_status	trim_quotes(char **str)
+{
+	char	*trimmed_str;
+
+	if (!ft_is_char_in_set(**str, "\'\""))
+		return (COMMAND_SUCCESS);
+	trimmed_str = ft_strndup(&(*str)[1], ft_strlen(&(*str)[1]) - 1);
+	if (!trimmed_str)
+		return (COMMAND_ERROR);
+	free(*str);
+	*str = trimmed_str;
+	return (COMMAND_SUCCESS);
+}
+
+t_command_status	suppr_quotes(char **ptr)
+{
+	t_command_status	status;
+	t_list				*words;
+	char				*word;
+	const char			*cursor;
+
+	cursor = *ptr;
+	words = NULL;
+	while (*cursor)
+	{
+		if (*cursor == '\'')
+			status = get_next_word_new(&cursor, &word, "\'", true);
+		else if (*cursor == '\"')
+			status = get_next_word_new(&cursor, &word, "\"", true);
+		else
+			status = get_next_word_new(&cursor, &word, "\'\"", false);
+		if (status)
+			return (ft_lstclear(&words, free), status);
+		status = trim_quotes(&word);
+		if (!str_list_append(&words, word))
+			return (ft_lstclear(&words, free), COMMAND_ERROR);
+	}
+	free(*ptr);
+	*ptr = ft_strsjoin_from_list(words);
+	ft_lstclear(&words, free);
+	if (!*ptr)
+		return (COMMAND_ERROR);
 	return (COMMAND_SUCCESS);
 }

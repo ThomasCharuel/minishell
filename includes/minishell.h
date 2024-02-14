@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/14 11:38:48 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/14 17:56:45 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,6 @@ char							*get_command_file(const char *path,
 t_command_status				handle_command(t_state *state,
 									t_command *command);
 t_command_status				handle_path_command(t_command *command);
-t_command_status				get_next_word(const char **ptr, char **word);
 
 t_command_status				line_exec(t_state *state, const char *line);
 
@@ -150,8 +149,6 @@ void							ft_clean_double_list(void **list,
 									void (*destroy)(void *));
 void							ft_close_fd(int fd);
 
-char							*get_var_value(t_state *state,
-									const char **ptr);
 char							*ft_strsjoin_from_list(t_list *list);
 void							ft_free(void **ptr);
 void							ft_free_str(char **str);
@@ -159,12 +156,12 @@ void							ft_free_str(char **str);
 void							display_str_list(t_list *word_list);
 t_return_status					str_list_append(t_list **word_list,
 									const char *str);
-
+t_command_status				get_var_value(t_state *state, const char **ptr,
+									char **word);
 t_command_status				handle_word_interpretation(t_state *state,
 									char **str);
 t_command_status				handle_heredocs(t_state *state,
 									const char *line);
-
 t_node							*node_create(t_node_type type, void *content);
 void							node_destroy(t_node **node);
 void							tree_dfs(t_state *state, t_node *node,
@@ -186,6 +183,9 @@ t_command_status				get_next_expression(const char **ptr,
 t_command_status				get_next_command(const char **ptr, char **res);
 t_command_status				get_next_parenthesis_expression(const char **ptr,
 									char **res);
+t_command_status				get_next_token(const char **ptr, char **res);
+t_command_status				suppr_quotes(char **ptr);
+
 char							**from_list_to_array(t_list *list);
 
 void							print_error(const char *str, ...);

@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:13:26 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 18:00:17 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/14 16:36:06 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ t_return_status	write_heredoc(t_heredoc *heredoc)
 	fd = open(heredoc->file, O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR);
 	if (fd < 0)
 		return (perror(heredoc->file), ERROR);
-	ft_printf("heredoc EOF: %s\nfile:%s\n", heredoc->eof, heredoc->file);
 	line = readline(">");
 	while (line && ft_strcmp(line, heredoc->eof))
 	{

@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/14 15:42:39 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:53:07 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,8 +183,6 @@ t_command_status	line_parsing(t_state *state, const char *line)
 	cursor = state->line;
 	status = ast_generate(state, &cursor, NULL);
 	ft_free_str(&state->line);
-	ft_printf("Files filtered: \n");
-	display_str_list(filter_files_based_on_pattern("t**t*"));
 	return (COMMAND_SUCCESS);
 }
 
