@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:15:01 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/14 13:39:01 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:49:41 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ bool	file_matches_pattern(const char *filename, const char *pattern)
 
 	if (has_only_stars(pattern))
 		return (true);
+	if (!filename)
+		return (false);
 	first_star = ft_strchr(pattern, '*');
 	if (!first_star)
 		return (ft_str_endswith(filename, pattern));
@@ -71,6 +73,9 @@ bool	file_matches_pattern(const char *filename, const char *pattern)
 	}
 	while (*pattern == '*')
 		pattern++;
+	first_star = ft_strchr(pattern, '*');
+	if (first_star)
+		filename = ft_strstrn(filename, pattern, first_star - pattern);
 	return (file_matches_pattern(filename, pattern));
 }
 
