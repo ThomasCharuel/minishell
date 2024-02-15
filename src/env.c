@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 17:17:41 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 18:38:59 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/15 19:33:41 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ t_command_status	minishell_export(t_state *state, int argc, char **argv)
 	char	*value;
 	int		i;
 
+	key = NULL;
 	if (argc == 1)
 		return (print_declare_statements(state->envp));
 	else

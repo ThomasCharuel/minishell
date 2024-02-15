@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:38:57 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/14 17:56:14 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/15 20:09:58 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_command_status	get_var_value(t_state *state, const char **ptr, char **word)
 		*word = calloc(1, 1);
 		if (!*word)
 			return (COMMAND_ERROR);
+		*ptr = cursor;
 		return (COMMAND_SUCCESS);
 	}
 	while (ft_isalnum(*cursor) || *cursor == '_')
