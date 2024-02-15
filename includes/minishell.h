@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/14 17:56:45 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/15 13:21:32 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,6 +210,8 @@ t_command_status				minishell_exit(t_state *state, int argc,
 									char **argv);
 void							handle_redirections(t_node *node);
 int								get_fd_to_close(t_node *node);
+t_command_status				handle_wildecards(t_state *state, char **ptr,
+									t_list *argv);
 
 t_list							*filter_files_based_on_pattern(const char *pattern);
 

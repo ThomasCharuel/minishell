@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/14 18:03:35 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/15 13:22:56 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,14 @@ t_command_status	command_parse(t_state *state, t_command *command)
 				return (status);
 			if (!word)
 				break ;
+			if (!first_run)
+			{
+				status = handle_wildecards(state, &word, command->argv);
+				if (!word)
+					continue ;
+				if (status)
+					return (status);
+			}
 			status = suppr_quotes(&word);
 			if (status)
 				return (status);

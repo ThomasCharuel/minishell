@@ -3,14 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:15:01 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/14 15:49:41 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/15 13:25:51 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_command_status	handle_wildecards(t_state *state, char **ptr, t_list *argv)
+{
+	t_list	*words;
+
+	(void)state;
+	words = filter_files_based_on_pattern(*ptr);
+	if (!words)
+		return (COMMAND_SUCCESS);
+	display_str_list(words);
+	free(*ptr);
+	*ptr = NULL;
+	while (argv->next)
+		argv = argv->next;
+	argv->next = words;
+	return (COMMAND_SUCCESS);
+}
 
 t_list	*get_files_in_current_directory(void)
 {
