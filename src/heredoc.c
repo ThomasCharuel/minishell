@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:13:26 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/15 13:21:06 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/15 16:04:57 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ t_command_status	handle_heredoc(t_state *state, const char **cursor,
 	*cursor += 2;
 	while (**cursor == ' ')
 		(*cursor)++;
-	status = get_next_heredoc_eof(cursor, &eof);
+	status = get_func_decorator(cursor, &eof, &get_next_heredoc_eof);
 	if (status)
 		return (ft_free_str(&eof), status);
 	if (!ft_strlen(eof))

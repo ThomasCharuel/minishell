@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:34:15 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/14 17:52:27 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/15 16:12:01 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ t_command_status	handle_redirection(t_state *state, const char **cmd,
 		cursor++;
 	if (!*cursor || ft_is_char_in_set(*cursor, "<>"))
 		return (COMMAND_PARSING_ERROR);
-	status = get_next_token(&cursor, &file);
+	status = get_func_decorator(&cursor, &file, &get_next_token);
 	if (status)
 		return (status);
 	status = handle_word_interpretation(state, &file);

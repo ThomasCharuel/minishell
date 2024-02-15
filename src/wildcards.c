@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:15:01 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/15 13:25:51 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/15 15:40:14 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_command_status	handle_wildecards(t_state *state, char **ptr, t_list *argv)
 	words = filter_files_based_on_pattern(*ptr);
 	if (!words)
 		return (COMMAND_SUCCESS);
-	display_str_list(words);
+	// display_str_list(words);
 	free(*ptr);
 	*ptr = NULL;
 	while (argv->next)

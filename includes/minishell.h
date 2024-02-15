@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/15 13:21:32 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/15 16:51:43 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,17 +173,23 @@ t_command_status				command_exec(t_state *state, t_node *node);
 
 t_pipe							*pipe_create(void);
 
+t_command_status				get_func_decorator(const char **cursor,
+									char **res,
+									t_command_status (*get_func)(const char **,
+										t_list **));
 t_command_status				get_next_word_new(const char **cursor,
 									char **res, const char *charset,
 									bool delim);
 t_command_status				get_next_heredoc_eof(const char **cursor,
-									char **eof);
+									t_list **words);
 t_command_status				get_next_expression(const char **ptr,
-									char **res);
-t_command_status				get_next_command(const char **ptr, char **res);
+									t_list **words);
+t_command_status				get_next_command(const char **ptr,
+									t_list **words);
 t_command_status				get_next_parenthesis_expression(const char **ptr,
-									char **res);
-t_command_status				get_next_token(const char **ptr, char **res);
+									t_list **words);
+t_command_status				get_next_token(const char **ptr,
+									t_list **words);
 t_command_status				suppr_quotes(char **ptr);
 
 char							**from_list_to_array(t_list *list);
@@ -212,7 +218,6 @@ void							handle_redirections(t_node *node);
 int								get_fd_to_close(t_node *node);
 t_command_status				handle_wildecards(t_state *state, char **ptr,
 									t_list *argv);
-
 t_list							*filter_files_based_on_pattern(const char *pattern);
 
 #endif
