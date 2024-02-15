@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:21:40 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/15 16:50:23 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/15 20:32:20 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,15 +220,18 @@ t_command_status	handle_word_interpretation(t_state *state, char **ptr)
 	while (*cursor)
 	{
 		if (*cursor == '$')
+		{
+			cursor++;
 			status = get_var_value(state, &cursor, &word);
+		}
 		else if (*cursor == '\'')
 			status = get_next_word_new(&cursor, &word, "\'", true);
 		else
 			status = get_next_word_new(&cursor, &word, "\'$", false);
 		if (status)
-			return (ft_lstclear(&words, free), status);
+			return (free(word), ft_lstclear(&words, free), status);
 		if (!str_list_append(&words, word))
-			return (ft_lstclear(&words, free), COMMAND_ERROR);
+			return (free(word), ft_lstclear(&words, free), COMMAND_ERROR);
 	}
 	free(*ptr);
 	*ptr = ft_strsjoin_from_list(words);

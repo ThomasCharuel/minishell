@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:15:01 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/15 15:40:14 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/15 20:32:09 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_command_status	handle_wildecards(t_state *state, char **ptr, t_list *argv)
 	t_list	*words;
 
 	(void)state;
+	if (!ft_strchr(*ptr, '*'))
+		return (COMMAND_SUCCESS);
 	words = filter_files_based_on_pattern(*ptr);
 	if (!words)
 		return (COMMAND_SUCCESS);
