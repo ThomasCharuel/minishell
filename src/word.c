@@ -6,11 +6,32 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:21:40 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/15 20:06:41 by romain           ###   ########.fr       */
+/*   Updated: 2024/02/15 20:32:20 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_command_status	get_func_decorator(const char **cursor, char **res,
+		t_command_status (*get_func)(const char **, t_list **))
+{
+	t_list				*words;
+	t_command_status	status;
+
+	words = NULL;
+	status = get_func(cursor, &words);
+	if (!status)
+	{
+		*res = ft_strsjoin_from_list(words);
+		ft_lstclear(&words, free);
+		return (COMMAND_SUCCESS);
+	}
+	else
+	{
+		ft_lstclear(&words, free);
+		return (status);
+	}
+}
 
 t_command_status	get_next_word_new(const char **cursor, char **res,
 		const char *charset, bool delim)
@@ -37,13 +58,11 @@ t_command_status	get_next_word_new(const char **cursor, char **res,
 	return (COMMAND_SUCCESS);
 }
 
-t_command_status	get_next_heredoc_eof(const char **cursor, char **eof)
+t_command_status	get_next_heredoc_eof(const char **cursor, t_list **words)
 {
 	t_command_status	status;
-	t_list				*words;
 	char				*word;
 
-	words = NULL;
 	while (**cursor)
 	{
 		if (ft_is_char_in_set(**cursor, "<>)&| "))
@@ -55,27 +74,22 @@ t_command_status	get_next_heredoc_eof(const char **cursor, char **eof)
 		else
 			status = get_next_word_new(cursor, &word, "\'\"<>)&| ", false);
 		if (status)
-			return (ft_lstclear(&words, free), status);
-		if (!str_list_append(&words, word))
-			return (ft_lstclear(&words, free), COMMAND_ERROR);
+			return (status);
+		if (!str_list_append(words, word))
+			return (COMMAND_ERROR);
 	}
-	*eof = ft_strsjoin_from_list(words);
-	if (!eof)
-		return (ft_lstclear(&words, free), COMMAND_ERROR);
-	return (ft_lstclear(&words, free), COMMAND_SUCCESS);
+	return (COMMAND_SUCCESS);
 }
 
-t_command_status	get_next_expression(const char **ptr, char **res)
+t_command_status	get_next_expression(const char **ptr, t_list **words)
 {
 	t_command_status	status;
-	t_list				*words;
 	char				*word;
 	const char			*cursor;
 	bool				parenthesis;
 
 	parenthesis = false;
 	cursor = *ptr;
-	words = NULL;
 	while (*cursor)
 	{
 		if (!parenthesis && (!ft_strncmp(cursor, "||", 2) || !ft_strncmp(cursor,
@@ -94,27 +108,23 @@ t_command_status	get_next_expression(const char **ptr, char **res)
 			status = get_next_word_new(&cursor, &word, "\'\"()&|", false);
 		}
 		if (status)
-			return (ft_lstclear(&words, free), status);
-		if (!str_list_append(&words, word))
-			return (ft_lstclear(&words, free), COMMAND_ERROR);
+			return (status);
+		if (!str_list_append(words, word))
+			return (COMMAND_ERROR);
 	}
-	*res = ft_strsjoin_from_list(words);
-	ft_lstclear(&words, free);
 	*ptr = cursor;
 	return (COMMAND_SUCCESS);
 }
 
-t_command_status	get_next_command(const char **ptr, char **res)
+t_command_status	get_next_command(const char **ptr, t_list **words)
 {
 	t_command_status	status;
-	t_list				*words;
 	char				*word;
 	const char			*cursor;
 	bool				parenthesis;
 
 	parenthesis = false;
 	cursor = *ptr;
-	words = NULL;
 	while (*cursor)
 	{
 		if (!parenthesis && *cursor == '|')
@@ -132,26 +142,22 @@ t_command_status	get_next_command(const char **ptr, char **res)
 			status = get_next_word_new(&cursor, &word, "\'\"()|", false);
 		}
 		if (status)
-			return (ft_lstclear(&words, free), status);
-		if (!str_list_append(&words, word))
-			return (ft_lstclear(&words, free), COMMAND_ERROR);
+			return (status);
+		if (!str_list_append(words, word))
+			return (COMMAND_ERROR);
 	}
-	*res = ft_strsjoin_from_list(words);
-	ft_lstclear(&words, free);
 	*ptr = cursor;
 	return (COMMAND_SUCCESS);
 }
 
 t_command_status	get_next_parenthesis_expression(const char **ptr,
-		char **res)
+		t_list **words)
 {
 	t_command_status	status;
-	t_list				*words;
 	char				*word;
 	const char			*cursor;
 
 	cursor = *ptr;
-	words = NULL;
 	while (*cursor)
 	{
 		if (*cursor == ')')
@@ -166,27 +172,23 @@ t_command_status	get_next_parenthesis_expression(const char **ptr,
 		else
 			status = get_next_word_new(&cursor, &word, "\'\")", false);
 		if (status)
-			return (ft_lstclear(&words, free), status);
-		if (!str_list_append(&words, word))
-			return (ft_lstclear(&words, free), COMMAND_ERROR);
+			return (status);
+		if (!str_list_append(words, word))
+			return (COMMAND_ERROR);
 		if (word[ft_strlen(word) - 1] == ')')
 			break ;
 	}
-	*res = ft_strsjoin_from_list(words);
-	ft_lstclear(&words, free);
 	*ptr = cursor;
 	return (COMMAND_SUCCESS);
 }
 
-t_command_status	get_next_token(const char **ptr, char **res)
+t_command_status	get_next_token(const char **ptr, t_list **words)
 {
 	t_command_status	status;
-	t_list				*words;
 	char				*word;
 	const char			*cursor;
 
 	cursor = *ptr;
-	words = NULL;
 	while (*cursor)
 	{
 		if (ft_is_char_in_set(*cursor, "<>&|() "))
@@ -198,13 +200,12 @@ t_command_status	get_next_token(const char **ptr, char **res)
 		else
 			status = get_next_word_new(&cursor, &word, "\'\"<>&|() ", false);
 		if (status)
-			return (ft_lstclear(&words, free), status);
-		if (!str_list_append(&words, word))
-			return (ft_lstclear(&words, free), COMMAND_ERROR);
+			return (status);
+		if (!str_list_append(words, word))
+			return (COMMAND_ERROR);
 	}
-	*res = ft_strsjoin_from_list(words);
-	ft_lstclear(&words, free);
-	return (*ptr = cursor, COMMAND_SUCCESS);
+	*ptr = cursor;
+	return (COMMAND_SUCCESS);
 }
 
 t_command_status	handle_word_interpretation(t_state *state, char **ptr)

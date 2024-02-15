@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/14 15:53:07 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/15 16:08:16 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ t_command_status	command_generation_handling(const char **ptr,
 	const char			*cursor;
 
 	cursor = *ptr;
-	status = get_next_command(&cursor, &word);
+	status = get_func_decorator(&cursor, &word, &get_next_command);
 	(void)status; // handle status
 	command = command_create(word);
 	free(word);
@@ -142,7 +142,7 @@ t_command_status	ast_generate(t_state *state, const char **cursor,
 
 	if (!left_child)
 	{
-		status = get_next_expression(cursor, &word);
+		status = get_func_decorator(cursor, &word, &get_next_expression);
 		(void)status; // Handle status
 		status = command_generation_handling((const char **)&word, &node);
 		(void)status; // Handle status
@@ -156,7 +156,7 @@ t_command_status	ast_generate(t_state *state, const char **cursor,
 		else
 			return (COMMAND_PARSING_ERROR);
 		*cursor += 2;
-		status = get_next_expression(cursor, &word);
+		status = get_func_decorator(cursor, &word, &get_next_expression);
 		(void)status; // Handle status
 		status = command_generation_handling((const char **)&word,
 				&node->right);
