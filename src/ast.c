@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 10:37:41 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 20:02:47 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/16 23:20:11 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,12 @@ t_command_status	ast_execute(t_state *state, t_node *node)
 		status = ast_execute(state, node->left);
 		if (status)
 			return (status);
-		waitpid(state->last_child_pid, &command_status, 0);
-		state->last_exit_code = WIFEXITED(command_status)
-			&& WEXITSTATUS(command_status);
+		if (state->last_child_pid)
+		{
+			waitpid(state->last_child_pid, &command_status, 0);
+			state->last_exit_code = WIFEXITED(command_status)
+				&& WEXITSTATUS(command_status);
+		}
 		if (state->last_exit_code)
 			return (state->last_exit_code);
 		return (ast_execute(state, node->right));
@@ -47,14 +50,16 @@ t_command_status	ast_execute(t_state *state, t_node *node)
 	{
 		status = ast_execute(state, node->left);
 		if (status)
+			return (ast_execute(state, node->right));
+		if (state->last_child_pid)
 		{
 			waitpid(state->last_child_pid, &command_status, 0);
 			state->last_exit_code = WIFEXITED(command_status)
 				&& WEXITSTATUS(command_status);
-			if (!state->last_exit_code)
-				return (COMMAND_SUCCESS);
+			if (state->last_exit_code)
+				return (ast_execute(state, node->right));
 		}
-		return (ast_execute(state, node->right));
+		return (COMMAND_SUCCESS);
 	}
 	else if (node->type == PIPE)
 	{
@@ -70,7 +75,10 @@ t_command_status	ast_execute(t_state *state, t_node *node)
 		return (ast_execute(state, node->right));
 	}
 	status = command_parse(state, node->content);
+	state->last_exit_code = status;
 	if (status)
 		return (status);
-	return (command_exec(state, node));
+	status = command_exec(state, node);
+	state->last_exit_code = status;
+	return (status);
 }
