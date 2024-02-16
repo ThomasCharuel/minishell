@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:21:40 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/15 20:32:20 by romain           ###   ########.fr       */
+/*   Updated: 2024/02/16 15:59:11 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ t_command_status	get_next_word_new(const char **cursor, char **res,
 	const char	*new_cursor;
 
 	new_cursor = ft_strchrs((*cursor) + 1, charset);
-	if (delim)
-		new_cursor++;
 	if (!new_cursor)
 	{
 		*res = ft_strndup(*cursor, ft_strlen(*cursor));
@@ -50,6 +48,8 @@ t_command_status	get_next_word_new(const char **cursor, char **res,
 	}
 	else
 	{
+		if (delim)
+			new_cursor++;
 		*res = ft_strndup(*cursor, new_cursor - *cursor);
 		if (!*res)
 			return (COMMAND_ERROR);

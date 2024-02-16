@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 17:17:41 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 14:23:33 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/16 16:44:29 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,57 @@ t_command_status	minishell_env(t_state *state, int argc, char **argv)
 	}
 	return (COMMAND_SUCCESS);
 }
+char	*escape_quote(const char *str)
+{
+	char	*res;
+	size_t	i;
+	size_t	len;
+
+	i = 0;
+	len = 0;
+	while (str[i])
+	{
+		len++;
+		if (str[i++] == '\"')
+			len++;
+	}
+	res = calloc(len, sizeof(char));
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (*str)
+	{
+		if (*str == '\"')
+			res[i++] = '\\';
+		res[i] = *str++;
+		i++;
+	}
+	return (res);
+}
+
+char	**parse_env_variable(const char *var)
+{
+	char		**strs;
+	const char	*cursor;
+
+	strs = calloc(2, sizeof(char *));
+	if (!strs)
+		return (NULL);
+	cursor = ft_strchr(var, '=');
+	if (!cursor)
+		strs[0] = ft_strdup(var);
+	else
+		strs[0] = ft_strndup(var, cursor - var);
+	if (!strs[0])
+		return (free(strs), NULL);
+	if (cursor)
+	{
+		strs[1] = escape_quote(++cursor);
+		if (!strs[1])
+			return (free(strs[0]), free(strs), NULL);
+	}
+	return (strs);
+}
 
 t_command_status	print_declare_statements(char **envp)
 {
@@ -39,7 +90,7 @@ t_command_status	print_declare_statements(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		strs = ft_split(envp[i], '=');
+		strs = parse_env_variable(envp[i]);
 		if (!strs)
 			return (COMMAND_ERROR);
 		if (strs[1])
