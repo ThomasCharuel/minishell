@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:15:01 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 11:49:18 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/16 20:22:10 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ t_list	*get_files_in_current_directory(void)
 		}
 		file = readdir(dir);
 	}
-	if (closedir(dir) == -1)
-		perror("closedir");
+	closedir(dir);
 	return (files);
 }
 

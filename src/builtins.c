@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:23:44 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 19:42:40 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/16 20:18:48 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,11 @@ t_command_status	minishell_pwd(t_state *state, int argc, char **argv)
 	pwd = get_working_directory();
 	if (!pwd)
 		return (COMMAND_ERROR);
-	ft_printf("%s\n", pwd);
+	if (*pwd)
+		ft_printf("%s\n", pwd);
+	else
+		print_error("pwd: error: cannot determine current directory: No such file or directory",
+			NULL);
 	free(pwd);
 	return (COMMAND_SUCCESS);
 }
