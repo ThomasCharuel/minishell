@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 17:17:41 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 16:44:29 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/16 17:21:36 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ t_command_status	print_declare_statements(char **envp)
 		if (!declare_statement)
 			return (COMMAND_ERROR);
 		ft_printf("%s\n", declare_statement);
+		free(declare_statement);
 		i++;
 	}
 	return (COMMAND_SUCCESS);
