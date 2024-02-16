@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:38:57 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 11:58:31 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/16 14:22:10 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_command_status	get_var_value(t_state *state, const char **ptr, char **word)
 	}
 	if (!ft_isalpha(*cursor) && *cursor != '_')
 	{
-		*word = calloc(1, 1);
+		*word = ft_calloc(1, 1);
 		if (!*word)
 			return (COMMAND_ERROR);
 		*ptr = cursor;
@@ -44,7 +44,7 @@ t_command_status	get_var_value(t_state *state, const char **ptr, char **word)
 	value = envp_get(state, var_str);
 	free(var_str);
 	if (!value)
-		*word = calloc(1, 1);
+		*word = ft_calloc(1, 1);
 	else
 		*word = ft_strdup(value);
 	if (!*word)

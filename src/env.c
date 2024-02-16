@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 17:17:41 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/15 19:33:41 by romain           ###   ########.fr       */
+/*   Updated: 2024/02/16 14:23:33 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,39 @@ t_command_status	print_declare_statements(char **envp)
 	return (COMMAND_SUCCESS);
 }
 
+t_command_status	parse_export_statement(const char *str, char **key,
+		char **value)
+{
+	size_t	i;
+
+	if (!ft_isalpha(str[0]) && str[0] != '_')
+		return (print_error("export: ", str, ": not a valid identifier", NULL),
+			COMMAND_PARSING_ERROR);
+	i = 1;
+	while (str[i])
+	{
+		if (str[i] == '=')
+			break ;
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (print_error("export: ", str, ": not a valid identifier",
+					NULL), COMMAND_PARSING_ERROR);
+		i++;
+	}
+	*key = ft_strndup(str, i);
+	if (!*key)
+		return (COMMAND_ERROR);
+	if (str[i] != '=')
+		return (*value = NULL, COMMAND_SUCCESS);
+	*value = (char *)&str[i + 1];
+	return (COMMAND_SUCCESS);
+}
+
 t_command_status	minishell_export(t_state *state, int argc, char **argv)
 {
-	char	*key;
-	char	*value;
-	int		i;
+	t_command_status	status;
+	char				*key;
+	char				*value;
+	int					i;
 
 	key = NULL;
 	if (argc == 1)
@@ -70,14 +98,12 @@ t_command_status	minishell_export(t_state *state, int argc, char **argv)
 		i = 0;
 		while (++i < argc)
 		{
-			value = ft_strchr(argv[i], '=');
-			if (!value)
-				return (envp_set(state, argv[i], NULL));
-			else
-			{
-				if (!envp_set(state, key, value))
-					return (COMMAND_ERROR);
-			}
+			status = parse_export_statement(argv[i], &key, &value);
+			if (status)
+				return (status);
+			if (!envp_set(state, key, value))
+				return (free(key), COMMAND_ERROR);
+			free(key);
 		}
 	}
 	return (COMMAND_SUCCESS);

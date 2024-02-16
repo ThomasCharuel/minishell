@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:34:20 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/15 13:21:16 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/16 14:21:57 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*ft_strsjoin_from_list(t_list *list)
 	size_t		len;
 
 	len = ft_lst_len(list);
-	strs = calloc(len + 1, sizeof(char *));
+	strs = ft_calloc(len + 1, sizeof(char *));
 	if (!strs)
 		return (NULL);
 	len = 0;

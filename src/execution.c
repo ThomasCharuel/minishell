@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/15 16:08:16 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/16 14:21:47 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	**from_list_to_array(t_list *list)
 	size_t	i;
 
 	i = ft_lst_len(list);
-	strs = calloc(i + 1, sizeof(char *));
+	strs = ft_calloc(i + 1, sizeof(char *));
 	if (!strs)
 		return (NULL);
 	i = 0;

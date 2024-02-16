@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 14:13:29 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 19:04:24 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/16 14:43:54 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	**envp_copy(const char **envp)
 	i = 0;
 	while (envp[i])
 		i++;
-	copy = calloc(i + 1, sizeof(char *));
+	copy = ft_calloc(i + 1, sizeof(char *));
 	if (!copy)
 		return (perror("minishell"), NULL);
 	i = 0;

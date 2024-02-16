@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:59:02 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 20:01:49 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/16 14:22:24 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*get_working_directory(void)
 {
 	char	*pwd;
 
-	pwd = calloc(PATH_MAX, sizeof(char));
+	pwd = ft_calloc(PATH_MAX, sizeof(char));
 	if (!pwd)
 		return (perror("minishell"), NULL);
 	if (!getcwd(pwd, PATH_MAX))

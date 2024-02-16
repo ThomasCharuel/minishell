@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 15:50:16 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/10 12:32:30 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/16 14:21:20 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*ft_strsjoin_array(const char **strs)
 	{
 		len += ft_strlen(strs[i++]);
 	}
-	str = calloc(len + 1, sizeof(char));
+	str = ft_calloc(len + 1, sizeof(char));
 	if (!str)
 		return (NULL);
 	i = 0;
