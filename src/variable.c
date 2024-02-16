@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:38:57 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/15 20:09:58 by romain           ###   ########.fr       */
+/*   Updated: 2024/02/16 11:58:31 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@ t_command_status	get_var_value(t_state *state, const char **ptr, char **word)
 	char		*var_str;
 
 	cursor = *ptr;
+	if (*cursor == '?')
+	{
+		*word = ft_itoa((int)state->last_exit_code);
+		if (!*word)
+			return (COMMAND_ERROR);
+		*ptr = ++cursor;
+		return (COMMAND_SUCCESS);
+	}
 	if (!ft_isalpha(*cursor) && *cursor != '_')
 	{
 		*word = calloc(1, 1);
