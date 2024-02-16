@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 19:29:56 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/16 22:30:40 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,11 +172,57 @@ t_command_status	ast_generate(t_state *state, const char **cursor,
 	return (COMMAND_SUCCESS);
 }
 
+const char	*move_to_next_char(const char **ptr, char c)
+{
+	const char	*cursor;
+
+	cursor = ft_strchr((*ptr) + 1, c);
+	if (cursor)
+		*ptr = ++cursor;
+	return (cursor);
+}
+
+/**
+ ** Runs a initial check of the validity of the input line for proper closure of quotes,
+ * double quotes, and parentheses.
+ */
+t_command_status	first_line_validity_check(const char *line)
+{
+	int	open_parenthesis;
+
+	open_parenthesis = 0;
+	while (line && *line)
+	{
+		if (*line == '(')
+			open_parenthesis++;
+		else if (*line == ')' && open_parenthesis-- < 1)
+			return (print_error("syntax error near unexpected token `)'", NULL),
+				COMMAND_PARSING_ERROR);
+		else if (ft_is_char_in_set(*line, "\"\'") && !move_to_next_char(&line,
+				*line))
+		{
+			if (*line == '\'')
+				return (print_error("syntax error: unclosed quote", NULL),
+					COMMAND_PARSING_ERROR);
+			return (print_error("syntax error: unclosed double quotes", NULL),
+				COMMAND_PARSING_ERROR);
+		}
+		line = ft_strchrs(line + 1, "\'\"()");
+	}
+	if (open_parenthesis)
+		return (print_error("syntax error: unclosed parenthesis", NULL),
+			COMMAND_PARSING_ERROR);
+	return (COMMAND_SUCCESS);
+}
+
 t_command_status	line_parsing(t_state *state, const char *line)
 {
 	t_command_status	status;
 	const char			*cursor;
 
+	status = first_line_validity_check(line);
+	if (status)
+		return (state->last_exit_code = status, status);
 	status = handle_heredocs(state, line);
 	if (status)
 		return (status);

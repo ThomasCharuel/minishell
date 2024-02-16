@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:13:26 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/15 16:04:57 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/16 21:30:53 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,37 +104,6 @@ t_command_status	handle_heredoc(t_state *state, const char **cursor,
 		return (heredoc_destroy(heredoc), COMMAND_ERROR);
 	*res = ft_strsjoin("<", heredoc->file, NULL);
 	if (!write_heredoc(heredoc))
-		return (COMMAND_ERROR);
-	return (COMMAND_SUCCESS);
-}
-
-t_command_status	handle_heredocs(t_state *state, const char *line)
-{
-	t_command_status	status;
-	const char			*cursor;
-	t_list				*words;
-	char				*word;
-
-	words = NULL;
-	cursor = line;
-	while (*cursor)
-	{
-		if (*cursor == '\"')
-			status = get_next_word_new(&cursor, &word, "\"", true);
-		else if (*cursor == '\'')
-			status = get_next_word_new(&cursor, &word, "\'", true);
-		else if (!ft_strncmp(cursor, "<<", 2))
-			status = handle_heredoc(state, &cursor, &word);
-		else
-			status = get_next_word_new(&cursor, &word, "\'\"<", false);
-		if (status)
-			return (ft_lstclear(&words, free), status);
-		if (!str_list_append(&words, word))
-			return (ft_lstclear(&words, free), COMMAND_ERROR);
-	}
-	state->line = ft_strsjoin_from_list(words);
-	ft_lstclear(&words, free);
-	if (!state->line)
 		return (COMMAND_ERROR);
 	return (COMMAND_SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/15 16:51:43 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/16 22:12:25 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,8 @@ t_command_status				command_parse(t_state *state,
 									t_command *command);
 
 void							heredoc_destroy(void *ptr);
+t_command_status				handle_heredoc(t_state *state,
+									const char **cursor, char **res);
 
 t_redirection					*redirection_create(const char *file,
 									t_redirection_type type);
