@@ -6,7 +6,7 @@
 #    By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/06 13:51:51 by tcharuel          #+#    #+#              #
-#    Updated: 2024/02/14 13:38:14 by tcharuel         ###   ########.fr        #
+#    Updated: 2024/02/16 11:52:50 by tcharuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,6 +56,8 @@ $(NAME): $(LIBFT) $(OBJ)
 
 all: $(NAME)
 
+bonus: all
+
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
@@ -72,4 +74,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus
