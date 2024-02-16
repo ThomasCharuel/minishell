@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:41:51 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 19:55:41 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/16 23:24:47 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,85 +81,3 @@ t_command_status	handle_path_command(t_command *command)
 	}
 	return (COMMAND_SUCCESS);
 }
-
-// t_command_status	handle_word_interpretation(t_state *state, char **str)
-// {
-// 	t_list		*words;
-// 	char		*word;
-// 	bool		is_double_quote;
-// 	const char	*cursor;
-// 	const char	*new_cursor;
-
-// 	is_double_quote = false;
-// 	words = NULL;
-// 	cursor = *str;
-// 	new_cursor = cursor;
-// 	while (*cursor)
-// 	{
-// 		if (is_double_quote)
-// 			new_cursor = ft_strchrs(new_cursor, "\"$");
-// 		else
-// 			new_cursor = ft_strchrs(new_cursor, "\"\'$");
-// 		if (!new_cursor)
-// 		{
-// 			word = ft_strdup(cursor);
-// 			if (!word)
-// 				return (ft_lstclear(&words, free), COMMAND_ERROR);
-// 			if (!str_list_append(&words, word))
-// 				return (free(word), ft_lstclear(&words, free), COMMAND_ERROR);
-// 			break ;
-// 		}
-// 		word = ft_strndup(cursor, new_cursor - cursor);
-// 		if (!word)
-// 			return (ft_lstclear(&words, free), COMMAND_ERROR);
-// 		if (!str_list_append(&words, word))
-// 			return (free(word), ft_lstclear(&words, free), COMMAND_ERROR);
-// 		cursor = new_cursor;
-// 		if (*new_cursor == '\'')
-// 		{
-// 			new_cursor = ft_strchr(++cursor, '\'');
-// 			if (!new_cursor)
-// 				return (ft_lstclear(&words, free), COMMAND_PARSING_ERROR);
-// 			word = ft_strndup(cursor, new_cursor - cursor);
-// 			if (!word)
-// 				return (ft_lstclear(&words, free), COMMAND_ERROR);
-// 			if (!str_list_append(&words, word))
-// 				return (free(word), ft_lstclear(&words, free), COMMAND_ERROR);
-// 			cursor = ++new_cursor;
-// 		}
-// 		else if (*new_cursor == '\"')
-// 		{
-// 			if (is_double_quote)
-// 			{
-// 				word = ft_strndup(cursor, new_cursor - cursor);
-// 				if (!word)
-// 					return (ft_lstclear(&words, free), COMMAND_ERROR);
-// 				if (!str_list_append(&words, word))
-// 					return (free(word), ft_lstclear(&words, free),
-// 						COMMAND_ERROR);
-// 				is_double_quote = false;
-// 			}
-// 			else
-// 				is_double_quote = true;
-// 			cursor = ++new_cursor;
-// 		}
-// 		else if (*new_cursor++ == '$')
-// 		{
-// 			word = get_var_value(state, &new_cursor);
-// 			if (!word)
-// 				return (ft_lstclear(&words, free), COMMAND_ERROR);
-// 			if (!str_list_append(&words, word))
-// 				return (free(word), ft_lstclear(&words, free), COMMAND_ERROR);
-// 			cursor = new_cursor;
-// 		}
-// 	}
-// 	free(*str);
-// 	*str = ft_strsjoin_from_list(words);
-// 	ft_printf("Command: %s\n", *str);
-// 	// display_str_list(filter_files_based_on_pattern("t**t*"));
-// 	ft_lstclear(&words, free);
-// 	if (!*str)
-// 		return (COMMAND_ERROR);
-// 	return (COMMAND_SUCCESS);
-// }
-#
