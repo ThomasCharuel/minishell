@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 22:30:40 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/16 22:41:07 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ const char	*move_to_next_char(const char **ptr, char c)
 
 	cursor = ft_strchr((*ptr) + 1, c);
 	if (cursor)
-		*ptr = ++cursor;
+		*ptr = cursor;
 	return (cursor);
 }
 
