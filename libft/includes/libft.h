@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:01:58 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/15 13:20:29 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/16 23:27:02 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@
 # define BASE_DECIMAL "0123456789"
 # define BASE_HEX_LOWERCASE "0123456789abcdef"
 # define BASE_HEX_UPPERCASE "0123456789ABCDEF"
-
-# define MIN(a, b) (((a) < (b)) ? (a) : (b))
 
 # define BUFFER_SIZE 40
 
