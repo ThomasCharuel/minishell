@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 18:03:25 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/16 19:29:56 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,15 +197,12 @@ t_command_status	line_exec(t_state *state, const char *line)
 	status = ast_execute(state, state->ast);
 	if (status)
 		state->last_exit_code = status;
-	else
+	else if (state->last_child_pid)
 	{
-		if (state->last_child_pid)
-		{
-			// To be refactored (check other waitpid codes)
-			waitpid(state->last_child_pid, &command_status, 0);
-			state->last_exit_code = WIFEXITED(command_status)
-				&& WEXITSTATUS(command_status);
-		}
+		// To be refactored (check other waitpid codes)
+		waitpid(state->last_child_pid, &command_status, 0);
+		state->last_exit_code = WIFEXITED(command_status)
+			&& WEXITSTATUS(command_status);
 	}
 	while (wait(NULL) != -1)
 		continue ;

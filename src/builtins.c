@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:23:44 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 19:14:51 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/16 19:42:40 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_command_status	minishell_cd(t_state *state, int argc, char **argv)
 	if (argc == 1)
 	{
 		path = envp_get(state, "HOME");
-		if (!path || !*path)
+		if (!*path)
 			return (print_error("cd: HOME not set", NULL),
 				COMMAND_TOO_MANY_ARGUMENTS);
 	}

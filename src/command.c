@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/15 16:12:02 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/16 19:40:30 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,18 +64,13 @@ void	command_display(t_command *command)
 
 t_command_status	set_command_command(t_state *state, t_command *command)
 {
-	t_command_status	status;
-
 	if (!command->argv)
 		return (COMMAND_NOT_FOUND);
 	if (is_builtin(command->argv->content))
 		return (COMMAND_SUCCESS);
 	if (ft_strchr((char *)command->argv->content, '/'))
-		status = handle_path_command(command);
-	else
-		status = handle_command(state, command);
-	(void)status; // handle status
-	return (COMMAND_SUCCESS);
+		return (handle_path_command(command));
+	return (handle_command(state, command));
 }
 
 t_command_status	handle_subshell(t_state *state, t_command *command,

@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:34:20 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 14:21:57 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/16 19:37:56 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	display_str_list(t_list *word_list)
 
 t_return_status	str_list_append(t_list **word_list, const char *str)
 {
-	if (!str || !ft_strlen(str))
+	if (!str)
 		return (SUCCESS);
 	if (!ft_append(word_list, (void *)str))
 		return (ERROR);

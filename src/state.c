@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 11:45:39 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 20:07:34 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/16 19:45:53 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ t_state	*state_init(const char *executable_path, const char **envp)
 
 void	state_cleanup(t_state *state)
 {
+	rl_clear_history();
 	if (state)
 	{
 		ft_free_str(&state->line);

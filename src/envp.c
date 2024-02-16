@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 14:13:29 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 14:43:54 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/16 19:43:24 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ const char	*envp_get(t_state *state, const char *key)
 		}
 		i++;
 	}
-	return (NULL);
+	return ("");
 }
 
 t_return_status	envp_set(t_state *state, const char *key, const char *value)

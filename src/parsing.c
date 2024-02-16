@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:41:51 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/14 17:54:11 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/16 19:55:41 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ t_command_status	handle_command(t_state *state, t_command *command)
 	char		*command_path;
 	char		*command_str;
 
+	if (!*(char *)command->argv->content)
+		return (print_error("Command '' not found", NULL), COMMAND_NOT_FOUND);
 	command_str = command->argv->content;
 	path = envp_get(state, "PATH");
-	if (!path)
-		return (COMMAND_NOT_FOUND);
 	paths = ft_split(path, ':');
 	if (!paths)
 		return (perror("minishell"), COMMAND_ERROR);
@@ -65,8 +65,7 @@ t_command_status	handle_command(t_state *state, t_command *command)
 		free(command_path);
 		i++;
 	}
-	write(STDERR_FILENO, command_str, ft_strlen(command_str));
-	write(STDERR_FILENO, ": command not found\n", 21);
+	print_error(command_str, ": No such file or directory", NULL);
 	return (ft_clean_double_list((void **)paths, free), COMMAND_NOT_FOUND);
 }
 
