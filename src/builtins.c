@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:23:44 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/14 15:50:02 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/16 18:29:27 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,10 +108,16 @@ t_command_status	builtin_exec_decorator(t_state *state, t_node *node,
 	stdin_ = dup(STDIN_FILENO);
 	if (node->daddy && node->daddy->type == PIPE)
 	{
-		dup2(node->write_fd, STDOUT_FILENO);
-		close(node->write_fd);
-		dup2(node->read_fd, STDIN_FILENO);
-		close(node->read_fd);
+		if (node->write_fd != STDOUT_FILENO)
+		{
+			dup2(node->write_fd, STDOUT_FILENO);
+			close(node->write_fd);
+		}
+		if (node->write_fd != STDIN_FILENO)
+		{
+			dup2(node->read_fd, STDIN_FILENO);
+			close(node->read_fd);
+		}
 	}
 	handle_redirections(node);
 	status = builtin(state, argc, argv);
