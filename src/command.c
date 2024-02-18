@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/18 14:49:03 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/18 16:13:33 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,11 @@ t_command_status	command_parse(t_state *state, t_command *command)
 	{
 		while (*cursor == ' ')
 			cursor++;
-		if (!*cursor)
-			break ;
-		if (first_run && *cursor == '(')
+		if (*cursor == '(')
 		{
+			if (!first_run)
+				return (print_error("syntax error: unexpected parenthesis",
+						NULL), COMMAND_PARSING_ERROR);
 			status = handle_subshell(state, command, &cursor);
 			if (status)
 				return (status);
