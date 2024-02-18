@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/18 16:19:51 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/18 19:22:17 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # define COMMAND_PARSING_ERROR 2
 # define COMMAND_NOT_FOUND 127
 # define COMMAND_SIGINT 130
+# define COMMAND_SIGQUIT 131
 
 typedef int						t_command_status;
 
