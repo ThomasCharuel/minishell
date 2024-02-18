@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:41:51 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 23:24:47 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/18 16:04:42 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_command_status	handle_command(t_state *state, t_command *command)
 		free(command_path);
 		i++;
 	}
-	print_error(command_str, ": No such file or directory", NULL);
+	print_error(command_str, ": command not found", NULL);
 	return (ft_clean_double_list((void **)paths, free), COMMAND_NOT_FOUND);
 }
 
