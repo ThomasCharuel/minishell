@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:37:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/18 17:45:49 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/18 18:28:22 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_command_status	repl(t_state *state)
 	t_command_status	status;
 
 	status = COMMAND_SUCCESS;
-	while (g_signal_code != SIGTERM && status != COMMAND_ERROR)
+	while (g_signal_code != SIGUSR1 && status != COMMAND_ERROR)
 	{
 		status = prompt_loop(state, &line);
 		if (status)

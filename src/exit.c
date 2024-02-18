@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:42:06 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/13 17:35:42 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/18 18:28:09 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_command_status	minishell_exit(t_state *state, int argc, char **argv)
 
 	(void)state;
 	status = COMMAND_SUCCESS;
-	g_signal_code = SIGTERM;
+	g_signal_code = SIGUSR1;
 	if (argc == 1)
 		return (status);
 	else if (argc > 2)
