@@ -6,12 +6,13 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 14:13:29 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 19:43:24 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/18 16:25:05 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// OK
 char	**envp_copy(const char **envp)
 {
 	size_t	i;

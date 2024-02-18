@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/18 15:01:19 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/18 16:19:51 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # include <unistd.h>
 
 # define COMMAND_SUCCESS 0
-# define COMMAND_ERROR -1
+# define COMMAND_ERROR 1
 # define COMMAND_TOO_MANY_ARGUMENTS 1
 # define COMMAND_PARSING_ERROR 2
 # define COMMAND_NOT_FOUND 127

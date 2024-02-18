@@ -6,31 +6,13 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:37:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 23:28:52 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/18 17:01:46 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*prompt_loop(t_state *state)
-{
-	char	*pwd;
-	char	*prompt;
-	char	*line;
-
-	pwd = get_working_directory();
-	if (!pwd)
-		return (NULL);
-	prompt = ft_strsjoin(envp_get(state, "USER"), ":", pwd, "$ ", NULL);
-	if (!prompt)
-		return (perror("minishell"), free(pwd), NULL);
-	free(pwd);
-	line = readline(prompt);
-	free(prompt);
-	return (line);
-}
-
-bool	is_whitespace_line(char *line)
+static bool	is_whitespace_line(const char *line)
 {
 	size_t	i;
 
@@ -44,6 +26,23 @@ bool	is_whitespace_line(char *line)
 	return (true);
 }
 
+static t_command_status	prompt_loop(t_state *state, char **ptr)
+{
+	char	*pwd;
+	char	*prompt;
+
+	pwd = get_working_directory();
+	if (!pwd)
+		return (COMMAND_ERROR);
+	prompt = ft_strsjoin(envp_get(state, "USER"), ":", pwd, "$ ", NULL);
+	if (!prompt)
+		return (perror("minishell"), free(pwd), COMMAND_ERROR);
+	free(pwd);
+	*ptr = readline(prompt);
+	free(prompt);
+	return (COMMAND_SUCCESS);
+}
+
 t_command_status	repl(t_state *state)
 {
 	char				*line;
@@ -52,13 +51,17 @@ t_command_status	repl(t_state *state)
 	status = COMMAND_SUCCESS;
 	while (g_signal_code != SIGTERM && status != COMMAND_ERROR)
 	{
-		line = prompt_loop(state);
+		status = prompt_loop(state, &line);
+		if (status)
+			return (status);
 		if (!line)
-			return (COMMAND_ERROR);
+			break ;
 		if (*line)
+		{
 			add_history(line);
-		if (!is_whitespace_line(line))
-			status = line_exec(state, line);
+			if (!is_whitespace_line(line))
+				status = line_exec(state, line);
+		}
 		free(line);
 	}
 	write(STDOUT_FILENO, "exit\n", 6);
