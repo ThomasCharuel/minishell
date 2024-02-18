@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:13:26 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 21:30:53 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/18 17:39:18 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ char	*get_heredoc_file_name(bool should_be_interpreted)
 	else
 		file = ft_strsjoin("/tmp/.minishell-h-", uid, NULL);
 	free(uid);
+	if (!access(file, F_OK))
+		return (get_heredoc_file_name(should_be_interpreted));
 	return (file);
 }
 
