@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 18:50:39 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/18 18:26:31 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/18 19:12:51 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	sig_handler(int signum)
 {
-	if (signum == SIGINT)
+	if (wait(NULL) != -1)
+		ft_printf("\n");
+	else if (signum == SIGINT)
 	{
 		ft_printf("^C\n");
 		rl_on_new_line();

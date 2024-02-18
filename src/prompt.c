@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:37:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/18 18:28:22 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/18 19:12:41 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,10 @@ t_command_status	repl(t_state *state)
 		if (!line)
 			break ;
 		if (g_signal_code == SIGINT)
+		{
 			state->last_exit_code = COMMAND_SIGINT;
+			g_signal_code = 0;
+		}
 		if (*line)
 		{
 			add_history(line);
