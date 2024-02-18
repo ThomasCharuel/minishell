@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 23:12:22 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/18 15:01:19 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,5 +221,7 @@ int								get_fd_to_close(t_node *node);
 t_command_status				handle_wildecards(t_state *state, char **ptr,
 									t_list *argv);
 t_list							*filter_files_based_on_pattern(const char *pattern);
+
+t_command_status				subshell_execute(t_state *state, t_node *node);
 
 #endif

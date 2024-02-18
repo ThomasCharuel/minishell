@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 23:12:25 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/18 15:50:24 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,26 @@ t_command_status	command_exec(t_state *state, t_node *node)
 	ft_close_fd(node->read_fd);
 	ft_close_fd(node->write_fd);
 	return (COMMAND_SUCCESS);
+}
+
+t_command_status	subshell_execute(t_state *state, t_node *node)
+{
+	char		*word;
+	char		*instruction;
+	t_command	*command;
+
+	command = node->content;
+	word = ft_strdup(state->executable_path);
+	if (!word)
+		return (COMMAND_ERROR);
+	if (!str_list_append(&command->argv, word))
+		return (free(word), COMMAND_ERROR);
+	instruction = ft_strdup(command->command_str);
+	if (!instruction)
+		return (COMMAND_ERROR);
+	if (!str_list_append(&command->argv, instruction))
+		return (free(instruction), COMMAND_ERROR);
+	return (command_exec(state, node));
 }
 
 t_command_status	command_generation_handling(const char **ptr,

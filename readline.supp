@@ -1,7 +1,6 @@
 {
    <readline>
    Memcheck:Leak
-   match-leak-kinds: reachable
    ...
    fun:readline
 }
@@ -9,7 +8,6 @@
 {
    <readline_history>
    Memcheck:Leak
-   match-leak-kinds: reachable
    ...
    fun:add_history
 }
