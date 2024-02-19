@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 00:28:50 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 00:45:51 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ void							tree_dfs(t_state *state, t_node *node,
 // utils.c
 void							print_error(const char *str, ...);
 char							*get_working_directory(void);
+bool							is_whitespace_str(const char *str);
 
 // word.c
 t_command_status				handle_word(t_state *state, const char **ptr,

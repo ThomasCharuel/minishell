@@ -6,26 +6,11 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:37:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 00:07:54 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 00:43:03 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// OK
-static bool	is_whitespace_line(const char *line)
-{
-	size_t	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (!ft_isspace(line[i]))
-			return (false);
-		i++;
-	}
-	return (true);
-}
 
 // OK
 static t_command_status	prompt_loop(t_state *state, char **ptr)
@@ -78,7 +63,7 @@ t_command_status	repl(t_state *state)
 		if (!catch_signals(state) && *line)
 		{
 			add_history(line);
-			if (!is_whitespace_line(line))
+			if (!is_whitespace_str(line))
 				status = command_line_execute(state, line);
 		}
 		free(line);

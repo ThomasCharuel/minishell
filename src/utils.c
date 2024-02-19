@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:59:02 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 23:19:37 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 00:46:17 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,19 @@ char	*get_working_directory(void)
 		return (perror("minishell"), NULL);
 	getcwd(pwd, PATH_MAX);
 	return (pwd);
+}
+
+// OK
+bool	is_whitespace_str(const char *line)
+{
+	size_t	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (!ft_isspace(line[i]))
+			return (false);
+		i++;
+	}
+	return (true);
 }
