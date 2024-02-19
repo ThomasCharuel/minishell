@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 18:35:35 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 19:15:12 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,32 +123,4 @@ t_command_status	subshell_execute(t_state *state, t_node *node)
 	if (!str_list_append(&command->argv, instruction))
 		return (free(instruction), COMMAND_ERROR);
 	return (command_exec(state, node));
-}
-
-t_command_status	command_generation_handling(const char **ptr,
-		t_node **daddy)
-{
-	t_command_status	status;
-	char				*word;
-	t_command			*command;
-	const char			*cursor;
-
-	cursor = *ptr;
-	status = handle_word(NULL, &cursor, &word, &get_next_command);
-	(void)status; // handle status
-	command = command_create(word);
-	free(word);
-	if (*cursor == '|')
-	{
-		*daddy = node_create(PIPE, NULL);
-		(*daddy)->left = node_create(COMMAND, command);
-		(*daddy)->left->daddy = *daddy;
-		cursor++;
-		status = command_generation_handling(&cursor, &(*daddy)->right);
-		(*daddy)->right->daddy = *daddy;
-		(void)status; // handle status
-	}
-	else
-		*daddy = node_create(COMMAND, command);
-	return (COMMAND_SUCCESS);
 }

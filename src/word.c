@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:21:40 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 18:36:58 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 19:24:56 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,42 +87,6 @@ t_command_status	get_next_heredoc_eof(t_state *state, const char **cursor,
 		if (!str_list_append(words, word))
 			return (COMMAND_ERROR);
 	}
-	return (COMMAND_SUCCESS);
-}
-
-t_command_status	get_next_command(t_state *state, const char **ptr,
-		t_list **words)
-{
-	t_command_status	status;
-	char				*word;
-	const char			*cursor;
-	bool				parenthesis;
-
-	(void)state;
-	parenthesis = false;
-	cursor = *ptr;
-	while (*cursor)
-	{
-		if (!parenthesis && *cursor == '|')
-			break ;
-		if (*cursor == '\"')
-			status = get_next_word(&cursor, &word, "\"", true);
-		else if (*cursor == '\'')
-			status = get_next_word(&cursor, &word, "\'", true);
-		else
-		{
-			if (*cursor == '(')
-				parenthesis = true;
-			else if (*cursor == ')')
-				parenthesis = false;
-			status = get_next_word(&cursor, &word, "\'\"()|", false);
-		}
-		if (status)
-			return (status);
-		if (!str_list_append(words, word))
-			return (COMMAND_ERROR);
-	}
-	*ptr = cursor;
 	return (COMMAND_SUCCESS);
 }
 
