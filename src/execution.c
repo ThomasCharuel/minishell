@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 21:55:16 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 22:54:52 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,9 @@ t_command_status	command_exec(t_state *state, t_node *node)
 		execve(argv[0], argv, state->envp);
 		// Test return value
 	}
-	ft_printf("Command: %s\n", argv[1]);
-	free(argv);
 	ft_close_fd(node->read_fd);
 	ft_close_fd(node->write_fd);
+	free(argv);
 	return (COMMAND_SUCCESS);
 }
 

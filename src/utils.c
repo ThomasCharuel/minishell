@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:59:02 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 16:25:32 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 23:19:37 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	print_error(const char *str, ...)
 	write(STDERR_FILENO, "\n", 1);
 }
 
+// OK
 char	*get_working_directory(void)
 {
 	char	*pwd;

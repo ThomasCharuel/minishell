@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 16:16:15 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 21:48:21 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 23:05:05 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,9 @@ t_command_status	command_line_execute(t_state *state, const char *line)
 	if (!status && state->last_child_pid)
 	{
 		waitpid(state->last_child_pid, &command_status, 0);
-		status = (WIFEXITED(command_status) && WEXITSTATUS(command_status));
+		status = !WIFEXITED(command_status);
+		if (!status)
+			status = WEXITSTATUS(command_status);
 	}
 	state->last_exit_code = status;
 	while (wait(NULL) != -1)

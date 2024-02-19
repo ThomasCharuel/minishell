@@ -6,50 +6,53 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 10:37:41 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 21:51:02 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 23:16:49 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// OK
 static t_command_status	and_execute(t_state *state, t_node *node)
 {
 	t_command_status	status;
 	int					command_status;
 
 	status = ast_execute(state, node->left);
-	if (status)
-		return (status);
-	if (state->last_child_pid)
+	if (!status && state->last_child_pid)
 	{
 		waitpid(state->last_child_pid, &command_status, 0);
-		state->last_exit_code = (WIFEXITED(command_status)
-				&& WEXITSTATUS(command_status));
+		status = !WIFEXITED(command_status);
+		if (!status)
+			status = WEXITSTATUS(command_status);
 	}
-	if (state->last_exit_code)
-		return (state->last_exit_code);
+	state->last_exit_code = status;
+	if (status)
+		return (status);
 	return (ast_execute(state, node->right));
 }
 
+// OK
 static t_command_status	or_execute(t_state *state, t_node *node)
 {
 	t_command_status	status;
 	int					command_status;
 
 	status = ast_execute(state, node->left);
-	if (status)
-		return (ast_execute(state, node->right));
-	if (state->last_child_pid)
+	if (!status && state->last_child_pid)
 	{
 		waitpid(state->last_child_pid, &command_status, 0);
-		state->last_exit_code = (WIFEXITED(command_status)
-				&& WEXITSTATUS(command_status));
-		if (state->last_exit_code)
-			return (ast_execute(state, node->right));
+		status = !WIFEXITED(command_status);
+		if (!status)
+			status = WEXITSTATUS(command_status);
 	}
+	state->last_exit_code = status;
+	if (status)
+		return (ast_execute(state, node->right));
 	return (COMMAND_SUCCESS);
 }
 
+// OK
 static t_command_status	pipe_execute(t_state *state, t_node *node)
 {
 	t_command_status	status;
@@ -66,6 +69,7 @@ static t_command_status	pipe_execute(t_state *state, t_node *node)
 	return (ast_execute(state, node->right));
 }
 
+// OK
 static t_command_status	command_execute(t_state *state, t_node *node)
 {
 	t_command_status	status;
@@ -77,6 +81,7 @@ static t_command_status	command_execute(t_state *state, t_node *node)
 	return (status);
 }
 
+// OK
 t_command_status	ast_execute(t_state *state, t_node *node)
 {
 	if (node->type == AND)

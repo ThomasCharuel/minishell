@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 19:44:53 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 23:19:02 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,12 @@ t_command_status				command_line_execute(t_state *state,
 t_command_status				handle_heredocs(t_state *state,
 									const char **ptr, t_list **words);
 
+// pipe.c
+t_pipe							*pipe_create(void);
+
+// prompt.c
+t_command_status				repl(t_state *state);
+
 // tree.c
 t_node							*node_create(t_node_type type, void *content);
 void							node_destroy(t_node **node);
@@ -134,6 +140,7 @@ void							tree_dfs(t_state *state, t_node *node,
 
 // utils.c
 void							print_error(const char *str, ...);
+char							*get_working_directory(void);
 
 // word.c
 t_command_status				handle_word(t_state *state, const char **ptr,
@@ -199,8 +206,6 @@ t_command_status				handle_word_interpretation(t_state *state,
 									char **str);
 
 t_command_status				command_exec(t_state *state, t_node *node);
-
-t_pipe							*pipe_create(void);
 
 t_command_status				get_next_heredoc_eof(t_state *state,
 									const char **cursor, t_list **words);
