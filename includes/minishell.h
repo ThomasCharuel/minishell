@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/18 19:22:17 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 16:58:34 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,33 @@ typedef struct s_state
 
 extern volatile sig_atomic_t	g_signal_code;
 
+// ast.c
+t_command_status				ast_generate(t_state *state,
+									const char **cursor, t_node *left_child);
+
+// command_line.c
+t_command_status				command_line_execute(t_state *state,
+									const char *line);
+// heredocs.c
+t_command_status				handle_word(t_state *state, const char *line,
+									char **res,
+									t_command_status parse_function(t_state *,
+										const char *, t_list **));
+t_command_status				handle_heredocs(t_state *state, const char *str,
+									t_list **words);
+
+// utils.c
+void							print_error(const char *str, ...);
+
+// word.c
+t_command_status				handle_word(t_state *state, const char *line,
+									char **res,
+									t_command_status parse_function(t_state *,
+										const char *, t_list **));
+
 t_command_status				repl(t_state *state);
+t_command_status				command_generation_handling(const char **ptr,
+									t_node **daddy);
 
 void							signal_init(void);
 
@@ -146,8 +172,6 @@ t_command_status				handle_command(t_state *state,
 									t_command *command);
 t_command_status				handle_path_command(t_command *command);
 
-t_command_status				line_exec(t_state *state, const char *line);
-
 void							ft_clean_double_list(void **list,
 									void (*destroy)(void *));
 void							ft_close_fd(int fd);
@@ -163,8 +187,6 @@ t_command_status				get_var_value(t_state *state, const char **ptr,
 									char **word);
 t_command_status				handle_word_interpretation(t_state *state,
 									char **str);
-t_command_status				handle_heredocs(t_state *state,
-									const char *line);
 t_node							*node_create(t_node_type type, void *content);
 void							node_destroy(t_node **node);
 void							tree_dfs(t_state *state, t_node *node,
@@ -197,7 +219,6 @@ t_command_status				suppr_quotes(char **ptr);
 
 char							**from_list_to_array(t_list *list);
 
-void							print_error(const char *str, ...);
 char							*get_working_directory(void);
 
 bool							is_builtin(const char *str);

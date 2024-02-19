@@ -6,7 +6,7 @@
 #    By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/06 13:51:51 by tcharuel          #+#    #+#              #
-#    Updated: 2024/02/16 11:52:50 by tcharuel         ###   ########.fr        #
+#    Updated: 2024/02/19 16:30:29 by tcharuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,11 +18,17 @@ OBJ_DIR = obj
 
 SRC_FILES = ast.c \
 	builtins.c \
+	command_line.c \
+	command.c \
+	env.c \
 	envp.c \
 	execution.c \
+	exit.c \
+	heredoc.c \
+	heredocs.c \
 	main.c \
 	parsing.c \
-	command.c \
+	pipe.c \
 	prompt.c \
 	redirection.c \
 	signals.c \
@@ -31,12 +37,8 @@ SRC_FILES = ast.c \
 	tree.c \
 	utils.c \
 	variable.c \
-	heredoc.c \
-	pipe.c \
-	word.c \
-	exit.c \
-	env.c \
-	wildcards.c
+	wildcards.c \
+	word.c
 
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))

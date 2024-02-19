@@ -6,11 +6,28 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:21:40 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 21:34:01 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 16:58:37 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_command_status	handle_word(t_state *state, const char *line, char **res,
+		t_command_status parse_function(t_state *, const char *, t_list **))
+{
+	t_command_status	status;
+	t_list				*words;
+
+	words = NULL;
+	status = parse_function(state, line, &words);
+	if (status)
+		return (ft_lstclear(&words, free), status);
+	*res = ft_strsjoin_from_list(words);
+	ft_lstclear(&words, free);
+	if (!*res)
+		return (COMMAND_ERROR);
+	return (COMMAND_SUCCESS);
+}
 
 t_command_status	get_func_decorator(const char **cursor, char **res,
 		t_command_status (*get_func)(const char **, t_list **))
@@ -78,37 +95,6 @@ t_command_status	get_next_heredoc_eof(const char **cursor, t_list **words)
 		if (!str_list_append(words, word))
 			return (COMMAND_ERROR);
 	}
-	return (COMMAND_SUCCESS);
-}
-
-t_command_status	handle_heredocs(t_state *state, const char *line)
-{
-	t_command_status	status;
-	const char			*cursor;
-	t_list				*words;
-	char				*word;
-
-	words = NULL;
-	cursor = line;
-	while (*cursor)
-	{
-		if (*cursor == '\"')
-			status = get_next_word_new(&cursor, &word, "\"", true);
-		else if (*cursor == '\'')
-			status = get_next_word_new(&cursor, &word, "\'", true);
-		else if (!ft_strncmp(cursor, "<<", 2))
-			status = handle_heredoc(state, &cursor, &word);
-		else
-			status = get_next_word_new(&cursor, &word, "\'\"<", false);
-		if (status)
-			return (ft_lstclear(&words, free), status);
-		if (!str_list_append(&words, word))
-			return (ft_lstclear(&words, free), COMMAND_ERROR);
-	}
-	state->line = ft_strsjoin_from_list(words);
-	ft_lstclear(&words, free);
-	if (!state->line)
-		return (COMMAND_ERROR);
 	return (COMMAND_SUCCESS);
 }
 

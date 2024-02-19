@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:59:02 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 20:14:42 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 16:25:32 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	ft_close_fd(int fd)
 		close(fd);
 }
 
+// OK
 void	print_error(const char *str, ...)
 {
 	va_list	ap;

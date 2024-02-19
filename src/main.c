@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:08:12 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/18 17:55:17 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 16:13:13 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int argc, char **argv, const char **envp)
 	if (!state)
 		return (COMMAND_ERROR);
 	if (argc == 2)
-		exit_code = line_exec(state, argv[1]);
+		exit_code = command_line_execute(state, argv[1]);
 	else
 		exit_code = repl(state);
 	state_cleanup(state);
