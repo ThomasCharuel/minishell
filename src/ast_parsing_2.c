@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 19:36:38 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 20:00:21 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 21:22:31 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static t_command_status	ast_generate_lower_nodes_pipes(const char **ptr,
 	if (!(*daddy)->left)
 		return (node_destroy(daddy), command_destroy(command), COMMAND_ERROR);
 	(*daddy)->left->daddy = *daddy;
-	ptr++;
+	(*ptr)++;
 	status = ast_generate_lower_nodes(ptr, &(*daddy)->right);
 	if (status)
 		return (status);
@@ -72,7 +72,6 @@ t_command_status	ast_generate_lower_nodes(const char **ptr, t_node **daddy)
 	status = handle_word(NULL, &cursor, &word, &get_next_subcommand_pipe);
 	if (status)
 		return (status);
-	ft_printf("Lower nodes Word: '%s'\n", word);
 	command = command_create(word);
 	free(word);
 	if (!command)
