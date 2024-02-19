@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:41:51 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 00:28:26 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 00:29:38 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static t_command_status	handle_command(t_state *state, t_command *command)
 	return (ft_clean_double_list((void **)paths, free), COMMAND_NOT_FOUND);
 }
 
+// OK
 static t_command_status	handle_path_command(t_command *command)
 {
 	char	*command_str;
@@ -57,8 +58,7 @@ static t_command_status	handle_path_command(t_command *command)
 }
 
 // OK
-static t_command_status	set_command_executable(t_state *state,
-		t_command *command)
+t_command_status	set_command_executable(t_state *state, t_command *command)
 {
 	if (!command->argv)
 		return (COMMAND_NOT_FOUND);

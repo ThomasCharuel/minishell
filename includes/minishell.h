@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 00:28:10 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 00:28:50 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ t_command_status				ast_generate_lower_nodes(const char **ptr,
 									t_node **daddy);
 
 // command_executable.c
-static t_command_status			set_command_executable(t_state *state,
+t_command_status				set_command_executable(t_state *state,
 									t_command *command);
 
 // command_line.c
