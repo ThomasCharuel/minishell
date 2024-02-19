@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 16:16:15 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 16:51:29 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:27:48 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ static t_command_status	command_line_validity_check(const char *line)
 static t_command_status	command_line_parse(t_state *state, const char *line)
 {
 	t_command_status	status;
-	const char			*cursor;
 
 	status = command_line_validity_check(line);
 	if (status)
@@ -68,8 +67,7 @@ static t_command_status	command_line_parse(t_state *state, const char *line)
 	status = handle_word(state, line, &state->line, &handle_heredocs);
 	if (status)
 		return (status);
-	cursor = state->line;
-	status = ast_generate(state, &cursor, NULL);
+	status = ast_generate(state);
 	ft_free_str(&state->line);
 	return (COMMAND_SUCCESS);
 }

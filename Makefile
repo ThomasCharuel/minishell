@@ -6,7 +6,7 @@
 #    By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/06 13:51:51 by tcharuel          #+#    #+#              #
-#    Updated: 2024/02/19 16:30:29 by tcharuel         ###   ########.fr        #
+#    Updated: 2024/02/19 17:07:13 by tcharuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ HEADER_DIR = includes
 SRC_DIR = src
 OBJ_DIR = obj
 
-SRC_FILES = ast.c \
+SRC_FILES = ast_execution.c \
+	ast_parsing.c \
 	builtins.c \
 	command_line.c \
 	command.c \

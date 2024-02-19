@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 16:58:34 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:11:41 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,11 @@ typedef struct s_state
 
 extern volatile sig_atomic_t	g_signal_code;
 
-// ast.c
-t_command_status				ast_generate(t_state *state,
-									const char **cursor, t_node *left_child);
+// ast_execution.c
+t_command_status				ast_execute(t_state *state, t_node *node);
+
+// ast_parsing.c
+t_command_status				ast_generate(t_state *state);
 
 // command_line.c
 t_command_status				command_line_execute(t_state *state,
@@ -191,8 +193,6 @@ t_node							*node_create(t_node_type type, void *content);
 void							node_destroy(t_node **node);
 void							tree_dfs(t_state *state, t_node *node,
 									void (*f)(t_state *, t_node *));
-void							display_node(t_state *state, t_node *node);
-t_command_status				ast_execute(t_state *state, t_node *node);
 
 t_command_status				command_exec(t_state *state, t_node *node);
 
