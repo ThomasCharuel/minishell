@@ -1,42 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   command_executable.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:41:51 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 17:29:06 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 00:28:26 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_command_file(const char *path, const char *cmd)
-{
-	char	**paths;
-	char	*command_file;
-	int		i;
-
-	paths = ft_split(path, ':');
-	if (!paths)
-		return (perror("minishell"), NULL);
-	i = 0;
-	while (paths[i])
-	{
-		command_file = ft_strsjoin(paths[i], "/", cmd, NULL);
-		if (!command_file)
-			return (perror("minishell"), ft_clean_double_list((void **)paths,
-					free), NULL);
-		if (!access(command_file, X_OK))
-			return (ft_clean_double_list((void **)paths, free), command_file);
-		free(command_file);
-		i++;
-	}
-	return (ft_clean_double_list((void **)paths, free), NULL);
-}
-
-t_command_status	handle_command(t_state *state, t_command *command)
+static t_command_status	handle_command(t_state *state, t_command *command)
 {
 	const char	*path;
 	char		**paths;
@@ -69,15 +45,26 @@ t_command_status	handle_command(t_state *state, t_command *command)
 	return (ft_clean_double_list((void **)paths, free), COMMAND_NOT_FOUND);
 }
 
-t_command_status	handle_path_command(t_command *command)
+static t_command_status	handle_path_command(t_command *command)
 {
 	char	*command_str;
 
 	command_str = command->argv->content;
 	if (access(command_str, R_OK) || access(command_str, X_OK))
-	{
-		perror(command_str);
-		return (COMMAND_NOT_FOUND);
-	}
+		return (print_error(command_str, ": No such file or directory", NULL),
+			COMMAND_NOT_FOUND);
 	return (COMMAND_SUCCESS);
+}
+
+// OK
+static t_command_status	set_command_executable(t_state *state,
+		t_command *command)
+{
+	if (!command->argv)
+		return (COMMAND_NOT_FOUND);
+	if (is_builtin(command->argv->content))
+		return (COMMAND_SUCCESS);
+	if (ft_strchr((char *)command->argv->content, '/'))
+		return (handle_path_command(command));
+	return (handle_command(state, command));
 }

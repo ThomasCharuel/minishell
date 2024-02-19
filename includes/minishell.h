@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 23:19:02 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 00:28:10 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ typedef struct s_command
 	char						*command_str;
 	t_list						*argv;
 	t_list						*redirections;
-	int							status;
-	t_command_status			exit_code;
 }								t_command;
 
 typedef struct s_heredoc
@@ -119,9 +117,20 @@ t_command_status				ast_generate(t_state *state);
 t_command_status				ast_generate_lower_nodes(const char **ptr,
 									t_node **daddy);
 
+// command_executable.c
+static t_command_status			set_command_executable(t_state *state,
+									t_command *command);
+
 // command_line.c
 t_command_status				command_line_execute(t_state *state,
 									const char *line);
+
+// command.c
+t_command						*command_create(const char *command_str);
+void							command_destroy(void *ptr);
+t_command_status				command_parse(t_state *state,
+									t_command *command);
+
 // heredocs.c
 t_command_status				handle_heredocs(t_state *state,
 									const char **ptr, t_list **words);
@@ -168,11 +177,6 @@ t_return_status					envp_set(t_state *state, const char *key,
 									const char *value);
 void							envp_delete(t_state *state, const char *key);
 
-t_command						*command_create(const char *command_str);
-void							command_destroy(void *ptr);
-t_command_status				command_parse(t_state *state,
-									t_command *command);
-
 void							heredoc_destroy(void *ptr);
 t_command_status				handle_heredoc(t_state *state,
 									const char **cursor, char **res);
@@ -182,12 +186,6 @@ t_redirection					*redirection_create(const char *file,
 void							redirection_destroy(void *ptr);
 t_command_status				handle_redirection(t_state *state,
 									const char **cmd, t_command *command);
-
-char							*get_command_file(const char *path,
-									const char *cmd);
-t_command_status				handle_command(t_state *state,
-									t_command *command);
-t_command_status				handle_path_command(t_command *command);
 
 void							ft_clean_double_list(void **list,
 									void (*destroy)(void *));

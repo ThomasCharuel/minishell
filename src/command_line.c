@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 16:16:15 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 23:05:05 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 00:09:33 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ static t_command_status	command_line_parse(t_state *state, const char *line)
 	return (status);
 }
 
+// OK
 t_command_status	command_line_execute(t_state *state, const char *line)
 {
 	int					command_status;

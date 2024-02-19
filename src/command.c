@@ -6,12 +6,13 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 18:33:11 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 00:27:45 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// OK
 t_command	*command_create(const char *command_str)
 {
 	t_command	*command;
@@ -27,6 +28,7 @@ t_command	*command_create(const char *command_str)
 	return (command);
 }
 
+// OK
 void	command_destroy(void *ptr)
 {
 	t_command	*command;
@@ -39,38 +41,6 @@ void	command_destroy(void *ptr)
 		ft_lstclear(&command->redirections, redirection_destroy);
 		free(command);
 	}
-}
-
-void	command_display(t_command *command)
-{
-	t_list			*node;
-	t_redirection	*redirection;
-
-	node = command->argv;
-	while (node)
-	{
-		ft_printf("Argv: \"%s\"\n", node->content);
-		node = node->next;
-	}
-	node = command->redirections;
-	while (node)
-	{
-		redirection = node->content;
-		ft_printf("Redirections: \"%s\" (%d)\n", redirection->file,
-			redirection->type);
-		node = node->next;
-	}
-}
-
-t_command_status	set_command_command(t_state *state, t_command *command)
-{
-	if (!command->argv)
-		return (COMMAND_NOT_FOUND);
-	if (is_builtin(command->argv->content))
-		return (COMMAND_SUCCESS);
-	if (ft_strchr((char *)command->argv->content, '/'))
-		return (handle_path_command(command));
-	return (handle_command(state, command));
 }
 
 t_command_status	handle_subshell(t_state *state, t_command *command,
@@ -155,5 +125,5 @@ t_command_status	command_parse(t_state *state, t_command *command)
 		}
 		first_run = false;
 	}
-	return (set_command_command(state, command));
+	return (set_command_executable(state, command));
 }
