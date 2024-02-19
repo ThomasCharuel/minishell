@@ -6,12 +6,13 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 10:56:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/12 17:29:04 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 19:08:50 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// OK
 t_node	*node_create(t_node_type type, void *content)
 {
 	t_node	*node;
@@ -29,6 +30,7 @@ t_node	*node_create(t_node_type type, void *content)
 	return (node);
 }
 
+// OK
 void	node_destroy(t_node **node)
 {
 	if (*node)
@@ -46,6 +48,7 @@ void	node_destroy(t_node **node)
 	}
 }
 
+// OK
 void	tree_dfs(t_state *state, t_node *node, void (*f)(t_state *, t_node *))
 {
 	if (!node)

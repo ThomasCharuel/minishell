@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 18:36:05 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 18:57:18 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,12 @@ t_command_status				command_line_execute(t_state *state,
 t_command_status				handle_heredocs(t_state *state,
 									const char **ptr, t_list **words);
 
+// tree.c
+t_node							*node_create(t_node_type type, void *content);
+void							node_destroy(t_node **node);
+void							tree_dfs(t_state *state, t_node *node,
+									void (*f)(t_state *, t_node *));
+
 // utils.c
 void							print_error(const char *str, ...);
 
@@ -189,10 +195,6 @@ t_command_status				get_var_value(t_state *state, const char **ptr,
 									char **word);
 t_command_status				handle_word_interpretation(t_state *state,
 									char **str);
-t_node							*node_create(t_node_type type, void *content);
-void							node_destroy(t_node **node);
-void							tree_dfs(t_state *state, t_node *node,
-									void (*f)(t_state *, t_node *));
 
 t_command_status				command_exec(t_state *state, t_node *node);
 

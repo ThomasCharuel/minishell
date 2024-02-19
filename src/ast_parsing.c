@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:03:54 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 18:31:42 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 19:11:17 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,51 +42,53 @@ static t_command_status	get_next_subcommand(t_state *state, const char **ptr,
 	return (COMMAND_SUCCESS);
 }
 
-static t_command_status	build_ast(t_state *state, const char **cursor,
-		t_node *left_child)
+static t_command_status	ast_generate_upper_nodes(t_state *state,
+		const char **ptr)
 {
 	t_command_status	status;
 	t_node				*node;
 	char				*word;
 
-	if (!left_child)
-	{
-		status = handle_word(state, cursor, &word, &get_next_subcommand);
-		if (status)
-			return (status);
-		status = command_generation_handling((const char **)&word, &node);
-		(void)status; // Handle status
-	}
+	if (!ft_strncmp(*ptr, "||", 2))
+		node = node_create(OR, NULL);
+	else if (!ft_strncmp(*ptr, "&&", 2))
+		node = node_create(AND, NULL);
 	else
-	{
-		if (!ft_strncmp(*cursor, "||", 2))
-			node = node_create(OR, NULL);
-		else if (!ft_strncmp(*cursor, "&&", 2))
-			node = node_create(AND, NULL);
-		else
-			return (COMMAND_PARSING_ERROR);
-		*cursor += 2;
-		status = handle_word(state, cursor, &word, &get_next_subcommand);
-		if (status)
-			return (status);
-		status = command_generation_handling((const char **)&word,
-				&node->right);
-		node->right->daddy = node;
-		(void)status; // Handle status
-		left_child->daddy = node;
-		node->left = left_child;
-	}
-	state->ast = node;
+		return (COMMAND_PARSING_ERROR);
+	*ptr += 2;
+	status = handle_word(state, ptr, &word, &get_next_subcommand);
+	if (status)
+		return (status);
+	status = command_generation_handling((const char **)&word, &node->right);
 	free(word);
-	if (**cursor)
-		return (build_ast(state, cursor, node));
+	if (status)
+		return (status);
+	node->right->daddy = node;
+	node->left = state->ast;
+	state->ast->daddy = node;
+	state->ast = node;
+	if (**ptr)
+		return (ast_generate_upper_nodes(state, ptr));
 	return (COMMAND_SUCCESS);
 }
 
 t_command_status	ast_generate(t_state *state)
 {
-	const char	*command_line;
+	const char			*command_line;
+	t_command_status	status;
+	char				*word;
+	t_node				*node;
 
 	command_line = state->line;
-	return (build_ast(state, &command_line, NULL));
+	status = handle_word(state, &command_line, &word, &get_next_subcommand);
+	if (status)
+		return (status);
+	status = command_generation_handling((const char **)&word, &node);
+	free(word);
+	if (status)
+		return (status);
+	state->ast = node;
+	if (*command_line)
+		return (ast_generate_upper_nodes(state, &command_line));
+	return (COMMAND_SUCCESS);
 }
