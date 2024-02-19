@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 18:57:18 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 19:44:53 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ t_command_status				ast_execute(t_state *state, t_node *node);
 
 // ast_parsing.c
 t_command_status				ast_generate(t_state *state);
+t_command_status				ast_generate_lower_nodes(const char **ptr,
+									t_node **daddy);
 
 // command_line.c
 t_command_status				command_line_execute(t_state *state,
