@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:03:54 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 21:22:30 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 21:31:49 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ static t_command_status	ast_generate_upper_nodes(t_state *state,
 	return (COMMAND_SUCCESS);
 }
 
+// OK
 t_command_status	ast_generate(t_state *state)
 {
 	const char			*command_line;
