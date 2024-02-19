@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 17:38:51 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 18:35:35 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ t_command_status	command_generation_handling(const char **ptr,
 	const char			*cursor;
 
 	cursor = *ptr;
-	status = get_func_decorator(&cursor, &word, &get_next_command);
+	status = handle_word(NULL, &cursor, &word, &get_next_command);
 	(void)status; // handle status
 	command = command_create(word);
 	free(word);

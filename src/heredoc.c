@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:13:26 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/18 17:39:18 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 18:33:11 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ t_command_status	handle_heredoc(t_state *state, const char **cursor,
 	*cursor += 2;
 	while (**cursor == ' ')
 		(*cursor)++;
-	status = get_func_decorator(cursor, &eof, &get_next_heredoc_eof);
+	status = handle_word(state, cursor, &eof, &get_next_heredoc_eof);
 	if (status)
 		return (ft_free_str(&eof), status);
 	if (!ft_strlen(eof))

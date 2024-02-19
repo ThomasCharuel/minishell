@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 17:44:20 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 18:33:11 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ t_command_status	handle_subshell(t_state *state, t_command *command,
 		return (COMMAND_ERROR);
 	if (!str_list_append(&command->argv, word))
 		return (COMMAND_ERROR);
-	status = get_func_decorator(cursor, &res, &get_next_parenthesis_expression);
+	status = handle_word(state, cursor, &res, &get_next_parenthesis_expression);
 	if (status)
 		return (status);
 	word = ft_strndup(&res[1], ft_strlen(res) - 3);
@@ -129,7 +129,7 @@ t_command_status	command_parse(t_state *state, t_command *command)
 		}
 		else
 		{
-			status = get_func_decorator(&cursor, &word, &get_next_token);
+			status = handle_word(state, &cursor, &word, &get_next_token);
 			if (status)
 				return (status);
 			if (!word)

@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 17:11:41 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/19 18:36:05 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,21 +121,21 @@ t_command_status				ast_generate(t_state *state);
 t_command_status				command_line_execute(t_state *state,
 									const char *line);
 // heredocs.c
-t_command_status				handle_word(t_state *state, const char *line,
-									char **res,
-									t_command_status parse_function(t_state *,
-										const char *, t_list **));
-t_command_status				handle_heredocs(t_state *state, const char *str,
-									t_list **words);
+t_command_status				handle_heredocs(t_state *state,
+									const char **ptr, t_list **words);
 
 // utils.c
 void							print_error(const char *str, ...);
 
 // word.c
-t_command_status				handle_word(t_state *state, const char *line,
+t_command_status				handle_word(t_state *state, const char **ptr,
 									char **res,
 									t_command_status parse_function(t_state *,
-										const char *, t_list **));
+										const char **, t_list **));
+t_command_status				get_next_word(const char **cursor, char **res,
+									const char *charset, bool delim);
+t_command_status				get_next_word_char(const char **cursor,
+									char **res, char c, bool delim);
 
 t_command_status				repl(t_state *state);
 t_command_status				command_generation_handling(const char **ptr,
@@ -198,22 +198,13 @@ t_command_status				command_exec(t_state *state, t_node *node);
 
 t_pipe							*pipe_create(void);
 
-t_command_status				get_func_decorator(const char **cursor,
-									char **res,
-									t_command_status (*get_func)(const char **,
-										t_list **));
-t_command_status				get_next_word_new(const char **cursor,
-									char **res, const char *charset,
-									bool delim);
-t_command_status				get_next_heredoc_eof(const char **cursor,
-									t_list **words);
-t_command_status				get_next_expression(const char **ptr,
-									t_list **words);
-t_command_status				get_next_command(const char **ptr,
-									t_list **words);
-t_command_status				get_next_parenthesis_expression(const char **ptr,
-									t_list **words);
-t_command_status				get_next_token(const char **ptr,
+t_command_status				get_next_heredoc_eof(t_state *state,
+									const char **cursor, t_list **words);
+t_command_status				get_next_command(t_state *state,
+									const char **ptr, t_list **words);
+t_command_status				get_next_parenthesis_expression(t_state *state,
+									const char **ptr, t_list **words);
+t_command_status				get_next_token(t_state *state, const char **ptr,
 									t_list **words);
 t_command_status				suppr_quotes(char **ptr);
 
