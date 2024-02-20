@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   builtins_echo.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 13:10:57 by rdupeux           #+#    #+#             */
-/*   Updated: 2024/02/20 13:51:40 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/20 19:40:40 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_command_status	minishell_echo(t_state *state, int argc, char **argv)
 	(void)state;
 	should_print_new_line = true;
 	i = 1;
-	if (argc > 1 && !ft_strcmp("-n", argv[i]))
+	while (argv[i] && !ft_strcmp("-n", argv[i]))
 	{
 		should_print_new_line = false;
 		i++;
