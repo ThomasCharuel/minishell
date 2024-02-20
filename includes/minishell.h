@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 10:33:18 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 11:36:57 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # include <unistd.h>
 
 # define COMMAND_SUCCESS 0
-# define COMMAND_ERROR 1
+# define COMMAND_ERROR -1
 # define COMMAND_TOO_MANY_ARGUMENTS 1
 # define COMMAND_PARSING_ERROR 2
 # define COMMAND_NOT_FOUND 127
@@ -101,6 +101,7 @@ typedef struct s_state
 	char						*executable_path;
 	char						**envp;
 	char						*line;
+	char						*readline;
 	t_command_status			last_exit_code;
 	t_node						*ast;
 	t_list						*heredocs;
@@ -125,8 +126,7 @@ t_command_status				set_command_executable(t_state *state,
 t_command_status				command_exec(t_state *state, t_node *node);
 
 // command_line.c
-t_command_status				command_line_execute(t_state *state,
-									const char *line);
+t_command_status				command_line_execute(t_state *state);
 
 // command.c
 t_command						*command_create(const char *command_str);
@@ -144,8 +144,8 @@ t_pipe							*pipe_create(void);
 // prompt.c
 t_command_status				repl(t_state *state);
 
-// redirection.c
-void							handle_redirections(t_node *node);
+// redirections.c
+t_command_status				handle_redirections(t_node *node);
 
 // signals.c
 void							signal_init(void);

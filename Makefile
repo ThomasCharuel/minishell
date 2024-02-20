@@ -6,7 +6,7 @@
 #    By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/06 13:51:51 by tcharuel          #+#    #+#              #
-#    Updated: 2024/02/20 10:28:55 by tcharuel         ###   ########.fr        #
+#    Updated: 2024/02/20 11:12:13 by tcharuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRC_FILES = ast_execution.c \
 	pipe.c \
 	prompt.c \
 	redirection.c \
+	redirections.c \
 	signals.c \
 	state.c \
 	subshell.c \

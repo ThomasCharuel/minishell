@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 11:45:39 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/18 17:55:15 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 11:32:06 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_state	*state_init(const char *executable_path, const char **envp)
 	if (!state)
 		return (perror("minishell"), NULL);
 	state->line = NULL;
+	state->readline = NULL;
 	state->last_exit_code = COMMAND_SUCCESS;
 	state->envp = envp_copy(envp);
 	if (!state->envp)
@@ -64,6 +65,7 @@ void	state_cleanup(t_state *state)
 		ft_free_str(&state->executable_path);
 		ft_clean_double_list((void **)state->envp, free);
 		ft_free_str(&state->line);
+		ft_free_str(&state->readline);
 		node_destroy(&state->ast);
 		ft_lstclear(&state->heredocs, &heredoc_destroy);
 		free(state);

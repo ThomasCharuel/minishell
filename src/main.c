@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:08:12 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 22:55:46 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 11:38:15 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,12 @@ int	main(int argc, char **argv, const char **envp)
 	if (!state)
 		return (COMMAND_ERROR);
 	if (argc == 2)
-		exit_code = command_line_execute(state, argv[1]);
+	{
+		state->readline = ft_strdup(argv[1]);
+		if (!state->readline)
+			return (perror("minishell"), COMMAND_ERROR);
+		exit_code = command_line_execute(state);
+	}
 	else
 		exit_code = repl(state);
 	state_cleanup(state);

@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 10:37:30 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 11:28:54 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,25 @@ static int	get_fd_to_close(t_node *node)
 	return (STDIN_FILENO);
 }
 
+// OK
 static void	child_exec(t_state *state, t_node *node, char **argv)
 {
+	t_command_status	status;
+
 	ft_close_fd(get_fd_to_close(node));
 	dup2(node->read_fd, STDIN_FILENO);
 	ft_close_fd(node->read_fd);
 	dup2(node->write_fd, STDOUT_FILENO);
 	ft_close_fd(node->write_fd);
-	handle_redirections(node); // TODO
-	execve(argv[0], argv, state->envp);
-	perror("minishell");
-	exit(COMMAND_ERROR);
+	status = handle_redirections(node);
+	if (!status && execve(argv[0], argv, state->envp) == -1)
+	{
+		perror("minishell");
+		status = COMMAND_ERROR;
+	}
+	free(argv);
+	state_cleanup(state);
+	exit(status);
 }
 
 // OK
