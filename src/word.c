@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:21:40 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 16:55:25 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 17:28:12 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ t_command_status	get_next_heredoc_eof(t_state *state, const char **cursor,
 	char				*word;
 
 	(void)state;
-	while (**cursor)
+	while (*cursor && **cursor)
 	{
 		if (ft_is_char_in_set(**cursor, "<>)&| "))
 			break ;
@@ -120,7 +120,7 @@ t_command_status	get_next_heredoc_eof(t_state *state, const char **cursor,
 		if (status)
 			return (status);
 		if (!str_list_append(words, word))
-			return (COMMAND_ERROR);
+			return (ft_free_str(&word), COMMAND_ERROR);
 	}
 	return (COMMAND_SUCCESS);
 }
