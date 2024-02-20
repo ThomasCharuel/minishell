@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+         #
+#    By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/06 13:51:51 by tcharuel          #+#    #+#              #
-#    Updated: 2024/02/20 12:15:09 by tcharuel         ###   ########.fr        #
+#    Updated: 2024/02/20 13:14:44 by rdupeux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,10 @@ SRC_FILES = ast_execution.c \
 	utils_2.c \
 	variable.c \
 	wildcards.c \
-	word.c
+	word.c \
+	cd.c \
+	echo.c \
+	pwd.c 
 
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
