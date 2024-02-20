@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:03:54 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 21:31:49 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 01:08:44 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static t_command_status	get_next_subcommand(t_state *state, const char **ptr,
 		if (status)
 			return (status);
 		if (!str_list_append(words, word))
-			return (COMMAND_ERROR);
+			return (free(word), COMMAND_ERROR);
 	}
 	return (COMMAND_SUCCESS);
 }

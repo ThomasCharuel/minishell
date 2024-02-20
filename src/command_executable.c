@@ -6,12 +6,13 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:41:51 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 00:52:34 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 00:56:57 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// OK
 static char	**get_paths(t_state *state)
 {
 	const char	*path;
@@ -24,6 +25,7 @@ static char	**get_paths(t_state *state)
 	return (paths);
 }
 
+// OK
 static t_command_status	handle_command(t_state *state, t_command *command)
 {
 	char	**paths;

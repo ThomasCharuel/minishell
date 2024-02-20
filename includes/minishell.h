@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 00:45:51 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 00:58:32 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,10 @@ t_pipe							*pipe_create(void);
 // prompt.c
 t_command_status				repl(t_state *state);
 
+// subshell.c
+t_command_status				handle_subshell(t_state *state,
+									t_command *command, const char **cursor);
+
 // tree.c
 t_node							*node_create(t_node_type type, void *content);
 void							node_destroy(t_node **node);
@@ -209,8 +213,6 @@ t_command_status				command_exec(t_state *state, t_node *node);
 t_command_status				get_next_heredoc_eof(t_state *state,
 									const char **cursor, t_list **words);
 t_command_status				get_next_command(t_state *state,
-									const char **ptr, t_list **words);
-t_command_status				get_next_parenthesis_expression(t_state *state,
 									const char **ptr, t_list **words);
 t_command_status				get_next_token(t_state *state, const char **ptr,
 									t_list **words);

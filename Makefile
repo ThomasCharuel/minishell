@@ -6,7 +6,7 @@
 #    By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/06 13:51:51 by tcharuel          #+#    #+#              #
-#    Updated: 2024/02/20 00:27:48 by tcharuel         ###   ########.fr        #
+#    Updated: 2024/02/20 00:58:06 by tcharuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SRC_FILES = ast_execution.c \
 	signals.c \
 	state.c \
 	str_list.c \
+	subshell.c \
 	tree.c \
 	utils.c \
 	variable.c \

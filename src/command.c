@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 00:42:48 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 01:34:26 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,30 +41,6 @@ void	command_destroy(void *ptr)
 		ft_lstclear(&command->redirections, redirection_destroy);
 		free(command);
 	}
-}
-
-t_command_status	handle_subshell(t_state *state, t_command *command,
-		const char **cursor)
-{
-	char				*word;
-	char				*res;
-	t_command_status	status;
-
-	word = ft_strdup(state->executable_path);
-	if (!word)
-		return (COMMAND_ERROR);
-	if (!str_list_append(&command->argv, word))
-		return (COMMAND_ERROR);
-	status = handle_word(state, cursor, &res, &get_next_parenthesis_expression);
-	if (status)
-		return (status);
-	word = ft_strndup(&res[1], ft_strlen(res) - 3);
-	if (!word)
-		return (free(res), COMMAND_ERROR);
-	if (!str_list_append(&command->argv, word))
-		return (free(res), free(word), COMMAND_ERROR);
-	free(res);
-	return (COMMAND_SUCCESS);
 }
 
 t_command_status	command_parse(t_state *state, t_command *command)
