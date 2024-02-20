@@ -6,7 +6,7 @@
 #    By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/06 13:51:51 by tcharuel          #+#    #+#              #
-#    Updated: 2024/02/20 11:12:13 by tcharuel         ###   ########.fr        #
+#    Updated: 2024/02/20 12:15:09 by tcharuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,12 +19,13 @@ OBJ_DIR = obj
 SRC_FILES = ast_execution.c \
 	ast_parsing.c \
 	ast_parsing_2.c \
+	builtins_env.c \
+	builtins_export.c \
 	builtins.c \
 	command_executable.c \
 	command_execution.c \
 	command_line.c \
 	command.c \
-	env.c \
 	envp.c \
 	exit.c \
 	heredoc.c \
