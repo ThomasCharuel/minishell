@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 11:28:54 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 11:48:35 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,18 @@ static void	child_exec(t_state *state, t_node *node, char **argv)
 	t_command_status	status;
 
 	ft_close_fd(get_fd_to_close(node));
-	dup2(node->read_fd, STDIN_FILENO);
-	ft_close_fd(node->read_fd);
-	dup2(node->write_fd, STDOUT_FILENO);
-	ft_close_fd(node->write_fd);
-	status = handle_redirections(node);
+	if (dup2(node->read_fd, STDIN_FILENO) == -1 || dup2(node->write_fd,
+			STDOUT_FILENO) == -1)
+	{
+		perror("minishell");
+		status = COMMAND_ERROR;
+	}
+	if (!status)
+	{
+		ft_close_fd(node->read_fd);
+		ft_close_fd(node->write_fd);
+		status = handle_redirections(node);
+	}
 	if (!status && execve(argv[0], argv, state->envp) == -1)
 	{
 		perror("minishell");

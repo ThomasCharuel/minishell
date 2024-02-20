@@ -6,12 +6,13 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:11:32 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 11:19:23 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 11:50:53 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// OK
 static t_command_status	handle_write_redirection(t_node *node,
 		t_redirection *redirection)
 {
@@ -21,7 +22,10 @@ static t_command_status	handle_write_redirection(t_node *node,
 	else if (redirection->type == APPEND)
 		node->write_fd = open(redirection->file, O_WRONLY | O_CREAT | O_APPEND,
 				S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-	dup2(node->write_fd, STDOUT_FILENO);
+	if (node->write_fd < 0)
+		return (perror("minishell"), COMMAND_ERROR);
+	if (dup2(node->write_fd, STDOUT_FILENO) == -1)
+		return (perror("minishell"), COMMAND_ERROR);
 	ft_close_fd(node->write_fd);
 	return (COMMAND_SUCCESS);
 }
@@ -29,11 +33,12 @@ static t_command_status	handle_write_redirection(t_node *node,
 static t_command_status	handle_read_redirection(t_node *node,
 		t_redirection *redirection)
 {
-	// Handle interpretation
 	node->read_fd = open(redirection->file, O_RDONLY);
 	if (node->read_fd < 0)
 		return (perror("minishell"), COMMAND_ERROR);
-	dup2(node->read_fd, STDIN_FILENO);
+	if (dup2(node->read_fd, STDIN_FILENO) == -1)
+		return (perror("minishell"), COMMAND_ERROR);
+	// Handle interpretation
 	ft_close_fd(node->read_fd);
 	return (COMMAND_SUCCESS);
 }
