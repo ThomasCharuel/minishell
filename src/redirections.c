@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:11:32 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 11:59:15 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:06:48 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,17 @@ static t_command_status	handle_write_redirection(t_node *node,
 	return (COMMAND_SUCCESS);
 }
 
+// TODO
 static t_command_status	handle_read_redirection(t_node *node,
 		t_redirection *redirection)
 {
 	node->read_fd = open(redirection->file, O_RDONLY);
 	if (node->read_fd < 0)
 		return (perror("minishell"), COMMAND_TOO_MANY_ARGUMENTS);
+	// Handle interpretation des heredocs
+	// En fonction du nom du fichier, ecrire dans node->read_fd
 	if (dup2(node->read_fd, STDIN_FILENO) == -1)
 		return (perror("minishell"), COMMAND_ERROR);
-	// Handle interpretation
 	ft_close_fd(node->read_fd);
 	return (COMMAND_SUCCESS);
 }
