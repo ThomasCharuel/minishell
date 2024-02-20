@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 14:03:53 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 14:45:49 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,17 +86,6 @@ typedef enum e_node_type
 	COMMAND
 }								t_node_type;
 
-typedef struct s_node
-{
-	t_node_type					type;
-	void						*content;
-	struct s_node				*daddy;
-	struct s_node				*left;
-	struct s_node				*right;
-	int							read_fd;
-	int							write_fd;
-}								t_node;
-
 typedef struct s_state
 {
 	char						*executable_path;
@@ -108,6 +97,18 @@ typedef struct s_state
 	t_list						*heredocs;
 	pid_t						last_child_pid;
 }								t_state;
+
+typedef struct s_node
+{
+	t_node_type					type;
+	void						*content;
+	struct s_node				*daddy;
+	struct s_node				*left;
+	struct s_node				*right;
+	t_state						*state;
+	int							read_fd;
+	int							write_fd;
+}								t_node;
 
 extern volatile sig_atomic_t	g_signal_code;
 
