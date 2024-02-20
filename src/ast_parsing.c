@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:03:54 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 17:12:10 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/20 18:30:06 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ static t_command_status	ast_generate_upper_nodes(t_state *s, const char **ptr)
 	*ptr += 2;
 	status = handle_word(NULL, ptr, &word, &get_next_subcommand);
 	if (status)
-		return (status);
+		return (node_destroy(&node), status);
 	status = ast_generate_lower_nodes(s, (const char **)&word, &node->right);
 	ft_free_str(&word);
 	if (status)
-		return (status);
+		return (node_destroy(&node), status);
 	node->right->daddy = node;
 	node->left = s->ast;
 	s->ast->daddy = node;
