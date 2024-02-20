@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:34:15 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 15:46:21 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 15:49:05 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static t_redirection_type	get_redirection_type(const char **cursor)
 	return (type);
 }
 
+// OK
 t_command_status	handle_redirection(t_state *state, const char **cursor,
 		t_command *command)
 {
