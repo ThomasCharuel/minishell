@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:21:40 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 00:57:09 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 01:37:41 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_command_status	handle_word(t_state *state, const char **ptr, char **res,
 	return (COMMAND_SUCCESS);
 }
 
+// OK
 t_command_status	get_next_word(const char **cursor, char **res,
 		const char *charset, bool delim)
 {
@@ -39,8 +40,6 @@ t_command_status	get_next_word(const char **cursor, char **res,
 	if (!new_cursor)
 	{
 		*res = ft_strndup(*cursor, ft_strlen(*cursor));
-		if (!*res)
-			return (COMMAND_ERROR);
 		*cursor += ft_strlen(*cursor);
 	}
 	else
@@ -48,13 +47,14 @@ t_command_status	get_next_word(const char **cursor, char **res,
 		if (delim)
 			new_cursor++;
 		*res = ft_strndup(*cursor, new_cursor - *cursor);
-		if (!*res)
-			return (COMMAND_ERROR);
 		*cursor = new_cursor;
 	}
+	if (!*res)
+		return (COMMAND_ERROR);
 	return (COMMAND_SUCCESS);
 }
 
+// OK
 t_command_status	get_next_word_char(const char **cursor, char **res, char c,
 		bool delim)
 {
