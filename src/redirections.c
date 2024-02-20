@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:11:32 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 12:17:57 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 14:44:05 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,32 @@ static t_command_status	handle_write_redirection(t_node *node,
 	return (COMMAND_SUCCESS);
 }
 
+static t_command_status	file_interpreteur(t_state *state, int fd1, int fd2)
+{
+	char	*line;
+	char	*cursor;
+	char	*word;
+
+	line = get_next_line(fd1);
+	while (line)
+	{
+		cursor = ft_strchr(line, '$');
+		if (!cursor)
+			write(fd2, line, ft_strlen(line));
+		else
+		{
+			write(fd2, line, cursor - line);
+			cursor = &line[cursor - line + 1];
+			get_var_value(state, &cursor, &word);
+			write(fd2, word, ft_strlen(word));
+			write(fd2, cursor, ft_strlen(cursor));
+			ft_free_str(&word);
+		}
+		ft_free_str(&line);
+		line = get_next_line(fd1);
+	}
+}
+
 // TODO
 static t_command_status	handle_read_redirection(t_node *node,
 		t_redirection *redirection)
@@ -37,11 +63,16 @@ static t_command_status	handle_read_redirection(t_node *node,
 	node->read_fd = open(redirection->file, O_RDONLY);
 	if (node->read_fd < 0)
 		return (perror("minishell"), COMMAND_TOO_MANY_ARGUMENTS);
+	if (!ft_strcmp("/tmp/.minishell-hi-", redirection->file))
+		file_interpreteur(state, node->read_fd, STDIN_FILENO);
 	// Handle interpretation des heredocs
 	// En fonction du nom du fichier, ecrire dans node->read_fd
-	if (dup2(node->read_fd, STDIN_FILENO) == -1)
-		return (perror("minishell"), COMMAND_ERROR);
-	ft_close_fd(node->read_fd);
+	else
+	{
+		if (dup2(node->read_fd, STDIN_FILENO) == -1)
+			return (perror("minishell"), COMMAND_ERROR);
+		ft_close_fd(node->read_fd);
+	}
 	return (COMMAND_SUCCESS);
 }
 
