@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:03:54 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 16:54:57 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 17:12:10 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,34 +42,32 @@ static t_command_status	get_next_subcommand(t_state *state, const char **ptr,
 	return (COMMAND_SUCCESS);
 }
 
-static t_command_status	ast_generate_upper_nodes(t_state *state,
-		const char **ptr)
+static t_command_status	ast_generate_upper_nodes(t_state *s, const char **ptr)
 {
 	t_command_status	status;
 	t_node				*node;
 	char				*word;
 
 	if (!ft_strncmp(*ptr, "||", 2))
-		node = node_create(state, OR, NULL);
+		node = node_create(s, OR, NULL);
 	else if (!ft_strncmp(*ptr, "&&", 2))
-		node = node_create(state, AND, NULL);
+		node = node_create(s, AND, NULL);
 	else
 		return (COMMAND_PARSING_ERROR);
 	*ptr += 2;
 	status = handle_word(NULL, ptr, &word, &get_next_subcommand);
 	if (status)
 		return (status);
-	status = ast_generate_lower_nodes(state, (const char **)&word,
-			&node->right);
+	status = ast_generate_lower_nodes(s, (const char **)&word, &node->right);
 	ft_free_str(&word);
 	if (status)
 		return (status);
 	node->right->daddy = node;
-	node->left = state->ast;
-	state->ast->daddy = node;
-	state->ast = node;
+	node->left = s->ast;
+	s->ast->daddy = node;
+	s->ast = node;
 	if (**ptr)
-		return (ast_generate_upper_nodes(state, ptr));
+		return (ast_generate_upper_nodes(s, ptr));
 	return (COMMAND_SUCCESS);
 }
 
