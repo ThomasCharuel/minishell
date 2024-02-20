@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_env.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 12:11:40 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 12:14:31 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 13:59:20 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_command_status	minishell_env(t_state *state, int argc, char **argv)
 	i = 0;
 	while (state->envp && state->envp[i])
 	{
-		if (strchr(state->envp[i], '='))
+		if (ft_strchr(state->envp[i], '='))
 			ft_printf("%s\n", state->envp[i]);
 		i++;
 	}

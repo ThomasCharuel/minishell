@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 12:12:14 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 12:15:37 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 14:00:14 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char	*escape_quote(const char *str)
 		if (str[i++] == '\"')
 			len++;
 	}
-	res = calloc(len, sizeof(char));
+	res = ft_calloc(len, sizeof(char));
 	if (!res)
 		return (NULL);
 	i = 0;
@@ -45,7 +45,7 @@ static char	**parse_env_variable(const char *var)
 	char		**strs;
 	const char	*cursor;
 
-	strs = calloc(2, sizeof(char *));
+	strs = ft_calloc(2, sizeof(char *));
 	if (!strs)
 		return (NULL);
 	cursor = ft_strchr(var, '=');
