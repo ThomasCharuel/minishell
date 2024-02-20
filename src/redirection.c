@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:34:15 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 14:23:18 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 15:39:09 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,9 @@ t_command_status	handle_redirection(t_state *state, const char **cursor,
 	if (status)
 		return (status);
 	status = handle_word(state, (const char **)&file, &file, &handle_env_var);
-	// DOING
-	// status = handle_word_interpretation(state, &file); // TODO
 	if (status)
 		return (status);
-	status = suppr_quotes(&file); // TODO
+	status = handle_word(NULL, (const char **)&file, &file, &suppr_quotes);
 	if (status)
 		return (status);
 	redirection = redirection_create(file, type);
