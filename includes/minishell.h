@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 12:15:12 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 14:03:53 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,11 @@ t_pipe							*pipe_create(void);
 // prompt.c
 t_command_status				repl(t_state *state);
 
+// redirection.c
+void							redirection_destroy(void *ptr);
+t_command_status				handle_redirection(t_state *state,
+									const char **cursor, t_command *command);
+
 // redirections.c
 t_command_status				handle_redirections(t_node *node);
 
@@ -205,12 +210,6 @@ void							envp_delete(t_state *state, const char *key);
 void							heredoc_destroy(void *ptr);
 t_command_status				handle_heredoc(t_state *state,
 									const char **cursor, char **res);
-
-t_redirection					*redirection_create(const char *file,
-									t_redirection_type type);
-void							redirection_destroy(void *ptr);
-t_command_status				handle_redirection(t_state *state,
-									const char **cmd, t_command *command);
 
 t_command_status				get_var_value(t_state *state, const char **ptr,
 									char **word);
