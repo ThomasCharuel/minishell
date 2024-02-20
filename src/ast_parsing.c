@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:03:54 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 14:57:50 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/20 16:54:57 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static t_command_status	get_next_subcommand(t_state *state, const char **ptr,
 		if (status)
 			return (status);
 		if (!str_list_append(words, word))
-			return (free(word), COMMAND_ERROR);
+			return (ft_free_str(&word), COMMAND_ERROR);
 	}
 	return (COMMAND_SUCCESS);
 }
@@ -61,7 +61,7 @@ static t_command_status	ast_generate_upper_nodes(t_state *state,
 		return (status);
 	status = ast_generate_lower_nodes(state, (const char **)&word,
 			&node->right);
-	free(word);
+	ft_free_str(&word);
 	if (status)
 		return (status);
 	node->right->daddy = node;
@@ -86,7 +86,7 @@ t_command_status	ast_generate(t_state *state)
 	if (status)
 		return (status);
 	status = ast_generate_lower_nodes(state, (const char **)&word, &node);
-	free(word);
+	ft_free_str(&word);
 	if (status)
 		return (status);
 	state->ast = node;

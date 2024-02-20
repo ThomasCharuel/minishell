@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 15:34:29 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 15:49:37 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:55:06 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ t_command_status	remove_quotes(t_state *state, const char **ptr,
 			return (status);
 		status = trim_quotes(&word);
 		if (status)
-			return (free(word), status);
+			return (ft_free_str(&word), status);
 		if (!str_list_append(words, word))
-			return (free(word), COMMAND_ERROR);
+			return (ft_free_str(&word), COMMAND_ERROR);
 	}
 	return (COMMAND_SUCCESS);
 }

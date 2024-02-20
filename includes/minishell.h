@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 15:47:25 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/20 16:43:02 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,14 @@ t_command_status				handle_env_var(t_state *state, const char **ptr,
 t_command_status				get_var_value(t_state *state, const char **ptr,
 									char **word);
 
+// wildcards.c
+t_command_status				handle_wildcards(char **ptr, t_list *argv);
+
+// wildcards_utils.c
+t_command_status				get_files_in_current_directory(t_list **files);
+bool							file_matches_pattern(const char *filename,
+									const char *pattern);
+
 // word.c
 t_command_status				handle_word(t_state *state, const char **ptr,
 									char **res,
@@ -210,9 +218,6 @@ t_command_status				get_next_token(t_state *state, const char **ptr,
 									t_list **words);
 
 // NOT OK
-t_command_status				command_generation_handling(const char **ptr,
-									t_node **daddy);
-
 t_state							*state_init(const char *executable_path,
 									const char **envp);
 void							state_cleanup(t_state *state);
@@ -247,8 +252,5 @@ t_command_status				minishell_env(t_state *state, int argc,
 									char **argv);
 t_command_status				minishell_exit(t_state *state, int argc,
 									char **argv);
-t_command_status				handle_wildecards(t_state *state, char **ptr,
-									t_list *argv);
-t_list							*filter_files_based_on_pattern(const char *pattern);
 
 #endif

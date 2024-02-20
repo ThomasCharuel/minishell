@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_parsing_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 19:36:38 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 14:52:41 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/20 16:54:51 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static t_command_status	get_next_subcommand_pipe(t_state *state,
 		if (status)
 			return (status);
 		if (!str_list_append(words, word))
-			return (free(word), COMMAND_ERROR);
+			return (ft_free_str(&word), COMMAND_ERROR);
 	}
 	return (COMMAND_SUCCESS);
 }
@@ -74,7 +74,7 @@ t_command_status	ast_generate_lower_nodes(t_state *state, const char **ptr,
 	if (status)
 		return (status);
 	command = command_create(word);
-	free(word);
+	ft_free_str(&word);
 	if (!command)
 		return (COMMAND_ERROR);
 	if (*cursor == '|')

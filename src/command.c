@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 15:48:40 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:55:00 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_command_status	handle_command_word(t_state *state, const char **ptr,
 		return (status);
 	if (command->argv)
 	{
-		status = handle_wildecards(state, &word, command->argv);
+		status = handle_wildcards(&word, command->argv);
 		if (status || !word)
 			return (status);
 	}
@@ -65,7 +65,7 @@ t_command_status	handle_command_word(t_state *state, const char **ptr,
 	if (status)
 		return (status);
 	if (!str_list_append(&command->argv, word))
-		return (free(word), COMMAND_ERROR);
+		return (ft_free_str(&word), COMMAND_ERROR);
 	return (COMMAND_SUCCESS);
 }
 

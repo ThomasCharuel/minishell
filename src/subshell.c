@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 00:56:21 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 13:53:09 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:55:42 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static t_command_status	get_next_parenthesis_expression(t_state *state,
 		if (status)
 			return (status);
 		if (!str_list_append(words, word))
-			return (free(word), COMMAND_ERROR);
+			return (ft_free_str(&word), COMMAND_ERROR);
 	}
 	return (COMMAND_SUCCESS);
 }
@@ -52,13 +52,13 @@ t_command_status	handle_subshell(t_state *state, t_command *command,
 	if (!word)
 		return (COMMAND_ERROR);
 	if (!str_list_append(&command->argv, word))
-		return (free(word), COMMAND_ERROR);
+		return (ft_free_str(&word), COMMAND_ERROR);
 	status = handle_word(state, cursor, &word,
 			&get_next_parenthesis_expression);
 	if (status)
 		return (status);
 	if (!str_list_append(&command->argv, word))
-		return (free(word), COMMAND_ERROR);
+		return (ft_free_str(&word), COMMAND_ERROR);
 	(*cursor)++;
 	return (COMMAND_SUCCESS);
 }
@@ -75,11 +75,11 @@ t_command_status	subshell_execute(t_state *state, t_node *node)
 	if (!word)
 		return (COMMAND_ERROR);
 	if (!str_list_append(&command->argv, word))
-		return (free(word), COMMAND_ERROR);
+		return (ft_free_str(&word), COMMAND_ERROR);
 	instruction = ft_strdup(command->command_str);
 	if (!instruction)
 		return (COMMAND_ERROR);
 	if (!str_list_append(&command->argv, instruction))
-		return (free(instruction), COMMAND_ERROR);
+		return (ft_free_str(&instruction), COMMAND_ERROR);
 	return (command_exec(state, node));
 }
