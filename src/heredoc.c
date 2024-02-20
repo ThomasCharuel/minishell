@@ -6,12 +6,13 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:13:26 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 18:33:11 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 17:22:54 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// OK
 char	*get_heredoc_file_name(bool should_be_interpreted)
 {
 	char	*file;
@@ -24,12 +25,16 @@ char	*get_heredoc_file_name(bool should_be_interpreted)
 		file = ft_strsjoin("/tmp/.minishell-hi-", uid, NULL);
 	else
 		file = ft_strsjoin("/tmp/.minishell-h-", uid, NULL);
-	free(uid);
+	ft_free_str(&uid);
+	if (!file)
+		return (NULL);
 	if (!access(file, F_OK))
-		return (get_heredoc_file_name(should_be_interpreted));
+		return (ft_free_str(&file),
+			get_heredoc_file_name(should_be_interpreted));
 	return (file);
 }
 
+// OK
 t_heredoc	*heredoc_create(char *eof)
 {
 	t_heredoc	*heredoc;
@@ -42,12 +47,12 @@ t_heredoc	*heredoc_create(char *eof)
 	else
 		heredoc->file = get_heredoc_file_name(true);
 	if (!heredoc->file)
-		return (free(heredoc->file), free(heredoc), NULL);
-	ft_printf("Heredoc name: %s\n", heredoc->file);
+		return (free(heredoc), NULL);
 	heredoc->eof = eof;
 	return (heredoc);
 }
 
+// OK
 void	heredoc_destroy(void *ptr)
 {
 	t_heredoc	*heredoc;
@@ -96,7 +101,7 @@ t_command_status	handle_heredoc(t_state *state, const char **cursor,
 		(*cursor)++;
 	status = handle_word(state, cursor, &eof, &get_next_heredoc_eof);
 	if (status)
-		return (ft_free_str(&eof), status);
+		return (status);
 	if (!ft_strlen(eof))
 		return (ft_free_str(&eof), COMMAND_PARSING_ERROR);
 	heredoc = heredoc_create(eof);
@@ -105,6 +110,8 @@ t_command_status	handle_heredoc(t_state *state, const char **cursor,
 	if (!ft_append(&state->heredocs, heredoc))
 		return (heredoc_destroy(heredoc), COMMAND_ERROR);
 	*res = ft_strsjoin("<", heredoc->file, NULL);
+	if (!*res)
+		return (COMMAND_ERROR);
 	if (!write_heredoc(heredoc))
 		return (COMMAND_ERROR);
 	return (COMMAND_SUCCESS);
