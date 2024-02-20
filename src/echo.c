@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 13:10:57 by rdupeux           #+#    #+#             */
-/*   Updated: 2024/02/20 13:11:23 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/20 13:51:40 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 t_command_status	minishell_echo(t_state *state, int argc, char **argv)
 {
-	int i;
-	bool should_print_new_line;
+	int		i;
+	bool	should_print_new_line;
 
 	(void)state;
 	should_print_new_line = true;
