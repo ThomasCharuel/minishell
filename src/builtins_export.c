@@ -1,36 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/13 17:17:41 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 10:38:43 by tcharuel         ###   ########.fr       */
+/*   Created: 2024/02/20 12:12:14 by tcharuel          #+#    #+#             */
+/*   Updated: 2024/02/20 12:15:37 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_command_status	minishell_env(t_state *state, int argc, char **argv)
-{
-	size_t	i;
-
-	(void)argv;
-	if (argc > 1)
-		return (print_error("env: too many arguments", NULL),
-			COMMAND_TOO_MANY_ARGUMENTS);
-	i = 0;
-	while (state->envp && state->envp[i])
-	{
-		if (strchr(state->envp[i], '='))
-			ft_printf("%s\n", state->envp[i]);
-		i++;
-	}
-	return (COMMAND_SUCCESS);
-}
-
-char	*escape_quote(const char *str)
+static char	*escape_quote(const char *str)
 {
 	char	*res;
 	size_t	i;
@@ -58,7 +40,7 @@ char	*escape_quote(const char *str)
 	return (res);
 }
 
-char	**parse_env_variable(const char *var)
+static char	**parse_env_variable(const char *var)
 {
 	char		**strs;
 	const char	*cursor;
@@ -82,7 +64,7 @@ char	**parse_env_variable(const char *var)
 	return (strs);
 }
 
-t_command_status	print_declare_statements(char **envp)
+static t_command_status	print_declare_statements(char **envp)
 {
 	size_t	i;
 	char	*declare_statement;
@@ -109,7 +91,7 @@ t_command_status	print_declare_statements(char **envp)
 	return (COMMAND_SUCCESS);
 }
 
-t_command_status	parse_export_statement(const char *str, char **key,
+static t_command_status	parse_export_statement(const char *str, char **key,
 		char **value)
 {
 	size_t	i;
@@ -159,16 +141,5 @@ t_command_status	minishell_export(t_state *state, int argc, char **argv)
 			free(key);
 		}
 	}
-	return (COMMAND_SUCCESS);
-}
-
-t_command_status	minishell_unset(t_state *state, int argc, char **argv)
-{
-	size_t	i;
-
-	(void)argc;
-	i = 1;
-	while (argv[i])
-		envp_delete(state, argv[i++]);
 	return (COMMAND_SUCCESS);
 }

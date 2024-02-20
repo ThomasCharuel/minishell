@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:24:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 11:48:35 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 11:53:23 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	child_exec(t_state *state, t_node *node, char **argv)
 {
 	t_command_status	status;
 
+	status = COMMAND_SUCCESS;
 	ft_close_fd(get_fd_to_close(node));
 	if (dup2(node->read_fd, STDIN_FILENO) == -1 || dup2(node->write_fd,
 			STDOUT_FILENO) == -1)
