@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:11:32 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 14:44:05 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/20 15:01:46 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static t_command_status	handle_write_redirection(t_node *node,
 	return (COMMAND_SUCCESS);
 }
 
-static t_command_status	file_interpreteur(t_state *state, int fd1, int fd2)
+/* static t_command_status	file_interpreteur(t_state *state, int fd1, int fd2)
 {
 	char	*line;
 	char	*cursor;
@@ -54,8 +54,7 @@ static t_command_status	file_interpreteur(t_state *state, int fd1, int fd2)
 		ft_free_str(&line);
 		line = get_next_line(fd1);
 	}
-}
-
+} */
 // TODO
 static t_command_status	handle_read_redirection(t_node *node,
 		t_redirection *redirection)
@@ -63,8 +62,8 @@ static t_command_status	handle_read_redirection(t_node *node,
 	node->read_fd = open(redirection->file, O_RDONLY);
 	if (node->read_fd < 0)
 		return (perror("minishell"), COMMAND_TOO_MANY_ARGUMENTS);
-	if (!ft_strcmp("/tmp/.minishell-hi-", redirection->file))
-		file_interpreteur(state, node->read_fd, STDIN_FILENO);
+	/* 	if (!ft_strcmp("/tmp/.minishell-hi-", redirection->file))
+			file_interpreteur(node->state, node->read_fd, STDIN_FILENO); */
 	// Handle interpretation des heredocs
 	// En fonction du nom du fichier, ecrire dans node->read_fd
 	else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:03:54 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 01:08:44 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 14:57:50 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,17 @@ static t_command_status	ast_generate_upper_nodes(t_state *state,
 	char				*word;
 
 	if (!ft_strncmp(*ptr, "||", 2))
-		node = node_create(OR, NULL);
+		node = node_create(state, OR, NULL);
 	else if (!ft_strncmp(*ptr, "&&", 2))
-		node = node_create(AND, NULL);
+		node = node_create(state, AND, NULL);
 	else
 		return (COMMAND_PARSING_ERROR);
 	*ptr += 2;
 	status = handle_word(NULL, ptr, &word, &get_next_subcommand);
 	if (status)
 		return (status);
-	status = ast_generate_lower_nodes((const char **)&word, &node->right);
+	status = ast_generate_lower_nodes(state, (const char **)&word,
+			&node->right);
 	free(word);
 	if (status)
 		return (status);
@@ -84,7 +85,7 @@ t_command_status	ast_generate(t_state *state)
 	status = handle_word(NULL, &command_line, &word, &get_next_subcommand);
 	if (status)
 		return (status);
-	status = ast_generate_lower_nodes((const char **)&word, &node);
+	status = ast_generate_lower_nodes(state, (const char **)&word, &node);
 	free(word);
 	if (status)
 		return (status);

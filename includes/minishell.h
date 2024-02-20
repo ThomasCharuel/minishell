@@ -6,11 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/02/20 14:45:49 by rdupeux          ###   ########.fr       */
-=======
-/*   Updated: 2024/02/20 14:17:55 by tcharuel         ###   ########.fr       */
->>>>>>> 46349ff62ec6ec057440a80654a13fdcb0f34589
+/*   Updated: 2024/02/20 14:55:42 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +86,8 @@ typedef enum e_node_type
 	COMMAND
 }								t_node_type;
 
+typedef struct s_node			t_node;
+
 typedef struct s_state
 {
 	char						*executable_path;
@@ -121,8 +119,8 @@ t_command_status				ast_execute(t_state *state, t_node *node);
 
 // ast_parsing.c
 t_command_status				ast_generate(t_state *state);
-t_command_status				ast_generate_lower_nodes(const char **ptr,
-									t_node **daddy);
+t_command_status				ast_generate_lower_nodes(t_state *state,
+									const char **ptr, t_node **daddy);
 
 // command_executable.c
 t_command_status				set_command_executable(t_state *state,
@@ -167,7 +165,8 @@ t_command_status				handle_subshell(t_state *state,
 t_command_status				subshell_execute(t_state *state, t_node *node);
 
 // tree.c
-t_node							*node_create(t_node_type type, void *content);
+t_node							*node_create(t_state *state, t_node_type type,
+									void *content);
 void							node_destroy(t_node **node);
 void							tree_dfs(t_state *state, t_node *node,
 									void (*f)(t_state *, t_node *));

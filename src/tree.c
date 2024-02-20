@@ -6,14 +6,14 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 10:56:52 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 14:46:35 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/20 14:53:12 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // OK
-t_node	*node_create(t_node_type type, void *content)
+t_node	*node_create(t_state *state, t_node_type type, void *content)
 {
 	t_node	*node;
 
@@ -27,6 +27,7 @@ t_node	*node_create(t_node_type type, void *content)
 	node->right = NULL;
 	node->read_fd = STDIN_FILENO;
 	node->write_fd = STDOUT_FILENO;
+	node->state = state;
 	return (node);
 }
 
