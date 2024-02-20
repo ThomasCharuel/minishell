@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 16:43:02 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 17:42:39 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define COMMAND_NOT_FOUND 127
 # define COMMAND_SIGINT 130
 # define COMMAND_SIGQUIT 131
+# define COMMAND_ISDIRECTORY 126
 
 typedef int						t_command_status;
 

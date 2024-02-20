@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_executable.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:41:51 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 00:56:57 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 17:45:25 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,10 @@ static t_command_status	handle_path_command(t_command *command)
 	char	*command_str;
 
 	command_str = command->argv->content;
+	if (command_str[ft_strlen(command_str) - 1] == '/'
+		|| command_str[ft_strlen(command_str) - 1] == '.')
+		return (print_error(command_str, ": is a directory", NULL),
+			COMMAND_ISDIRECTORY);
 	if (access(command_str, R_OK) || access(command_str, X_OK))
 		return (print_error(command_str, ": No such file or directory", NULL),
 			COMMAND_NOT_FOUND);
