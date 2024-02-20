@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:34:15 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 15:49:05 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 19:18:56 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_command_status	handle_redirection(t_state *state, const char **cursor,
 	while (**cursor == ' ')
 		(*cursor)++;
 	if (!**cursor || ft_is_char_in_set(**cursor, "<>"))
-		return (COMMAND_PARSING_ERROR);
+		return (print_error("syntax error", NULL), COMMAND_PARSING_ERROR);
 	status = handle_word(NULL, cursor, &file, &get_next_token);
 	if (status)
 		return (status);

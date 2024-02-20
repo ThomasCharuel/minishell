@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   builtins_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:42:06 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/18 18:28:09 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 19:20:02 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,13 @@ unsigned char	get_exit_code(const char *str)
 		return (COMMAND_ERROR);
 	str = ft_strchrs(str, "-0123456789");
 	if (!str)
-		return (free(match), COMMAND_PARSING_ERROR);
+		return (free(match), print_error("syntax error", NULL),
+			COMMAND_PARSING_ERROR);
 	end_str = ft_strchr(str, ' ');
 	if ((end_str && ft_strncmp(match, str, end_str - str)) || (!end_str
 			&& ft_strcmp(match, str)))
-		return (free(match), COMMAND_PARSING_ERROR);
+		return (free(match), print_error("syntax error", NULL),
+			COMMAND_PARSING_ERROR);
 	free(match);
 	return (l_str);
 }

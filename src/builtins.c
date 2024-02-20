@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:23:44 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 14:05:49 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/20 19:20:17 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,5 @@ t_command_status	builtin_exec(t_state *state, t_node *node, char **argv)
 		return (builtin_exec_decorator(state, node, argv, &minishell_env));
 	else if (!ft_strcmp(argv[0], "exit"))
 		return (builtin_exec_decorator(state, node, argv, &minishell_exit));
-	return (COMMAND_PARSING_ERROR);
+	return (print_error("syntax error", NULL), COMMAND_PARSING_ERROR);
 }

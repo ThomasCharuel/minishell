@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:13:26 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 17:22:54 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 19:20:37 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,8 @@ t_command_status	handle_heredoc(t_state *state, const char **cursor,
 	if (status)
 		return (status);
 	if (!ft_strlen(eof))
-		return (ft_free_str(&eof), COMMAND_PARSING_ERROR);
+		return (ft_free_str(&eof), print_error("syntax error", NULL),
+			COMMAND_PARSING_ERROR);
 	heredoc = heredoc_create(eof);
 	if (!heredoc)
 		return (ft_free_str(&eof), COMMAND_ERROR);

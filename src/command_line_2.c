@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:59:49 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 19:00:14 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 19:21:52 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	move(const char **line)
 	}
 }
 
-t_command_status	command_line_validity_check_subcommand(const char *line)
+t_command_status	check_subcommand(const char *line)
 {
 	bool	is_operator;
 

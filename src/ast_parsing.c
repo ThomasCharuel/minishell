@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:03:54 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 18:30:06 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 19:19:43 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static t_command_status	ast_generate_upper_nodes(t_state *s, const char **ptr)
 	else if (!ft_strncmp(*ptr, "&&", 2))
 		node = node_create(s, AND, NULL);
 	else
-		return (COMMAND_PARSING_ERROR);
+		return (print_error("syntax error", NULL), COMMAND_PARSING_ERROR);
 	*ptr += 2;
 	status = handle_word(NULL, ptr, &word, &get_next_subcommand);
 	if (status)
