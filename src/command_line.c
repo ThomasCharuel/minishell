@@ -6,14 +6,14 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 16:16:15 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 19:00:06 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 19:01:30 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // OK
-static const char	*move_to_next_char(const char **ptr, char c)
+const char	*move_to_next_char(const char **ptr, char c)
 {
 	const char	*cursor;
 
