@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:11:32 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 15:01:46 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/20 15:45:21 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ static t_command_status	handle_write_redirection(t_node *node,
 	return (COMMAND_SUCCESS);
 }
 
-/* static t_command_status	file_interpreteur(t_state *state, int fd1, int fd2)
+static void	file_interpreteur(t_state *state, int fd1, int fd2)
 {
-	char	*line;
-	char	*cursor;
-	char	*word;
+	char		*line;
+	const char	*cursor;
+	char		*word;
 
 	line = get_next_line(fd1);
 	while (line)
@@ -45,7 +45,7 @@ static t_command_status	handle_write_redirection(t_node *node,
 		else
 		{
 			write(fd2, line, cursor - line);
-			cursor = &line[cursor - line + 1];
+			cursor = &line[cursor - line];
 			get_var_value(state, &cursor, &word);
 			write(fd2, word, ft_strlen(word));
 			write(fd2, cursor, ft_strlen(cursor));
@@ -54,16 +54,17 @@ static t_command_status	handle_write_redirection(t_node *node,
 		ft_free_str(&line);
 		line = get_next_line(fd1);
 	}
-} */
+}
 // TODO
 static t_command_status	handle_read_redirection(t_node *node,
 		t_redirection *redirection)
 {
+	printf("PING2");
 	node->read_fd = open(redirection->file, O_RDONLY);
 	if (node->read_fd < 0)
 		return (perror("minishell"), COMMAND_TOO_MANY_ARGUMENTS);
-	/* 	if (!ft_strcmp("/tmp/.minishell-hi-", redirection->file))
-			file_interpreteur(node->state, node->read_fd, STDIN_FILENO); */
+	if (!ft_strcmp("/tmp/.minishell-hi-", redirection->file))
+		file_interpreteur(node->state, node->read_fd, STDIN_FILENO);
 	// Handle interpretation des heredocs
 	// En fonction du nom du fichier, ecrire dans node->read_fd
 	else
@@ -83,6 +84,7 @@ t_command_status	handle_redirections(t_node *node)
 	t_redirection		*redirection;
 	t_command			*command;
 
+	printf("PING2");
 	command = node->content;
 	argv_node = command->redirections;
 	while (argv_node)

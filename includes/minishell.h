@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 14:55:42 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/20 15:41:15 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,8 @@ char							*ft_strsjoin_from_list(t_list *list);
 // variable.c
 t_command_status				handle_env_var(t_state *state, const char **ptr,
 									t_list **words);
+t_command_status				get_var_value(t_state *state, const char **ptr,
+									char **word);
 
 // word.c
 t_command_status				handle_word(t_state *state, const char **ptr,

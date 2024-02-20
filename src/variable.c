@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:38:57 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 15:04:15 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 15:40:26 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ static t_command_status	handle_empty_var(char **word)
 }
 
 // OK
-static t_command_status	get_var_value(t_state *state, const char **ptr,
-		char **word)
+t_command_status	get_var_value(t_state *state, const char **ptr, char **word)
 {
 	const char	*value;
 	char		*var_str;
