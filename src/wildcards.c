@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:15:01 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 20:22:10 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 13:36:38 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ t_command_status	handle_wildecards(t_state *state, char **ptr, t_list *argv)
 	words = filter_files_based_on_pattern(*ptr);
 	if (!words)
 		return (COMMAND_SUCCESS);
-	// display_str_list(words);
-	free(*ptr);
-	*ptr = NULL;
+	ft_free_str(ptr);
 	while (argv->next)
 		argv = argv->next;
 	argv->next = words;

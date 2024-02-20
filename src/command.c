@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 01:36:05 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 13:51:59 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,63 +43,55 @@ void	command_destroy(void *ptr)
 	}
 }
 
+t_command_status	handle_command_word(t_state *state, const char **ptr,
+		t_command *command)
+{
+	t_command_status	status;
+	char				*word;
+
+	status = handle_word(NULL, ptr, &word, &get_next_token);
+	if (status || !word)
+		return (status);
+	status = handle_word_interpretation(state, &word);
+	if (status || !word)
+		return (status);
+	if (command->argv)
+	{
+		status = handle_wildecards(state, &word, command->argv);
+		if (status || !word)
+			return (status);
+	}
+	status = suppr_quotes(&word);
+	if (status)
+		return (status);
+	if (!str_list_append(&command->argv, word))
+		return (free(word), COMMAND_ERROR);
+	return (COMMAND_SUCCESS);
+}
+
 t_command_status	command_parse(t_state *state, t_command *command)
 {
-	char				*word;
-	const char			*cursor;
 	t_command_status	status;
-	bool				first_run;
+	const char			*cursor;
 
-	first_run = true;
 	cursor = command->command_str;
 	while (*cursor)
 	{
 		while (*cursor == ' ')
 			cursor++;
-		if (!*cursor)
-			break ;
 		if (*cursor == '(')
 		{
-			if (!first_run)
+			if (command->argv)
 				return (print_error("syntax error: unexpected parenthesis",
 						NULL), COMMAND_PARSING_ERROR);
 			status = handle_subshell(state, command, &cursor);
-			if (status)
-				return (status);
 		}
 		else if (ft_is_char_in_set(*cursor, "<>"))
-		{
 			status = handle_redirection(state, &cursor, command);
-			if (status)
-				return (status);
-		}
-		else
-		{
-			status = handle_word(state, &cursor, &word, &get_next_token);
-			if (status)
-				return (status);
-			if (!word)
-				break ;
-			status = handle_word_interpretation(state, &word);
-			if (status)
-				return (status);
-			if (!word)
-				break ;
-			if (!first_run)
-			{
-				status = handle_wildecards(state, &word, command->argv);
-				if (!word)
-					continue ;
-				if (status)
-					return (status);
-			}
-			status = suppr_quotes(&word);
-			if (status)
-				return (status);
-			if (!str_list_append(&command->argv, word))
-				return (free(word), COMMAND_ERROR);
-		}
-		first_run = false;
+		else if (*cursor)
+			status = handle_command_word(state, &cursor, command);
+		if (status)
+			return (status);
 	}
 	return (set_command_executable(state, command));
 }
