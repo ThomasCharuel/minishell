@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 13:12:35 by rdupeux           #+#    #+#             */
-/*   Updated: 2024/02/20 13:12:50 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/20 13:54:45 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_command_status	minishell_pwd(t_state *state, int argc, char **argv)
 {
-	char *pwd;
+	char	*pwd;
 
 	(void)state;
 	(void)argc;
@@ -25,8 +25,8 @@ t_command_status	minishell_pwd(t_state *state, int argc, char **argv)
 	if (*pwd)
 		ft_printf("%s\n", pwd);
 	else
-		print_error("pwd: error: cannot determine current directory: No such file or directory",
-			NULL);
+		print_error("pwd: error: cannot determine current directory:",
+			"No such file or directory", NULL);
 	free(pwd);
 	return (COMMAND_SUCCESS);
 }
