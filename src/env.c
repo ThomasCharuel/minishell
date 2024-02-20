@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 17:17:41 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 17:21:36 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 10:38:43 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ t_command_status	minishell_env(t_state *state, int argc, char **argv)
 	}
 	return (COMMAND_SUCCESS);
 }
+
 char	*escape_quote(const char *str)
 {
 	char	*res;

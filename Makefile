@@ -6,7 +6,7 @@
 #    By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/06 13:51:51 by tcharuel          #+#    #+#              #
-#    Updated: 2024/02/20 00:58:06 by tcharuel         ###   ########.fr        #
+#    Updated: 2024/02/20 10:28:55 by tcharuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,11 +21,11 @@ SRC_FILES = ast_execution.c \
 	ast_parsing_2.c \
 	builtins.c \
 	command_executable.c \
+	command_execution.c \
 	command_line.c \
 	command.c \
 	env.c \
 	envp.c \
-	execution.c \
 	exit.c \
 	heredoc.c \
 	heredocs.c \
@@ -35,10 +35,10 @@ SRC_FILES = ast_execution.c \
 	redirection.c \
 	signals.c \
 	state.c \
-	str_list.c \
 	subshell.c \
 	tree.c \
 	utils.c \
+	utils_2.c \
 	variable.c \
 	wildcards.c \
 	word.c

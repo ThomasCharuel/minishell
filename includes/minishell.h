@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 00:58:32 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 10:33:18 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,9 @@ t_command_status				ast_generate_lower_nodes(const char **ptr,
 t_command_status				set_command_executable(t_state *state,
 									t_command *command);
 
+// command_execution.c
+t_command_status				command_exec(t_state *state, t_node *node);
+
 // command_line.c
 t_command_status				command_line_execute(t_state *state,
 									const char *line);
@@ -141,9 +144,16 @@ t_pipe							*pipe_create(void);
 // prompt.c
 t_command_status				repl(t_state *state);
 
+// redirection.c
+void							handle_redirections(t_node *node);
+
+// signals.c
+void							signal_init(void);
+
 // subshell.c
 t_command_status				handle_subshell(t_state *state,
 									t_command *command, const char **cursor);
+t_command_status				subshell_execute(t_state *state, t_node *node);
 
 // tree.c
 t_node							*node_create(t_node_type type, void *content);
@@ -152,9 +162,20 @@ void							tree_dfs(t_state *state, t_node *node,
 									void (*f)(t_state *, t_node *));
 
 // utils.c
+void							ft_close_fd(int fd);
 void							print_error(const char *str, ...);
 char							*get_working_directory(void);
 bool							is_whitespace_str(const char *str);
+char							**get_strs_from_list(t_list *list);
+
+// utils_2.c
+void							ft_free(void **ptr);
+void							ft_free_str(char **str);
+void							ft_clean_double_list(void **list,
+									void (*destroy)(void *));
+t_return_status					str_list_append(t_list **word_list,
+									const char *str);
+char							*ft_strsjoin_from_list(t_list *list);
 
 // word.c
 t_command_status				handle_word(t_state *state, const char **ptr,
@@ -166,11 +187,9 @@ t_command_status				get_next_word(const char **cursor, char **res,
 t_command_status				get_next_word_char(const char **cursor,
 									char **res, char c, bool delim);
 
-t_command_status				repl(t_state *state);
+// NOT OK
 t_command_status				command_generation_handling(const char **ptr,
 									t_node **daddy);
-
-void							signal_init(void);
 
 t_state							*state_init(const char *executable_path,
 									const char **envp);
@@ -192,23 +211,10 @@ void							redirection_destroy(void *ptr);
 t_command_status				handle_redirection(t_state *state,
 									const char **cmd, t_command *command);
 
-void							ft_clean_double_list(void **list,
-									void (*destroy)(void *));
-void							ft_close_fd(int fd);
-
-char							*ft_strsjoin_from_list(t_list *list);
-void							ft_free(void **ptr);
-void							ft_free_str(char **str);
-
-void							display_str_list(t_list *word_list);
-t_return_status					str_list_append(t_list **word_list,
-									const char *str);
 t_command_status				get_var_value(t_state *state, const char **ptr,
 									char **word);
 t_command_status				handle_word_interpretation(t_state *state,
 									char **str);
-
-t_command_status				command_exec(t_state *state, t_node *node);
 
 t_command_status				get_next_heredoc_eof(t_state *state,
 									const char **cursor, t_list **words);
@@ -217,8 +223,6 @@ t_command_status				get_next_command(t_state *state,
 t_command_status				get_next_token(t_state *state, const char **ptr,
 									t_list **words);
 t_command_status				suppr_quotes(char **ptr);
-
-char							**from_list_to_array(t_list *list);
 
 char							*get_working_directory(void);
 
@@ -239,12 +243,8 @@ t_command_status				minishell_env(t_state *state, int argc,
 									char **argv);
 t_command_status				minishell_exit(t_state *state, int argc,
 									char **argv);
-void							handle_redirections(t_node *node);
-int								get_fd_to_close(t_node *node);
 t_command_status				handle_wildecards(t_state *state, char **ptr,
 									t_list *argv);
 t_list							*filter_files_based_on_pattern(const char *pattern);
-
-t_command_status				subshell_execute(t_state *state, t_node *node);
 
 #endif

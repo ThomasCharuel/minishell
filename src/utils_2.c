@@ -1,26 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   str_list.c                                         :+:      :+:    :+:   */
+/*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/07 14:34:20 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/16 19:37:56 by tcharuel         ###   ########.fr       */
+/*   Created: 2024/02/20 10:22:40 by tcharuel          #+#    #+#             */
+/*   Updated: 2024/02/20 10:28:37 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	display_str_list(t_list *word_list)
+// OK
+void	ft_free(void **ptr)
 {
-	while (word_list)
+	if (*ptr)
 	{
-		ft_printf("- %s\n", word_list->content);
-		word_list = word_list->next;
+		free(*ptr);
+		*ptr = NULL;
 	}
 }
 
+// OK
+void	ft_free_str(char **str)
+{
+	ft_free((void **)str);
+}
+
+// OK
+void	ft_clean_double_list(void **list, void (*destroy)(void *))
+{
+	void	**temp;
+
+	temp = list;
+	if (list)
+	{
+		while (*temp)
+			destroy(*temp++);
+		free(list);
+	}
+}
+
+// OK
 t_return_status	str_list_append(t_list **word_list, const char *str)
 {
 	if (!str)
@@ -30,6 +52,7 @@ t_return_status	str_list_append(t_list **word_list, const char *str)
 	return (SUCCESS);
 }
 
+// OK
 char	*ft_strsjoin_from_list(t_list *list)
 {
 	const char	**strs;

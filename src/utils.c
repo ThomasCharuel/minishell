@@ -6,39 +6,13 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:59:02 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 00:46:17 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 10:22:50 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_free(void **ptr)
-{
-	if (*ptr)
-	{
-		free(*ptr);
-		*ptr = NULL;
-	}
-}
-
-void	ft_free_str(char **str)
-{
-	ft_free((void **)str);
-}
-
-void	ft_clean_double_list(void **list, void (*destroy)(void *))
-{
-	void	**temp;
-
-	temp = list;
-	if (list)
-	{
-		while (*temp)
-			destroy(*temp++);
-		free(list);
-	}
-}
-
+// OK
 void	ft_close_fd(int fd)
 {
 	if (fd != STDIN_FILENO && fd != STDOUT_FILENO && fd != STDERR_FILENO)
@@ -86,4 +60,23 @@ bool	is_whitespace_str(const char *line)
 		i++;
 	}
 	return (true);
+}
+
+// OK
+char	**get_strs_from_list(t_list *list)
+{
+	char	**strs;
+	size_t	i;
+
+	i = ft_lst_len(list);
+	strs = ft_calloc(i + 1, sizeof(char *));
+	if (!strs)
+		return (NULL);
+	i = 0;
+	while (list)
+	{
+		strs[i++] = list->content;
+		list = list->next;
+	}
+	return (strs);
 }

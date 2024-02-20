@@ -6,13 +6,13 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 18:50:39 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 00:06:49 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 10:32:42 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	sig_handler(int signum)
+static void	sig_handler(int signum)
 {
 	g_signal_code = signum;
 	if (wait(NULL) != -1)

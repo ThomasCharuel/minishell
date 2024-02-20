@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:34:15 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 18:33:11 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 10:33:23 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,38 @@ t_command_status	handle_redirection(t_state *state, const char **cmd,
 		return (COMMAND_ERROR);
 	*cmd = cursor;
 	return (COMMAND_SUCCESS);
+}
+
+void	handle_redirections(t_node *node)
+{
+	t_list			*argv_node;
+	t_redirection	*redirection;
+	t_command		*command;
+
+	command = node->content;
+	argv_node = command->redirections;
+	while (argv_node)
+	{
+		redirection = argv_node->content;
+		if (redirection->type == WRITE || redirection->type == APPEND)
+		{
+			if (redirection->type == WRITE)
+				node->write_fd = open(redirection->file,
+						O_WRONLY | O_CREAT | O_TRUNC,
+						S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+			else if (redirection->type == APPEND)
+				node->write_fd = open(redirection->file,
+						O_WRONLY | O_CREAT | O_APPEND,
+						S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+			dup2(node->write_fd, STDOUT_FILENO);
+			ft_close_fd(node->write_fd);
+		}
+		else if (redirection->type == READ)
+		{
+			node->read_fd = open(redirection->file, O_RDONLY);
+			dup2(node->read_fd, STDIN_FILENO);
+			ft_close_fd(node->read_fd);
+		}
+		argv_node = argv_node->next;
+	}
 }
