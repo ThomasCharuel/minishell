@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+         #
+#    By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/06 13:51:51 by tcharuel          #+#    #+#              #
-#    Updated: 2024/02/20 14:02:33 by rdupeux          ###   ########.fr        #
+#    Updated: 2024/02/20 15:40:20 by tcharuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRC_FILES = ast_execution.c \
 	main.c \
 	pipe.c \
 	prompt.c \
+	quotes.c \
 	redirection.c \
 	redirections.c \
 	signals.c \

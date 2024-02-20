@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 15:41:15 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/20 15:47:25 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,10 @@ t_pipe							*pipe_create(void);
 // prompt.c
 t_command_status				repl(t_state *state);
 
+// quotes.c
+t_command_status				remove_quotes(t_state *state, const char **ptr,
+									t_list **words);
+
 // redirection.c
 void							redirection_destroy(void *ptr);
 t_command_status				handle_redirection(t_state *state,
@@ -225,11 +229,6 @@ t_command_status				handle_heredoc(t_state *state,
 
 t_command_status				get_next_heredoc_eof(t_state *state,
 									const char **cursor, t_list **words);
-t_command_status				get_next_command(t_state *state,
-									const char **ptr, t_list **words);
-t_command_status				suppr_quotes(char **ptr);
-
-char							*get_working_directory(void);
 
 bool							is_builtin(const char *str);
 t_command_status				builtin_exec(t_state *state, t_node *node,

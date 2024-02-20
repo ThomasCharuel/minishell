@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:21:40 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 14:38:18 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 15:44:44 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,8 @@ t_command_status	get_next_token(t_state *state, const char **ptr,
 	{
 		if (ft_is_char_in_set(**ptr, "<>&|() "))
 			break ;
-		else if (**ptr == '\"')
-			status = get_next_word(ptr, &word, "\"", true);
-		else if (**ptr == '\'')
-			status = get_next_word(ptr, &word, "\'", true);
+		else if (ft_is_char_in_set(**ptr, "\'\""))
+			status = get_next_word_char(ptr, &word, **ptr, true);
 		else
 			status = get_next_word(ptr, &word, "\'\"<>&|() ", false);
 		if (status)
@@ -124,50 +122,5 @@ t_command_status	get_next_heredoc_eof(t_state *state, const char **cursor,
 		if (!str_list_append(words, word))
 			return (COMMAND_ERROR);
 	}
-	return (COMMAND_SUCCESS);
-}
-
-t_command_status	trim_quotes(char **str)
-{
-	char	*trimmed_str;
-
-	if (!ft_is_char_in_set(**str, "\'\""))
-		return (COMMAND_SUCCESS);
-	trimmed_str = ft_strndup(&(*str)[1], ft_strlen(&(*str)[1]) - 1);
-	if (!trimmed_str)
-		return (COMMAND_ERROR);
-	free(*str);
-	*str = trimmed_str;
-	return (COMMAND_SUCCESS);
-}
-
-t_command_status	suppr_quotes(char **ptr)
-{
-	t_command_status	status;
-	t_list				*words;
-	char				*word;
-	const char			*cursor;
-
-	cursor = *ptr;
-	words = NULL;
-	while (*cursor)
-	{
-		if (*cursor == '\'')
-			status = get_next_word(&cursor, &word, "\'", true);
-		else if (*cursor == '\"')
-			status = get_next_word(&cursor, &word, "\"", true);
-		else
-			status = get_next_word(&cursor, &word, "\'\"", false);
-		if (status)
-			return (ft_lstclear(&words, free), status);
-		status = trim_quotes(&word);
-		if (!str_list_append(&words, word))
-			return (ft_lstclear(&words, free), COMMAND_ERROR);
-	}
-	free(*ptr);
-	*ptr = ft_strsjoin_from_list(words);
-	ft_lstclear(&words, free);
-	if (!*ptr)
-		return (COMMAND_ERROR);
 	return (COMMAND_SUCCESS);
 }
