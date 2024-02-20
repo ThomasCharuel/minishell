@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:38:57 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 16:55:28 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 17:02:18 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,12 @@ t_command_status	get_var_value(t_state *state, const char **ptr, char **word)
 	if (!ft_isalpha(**ptr) && **ptr != '_')
 		return (handle_empty_var(word));
 	i = 0;
-	while (ft_isalnum(*ptr[i]) || *ptr[i] == '_')
+	while (ft_isalnum((*ptr)[i]) || (*ptr)[i] == '_')
 		i++;
 	var_str = ft_strndup(*ptr, i);
 	if (!var_str)
 		return (COMMAND_ERROR);
+	*ptr += i;
 	value = envp_get(state, var_str);
 	free(var_str);
 	*word = ft_strdup(value);

@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:11:32 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 15:45:21 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/20 16:49:33 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	file_interpreteur(t_state *state, int fd1, int fd2)
 		else
 		{
 			write(fd2, line, cursor - line);
-			cursor = &line[cursor - line];
+			cursor = &line[cursor - line + 1];
 			get_var_value(state, &cursor, &word);
 			write(fd2, word, ft_strlen(word));
 			write(fd2, cursor, ft_strlen(cursor));
@@ -59,20 +59,23 @@ static void	file_interpreteur(t_state *state, int fd1, int fd2)
 static t_command_status	handle_read_redirection(t_node *node,
 		t_redirection *redirection)
 {
-	printf("PING2");
+	int	fd[2];
+
 	node->read_fd = open(redirection->file, O_RDONLY);
 	if (node->read_fd < 0)
 		return (perror("minishell"), COMMAND_TOO_MANY_ARGUMENTS);
-	if (!ft_strcmp("/tmp/.minishell-hi-", redirection->file))
-		file_interpreteur(node->state, node->read_fd, STDIN_FILENO);
-	// Handle interpretation des heredocs
-	// En fonction du nom du fichier, ecrire dans node->read_fd
-	else
+	if (!ft_strncmp("/tmp/.minishell-hi-", redirection->file, 19))
 	{
-		if (dup2(node->read_fd, STDIN_FILENO) == -1)
-			return (perror("minishell"), COMMAND_ERROR);
-		ft_close_fd(node->read_fd);
+		if (pipe(fd))
+			return (COMMAND_ERROR);
+		file_interpreteur(node->state, node->read_fd, fd[1]);
+		close(node->read_fd);
+		close(fd[1]);
+		node->read_fd = fd[0];
 	}
+	if (dup2(node->read_fd, STDIN_FILENO) == -1)
+		return (perror("minishell"), COMMAND_ERROR);
+	ft_close_fd(node->read_fd);
 	return (COMMAND_SUCCESS);
 }
 
@@ -84,7 +87,6 @@ t_command_status	handle_redirections(t_node *node)
 	t_redirection		*redirection;
 	t_command			*command;
 
-	printf("PING2");
 	command = node->content;
 	argv_node = command->redirections;
 	while (argv_node)
