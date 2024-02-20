@@ -6,7 +6,7 @@
 #    By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/06 13:51:51 by tcharuel          #+#    #+#              #
-#    Updated: 2024/02/20 16:30:33 by tcharuel         ###   ########.fr        #
+#    Updated: 2024/02/20 19:00:31 by tcharuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRC_FILES = ast_execution.c \
 	command_executable.c \
 	command_execution.c \
 	command_line.c \
+	command_line_2.c \
 	command.c \
 	envp.c \
 	builtins_exit.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 16:16:15 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 11:50:46 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/20 19:00:06 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,9 @@ static t_command_status	command_line_parse(t_state *state)
 	const char			*str;
 
 	status = command_line_validity_check(state->readline);
+	if (status)
+		return (status);
+	status = command_line_validity_check_subcommand(state->readline);
 	if (status)
 		return (status);
 	str = state->readline;
