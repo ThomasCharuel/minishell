@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:23:44 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 13:12:33 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/20 14:05:49 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,8 @@ bool	is_builtin(const char *str)
 	return (false);
 }
 
-t_command_status	builtin_exec_decorator(t_state *state, t_node *node,
-		char **argv, t_command_status (*builtin)(t_state *, int, char **))
+static void	fd_setup_builtin(t_node *node)
 {
-	int					stdout_;
-	int					stdin_;
-	int					argc;
-	t_command_status	status;
-
-	argc = 0;
-	while (argv[argc])
-		argc++;
-	stdout_ = dup(STDOUT_FILENO);
-	stdin_ = dup(STDIN_FILENO);
 	if (node->daddy && node->daddy->type == PIPE)
 	{
 		if (node->write_fd != STDOUT_FILENO)
@@ -57,6 +46,22 @@ t_command_status	builtin_exec_decorator(t_state *state, t_node *node,
 			close(node->read_fd);
 		}
 	}
+}
+
+t_command_status	builtin_exec_decorator(t_state *state, t_node *node,
+		char **argv, t_command_status (*builtin)(t_state *, int, char **))
+{
+	int					stdout_;
+	int					stdin_;
+	int					argc;
+	t_command_status	status;
+
+	argc = 0;
+	while (argv[argc])
+		argc++;
+	stdout_ = dup(STDOUT_FILENO);
+	stdin_ = dup(STDIN_FILENO);
+	fd_setup_builtin(node);
 	handle_redirections(node);
 	status = builtin(state, argc, argv);
 	state->last_exit_code = status;

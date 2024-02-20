@@ -6,7 +6,7 @@
 #    By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/06 13:51:51 by tcharuel          #+#    #+#              #
-#    Updated: 2024/02/20 13:57:04 by rdupeux          ###   ########.fr        #
+#    Updated: 2024/02/20 14:02:33 by rdupeux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ SRC_FILES = ast_execution.c \
 	command_line.c \
 	command.c \
 	envp.c \
-	buitins_exit.c \
+	builtins_exit.c \
 	heredoc.c \
 	heredocs.c \
 	main.c \
@@ -44,9 +44,9 @@ SRC_FILES = ast_execution.c \
 	variable.c \
 	wildcards.c \
 	word.c \
-	buitins_cd.c \
-	buitins_echo.c \
-	buitins_pwd.c 
+	builtins_cd.c \
+	builtins_echo.c \
+	builtins_pwd.c 
 
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
