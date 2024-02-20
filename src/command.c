@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 13:51:59 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 14:23:04 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_command_status	handle_command_word(t_state *state, const char **ptr,
 	status = handle_word(NULL, ptr, &word, &get_next_token);
 	if (status || !word)
 		return (status);
-	status = handle_word_interpretation(state, &word);
+	status = handle_word(state, (const char **)&word, &word, &handle_env_var);
 	if (status || !word)
 		return (status);
 	if (command->argv)

@@ -6,7 +6,11 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/02/20 14:45:49 by rdupeux          ###   ########.fr       */
+=======
+/*   Updated: 2024/02/20 14:17:55 by tcharuel         ###   ########.fr       */
+>>>>>>> 46349ff62ec6ec057440a80654a13fdcb0f34589
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +188,10 @@ t_return_status					str_list_append(t_list **word_list,
 									const char *str);
 char							*ft_strsjoin_from_list(t_list *list);
 
+// variable.c
+t_command_status				handle_env_var(t_state *state, const char **ptr,
+									t_list **words);
+
 // word.c
 t_command_status				handle_word(t_state *state, const char **ptr,
 									char **res,
@@ -193,6 +201,8 @@ t_command_status				get_next_word(const char **cursor, char **res,
 									const char *charset, bool delim);
 t_command_status				get_next_word_char(const char **cursor,
 									char **res, char c, bool delim);
+t_command_status				get_next_token(t_state *state, const char **ptr,
+									t_list **words);
 
 // NOT OK
 t_command_status				command_generation_handling(const char **ptr,
@@ -212,17 +222,10 @@ void							heredoc_destroy(void *ptr);
 t_command_status				handle_heredoc(t_state *state,
 									const char **cursor, char **res);
 
-t_command_status				get_var_value(t_state *state, const char **ptr,
-									char **word);
-t_command_status				handle_word_interpretation(t_state *state,
-									char **str);
-
 t_command_status				get_next_heredoc_eof(t_state *state,
 									const char **cursor, t_list **words);
 t_command_status				get_next_command(t_state *state,
 									const char **ptr, t_list **words);
-t_command_status				get_next_token(t_state *state, const char **ptr,
-									t_list **words);
 t_command_status				suppr_quotes(char **ptr);
 
 char							*get_working_directory(void);
