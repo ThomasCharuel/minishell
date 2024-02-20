@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:11:32 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 16:49:33 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/20 17:03:22 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	file_interpreteur(t_state *state, int fd1, int fd2)
 		line = get_next_line(fd1);
 	}
 }
-// TODO
+
 static t_command_status	handle_read_redirection(t_node *node,
 		t_redirection *redirection)
 {
