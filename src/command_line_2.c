@@ -6,16 +6,18 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:59:49 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 19:21:52 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/20 19:32:59 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	move(const char **line)
+static void	move(const char **line, bool *is_operator)
 {
 	while (**line == ' ')
 		(*line)++;
+	if (**line && !ft_is_char_in_set(**line, "|&"))
+		*is_operator = false;
 	if (ft_is_char_in_set(**line, "\"\'"))
 	{
 		*line = move_to_next_char(line, **line);
@@ -42,9 +44,7 @@ t_command_status	check_subcommand(const char *line)
 			else
 				line++;
 		}
-		else
-			is_operator = false;
-		move(&line);
+		move(&line, &is_operator);
 		line = ft_strchrs(line, "&|\'\"");
 	}
 	if (is_operator)
