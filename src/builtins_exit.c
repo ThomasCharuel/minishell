@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:42:06 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/22 16:05:27 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:11:36 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,12 @@ t_command_status	minishell_exit(t_state *state, int argc, char **argv)
 	if (argc == 1)
 		status = COMMAND_SUCCESS;
 	else if (argc == 2)
-		status = get_exit_code(argv[1]);
+	{
+		if (is_numeric_str(argv[1]))
+			status = get_exit_code(argv[1]);
+		else
+			status = COMMAND_PARSING_ERROR;
+	}
 	else if (is_numeric_str(argv[1]))
 		status = COMMAND_TOO_MANY_ARGUMENTS;
 	else
