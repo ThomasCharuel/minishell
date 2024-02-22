@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 18:05:20 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/22 15:57:12 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:18:54 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ static size_t	get_result_length(long long nb, int radix)
 	len += get_nb_digits(nb, radix);
 	return (len);
 }
-
-#include <stdio.h>
 
 static void	put_n_in_str(long long nb, char *res, size_t len, char *base)
 {
