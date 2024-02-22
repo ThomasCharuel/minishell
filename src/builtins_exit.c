@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:42:06 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 19:20:02 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/22 13:35:35 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ t_command_status	minishell_exit(t_state *state, int argc, char **argv)
 		status = COMMAND_PARSING_ERROR;
 	else
 		status = get_exit_code(argv[1]);
+	ft_printf("exit\n");
 	if (status == COMMAND_TOO_MANY_ARGUMENTS)
 		print_error("exit: ", "too many arguments", NULL);
 	else if (status == COMMAND_PARSING_ERROR)

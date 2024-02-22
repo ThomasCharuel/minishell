@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:37:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 11:36:59 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/22 13:38:48 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ t_command_status	repl(t_state *state)
 				status = command_line_execute(state);
 		}
 	}
-	write(STDOUT_FILENO, "exit\n", 6);
+	if (g_signal_code != SIGUSR1)
+		ft_printf("exit\n");
 	return (state->last_exit_code);
 }
