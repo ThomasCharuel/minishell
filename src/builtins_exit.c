@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:42:06 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/22 13:35:35 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/22 13:50:55 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ bool	is_numeric_str(const char *str)
 			return (false);
 		i++;
 	}
-	while (str[i++] == ' ')
-		;
+	while (str[i] == ' ')
+		i++;
 	if (str[i])
 		return (false);
 	return (true);
