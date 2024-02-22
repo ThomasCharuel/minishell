@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 18:05:20 by tcharuel          #+#    #+#             */
-/*   Updated: 2023/11/17 19:15:59 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:57:12 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,17 @@ static size_t	get_result_length(long long nb, int radix)
 	return (len);
 }
 
+#include <stdio.h>
+
 static void	put_n_in_str(long long nb, char *res, size_t len, char *base)
 {
 	int	radix;
 
 	radix = ft_strlen(base);
-	res[len--] = '\0';
 	if (nb < 0)
 	{
 		res[0] = '-';
-		nb *= -1;
+		nb = nb * -1;
 	}
 	if (nb == 0)
 		res[len] = base[0];
@@ -72,7 +73,7 @@ char	*ft_ltoa(long n, char *base)
 
 	radix = ft_strlen(base);
 	len = get_result_length(n, radix);
-	res = (char *)malloc((len + 1) * sizeof(char));
+	res = ft_calloc(len + 1, sizeof(char));
 	if (!res)
 		return (NULL);
 	put_n_in_str(n, res, len, base);

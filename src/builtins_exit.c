@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:42:06 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/22 13:50:55 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:05:27 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,26 +34,71 @@ bool	is_numeric_str(const char *str)
 	return (true);
 }
 
+size_t	clean_str_len(const char *str)
+{
+	size_t	len;
+
+	len = 0;
+	while (*str == ' ')
+		str++;
+	if (*str == '+')
+		str++;
+	else if (*str == '-')
+	{
+		str++;
+		len++;
+	}
+	while (*str == '0' && str[1] && str[1] != ' ')
+		str++;
+	while (*str && *str != ' ')
+	{
+		len++;
+		str++;
+	}
+	return (len);
+}
+
+char	*clean_str(const char *str)
+{
+	char	*clean_str;
+	size_t	i;
+
+	clean_str = ft_calloc(clean_str_len(str) + 1, sizeof(char));
+	if (!clean_str)
+		return (perror("minishell"), NULL);
+	i = 0;
+	while (*str == ' ')
+		str++;
+	if (*str == '+')
+		str++;
+	else if (*str == '-')
+		clean_str[i++] = *(str++);
+	while (*str == '0' && str[1] && str[1] != ' ')
+		str++;
+	while (*str && *str != ' ')
+		clean_str[i++] = *(str++);
+	if (!ft_strcmp(clean_str, "-0"))
+	{
+		clean_str[0] = '0';
+		clean_str[1] = '\0';
+	}
+	return (clean_str);
+}
+
 unsigned char	get_exit_code(const char *str)
 {
-	long		l_str;
-	const char	*end_str;
-	char		*match;
+	long	l_str;
+	char	*cleaned_str;
 
-	l_str = ft_atol(str);
-	match = ft_ltoa(l_str, "0123456789");
-	if (!match)
+	cleaned_str = clean_str(str);
+	if (!cleaned_str)
 		return (COMMAND_ERROR);
-	str = ft_strchrs(str, "-0123456789");
-	if (!str)
-		return (free(match), print_error("syntax error", NULL),
-			COMMAND_PARSING_ERROR);
-	end_str = ft_strchr(str, ' ');
-	if ((end_str && ft_strncmp(match, str, end_str - str)) || (!end_str
-			&& ft_strcmp(match, str)))
-		return (free(match), print_error("syntax error", NULL),
-			COMMAND_PARSING_ERROR);
-	free(match);
+	if ((*cleaned_str == '-' && ft_strcmp(cleaned_str,
+				"-9223372036854775808") > 0) || (*cleaned_str != '-'
+			&& ft_strcmp(cleaned_str, "9223372036854775807") > 0))
+		return (free(cleaned_str), COMMAND_PARSING_ERROR);
+	l_str = ft_atol(str);
+	free(cleaned_str);
 	return (l_str);
 }
 
@@ -62,16 +107,15 @@ t_command_status	minishell_exit(t_state *state, int argc, char **argv)
 	t_command_status	status;
 
 	(void)state;
-	status = COMMAND_SUCCESS;
 	g_signal_code = SIGUSR1;
 	if (argc == 1)
-		return (status);
-	else if (argc > 2)
-		status = COMMAND_TOO_MANY_ARGUMENTS;
-	if (argc > 2 && !is_numeric_str(argv[1]))
-		status = COMMAND_PARSING_ERROR;
-	else
+		status = COMMAND_SUCCESS;
+	else if (argc == 2)
 		status = get_exit_code(argv[1]);
+	else if (is_numeric_str(argv[1]))
+		status = COMMAND_TOO_MANY_ARGUMENTS;
+	else
+		status = COMMAND_PARSING_ERROR;
 	ft_printf("exit\n");
 	if (status == COMMAND_TOO_MANY_ARGUMENTS)
 		print_error("exit: ", "too many arguments", NULL);
