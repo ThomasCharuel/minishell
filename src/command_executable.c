@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_executable.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:41:51 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 17:45:25 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/22 11:30:25 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static t_command_status	handle_command(t_state *state, t_command *command)
 	char	*command_path;
 
 	norm = command->argv->content;
-	if (*norm == '\0')
+	if (!norm || *norm == '\0')
 		return (print_error("Command '' not found", NULL), COMMAND_NOT_FOUND);
 	paths = get_paths(state);
 	if (!paths)

@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:13:26 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 19:20:37 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/22 11:33:24 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void	heredoc_destroy(void *ptr)
 	if (heredoc)
 	{
 		unlink(heredoc->file);
-		free(heredoc->file);
-		free(heredoc->eof);
+		ft_free_str(&heredoc->file);
+		ft_free_str(&heredoc->eof);
 		free(heredoc);
 	}
 }
@@ -83,8 +83,7 @@ t_return_status	write_heredoc(t_heredoc *heredoc)
 		free(line);
 		line = readline(">");
 	}
-	if (line)
-		free(line);
+	ft_free_str(&line);
 	close(fd);
 	return (SUCCESS);
 }

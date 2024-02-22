@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:49:59 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 19:17:47 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/22 11:28:05 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	command_destroy(void *ptr)
 	command = ptr;
 	if (command)
 	{
-		free(command->command_str);
+		ft_free_str(&command->command_str);
 		ft_lstclear(&command->argv, free);
 		ft_lstclear(&command->redirections, redirection_destroy);
 		free(command);

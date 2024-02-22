@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:34:15 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 19:18:56 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/22 11:35:25 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ void	redirection_destroy(void *ptr)
 	redirection = ptr;
 	if (redirection)
 	{
-		if (redirection->file)
-			free(redirection->file);
+		ft_free_str(&redirection->file);
 		free(redirection);
 	}
 }
@@ -85,7 +84,7 @@ t_command_status	handle_redirection(t_state *state, const char **cursor,
 		return (status);
 	redirection = redirection_create(file, type);
 	if (!redirection)
-		return (free(file), COMMAND_ERROR);
+		return (ft_free_str(&file), COMMAND_ERROR);
 	if (!ft_append(&command->redirections, redirection))
 		return (redirection_destroy(redirection), COMMAND_ERROR);
 	return (COMMAND_SUCCESS);

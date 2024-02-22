@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 12:12:14 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 18:48:34 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/22 11:27:32 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,8 +137,8 @@ t_command_status	minishell_export(t_state *state, int argc, char **argv)
 			if (status)
 				return (status);
 			if (!envp_set(state, key, value))
-				return (free(key), COMMAND_ERROR);
-			free(key);
+				return (ft_free_str(&key), COMMAND_ERROR);
+			ft_free_str(&key);
 		}
 	}
 	return (COMMAND_SUCCESS);
