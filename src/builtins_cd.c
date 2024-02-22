@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   builtins_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 13:11:53 by rdupeux           #+#    #+#             */
-/*   Updated: 2024/02/20 13:51:46 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/22 13:26:25 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_command_status	minishell_cd(t_state *state, int argc, char **argv)
 	else
 		return (print_error("cd: too many arguments", NULL),
 			COMMAND_TOO_MANY_ARGUMENTS);
-	if (chdir(path))
-		return (perror("minishell"), COMMAND_TOO_MANY_ARGUMENTS);
+	if (*path && chdir(path))
+		return (perror("minishell: cd"), COMMAND_TOO_MANY_ARGUMENTS);
 	return (COMMAND_SUCCESS);
 }
