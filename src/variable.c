@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:38:57 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/23 15:04:05 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/23 15:11:11 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_command_status	get_var_value(t_state *state, const char **ptr, char **word)
 		return (handle_exit_value_var(state, ptr, word));
 	if (!ft_isalpha(**ptr) && **ptr != '_')
 	{
-		if (**ptr != '"')
+		if (**ptr != '"' && **ptr != '\'')
 			(*ptr)++;
 		return (handle_empty_var(word));
 	}
