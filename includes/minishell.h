@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 19:21:34 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/23 13:51:25 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define COMMAND_TOO_MANY_ARGUMENTS 1
 # define COMMAND_REDIRECTION_ERROR 1
 # define COMMAND_PARSING_ERROR 2
+# define COMMAND_NOT_EXECUTABLE 126
 # define COMMAND_NOT_FOUND 127
 # define COMMAND_SIGINT 130
 # define COMMAND_SIGQUIT 131
