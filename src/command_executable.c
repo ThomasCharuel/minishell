@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:41:51 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/23 13:52:00 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/23 14:07:15 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ static t_command_status	handle_path_command(t_command *command)
 t_command_status	set_command_executable(t_state *state, t_command *command)
 {
 	if (!command->argv)
-		return (COMMAND_NOT_FOUND);
+		return (print_error("'': No such file or directory", NULL),
+			COMMAND_NOT_FOUND);
 	if (is_builtin(command->argv->content))
 		return (COMMAND_SUCCESS);
 	if (ft_strchr((char *)command->argv->content, '/'))
