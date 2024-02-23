@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 10:37:41 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 23:16:49 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/23 10:11:21 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ static t_command_status	and_execute(t_state *state, t_node *node)
 	state->last_exit_code = status;
 	if (status)
 		return (status);
+	while (wait(NULL) != -1)
+		continue ;
 	return (ast_execute(state, node->right));
 }
 
@@ -47,6 +49,8 @@ static t_command_status	or_execute(t_state *state, t_node *node)
 			status = WEXITSTATUS(command_status);
 	}
 	state->last_exit_code = status;
+	while (wait(NULL) != -1)
+		continue ;
 	if (status)
 		return (ast_execute(state, node->right));
 	return (COMMAND_SUCCESS);
