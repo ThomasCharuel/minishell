@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:13:26 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/23 14:09:03 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/23 17:14:14 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_command_status	write_heredoc(t_heredoc *heredoc)
 	fd = open(heredoc->file, O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR);
 	if (fd < 0)
 		return (perror(heredoc->file), COMMAND_ERROR);
-	line = readline(">");
+	line = readline("> ");
 	while (line && ft_strcmp(line, heredoc->eof))
 	{
 		write(fd, line, ft_strlen(line));
