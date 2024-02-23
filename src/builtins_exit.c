@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:42:06 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/23 13:40:22 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/23 18:02:50 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ t_command_status	minishell_exit(t_state *state, int argc, char **argv)
 
 	(void)state;
 	g_signal_code = SIGUSR1;
+	status = COMMAND_TOO_MANY_ARGUMENTS;
 	if (argc == 1)
 		status = COMMAND_SUCCESS;
 	else if (argc == 2)
@@ -118,7 +119,7 @@ t_command_status	minishell_exit(t_state *state, int argc, char **argv)
 			status = COMMAND_PARSING_ERROR;
 	}
 	else if (is_numeric_str(argv[1]))
-		status = COMMAND_TOO_MANY_ARGUMENTS;
+		g_signal_code = 0;
 	else
 		status = COMMAND_PARSING_ERROR;
 	ft_printf("exit\n");
