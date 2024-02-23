@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 18:05:20 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/22 16:18:54 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/23 10:40:25 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ static void	put_n_in_str(long long nb, char *res, size_t len, char *base)
 	if (nb < 0)
 	{
 		res[0] = '-';
-		nb = nb * -1;
+		nb *= -1;
 	}
 	if (nb == 0)
-		res[len] = base[0];
+		res[0] = base[0];
 	while (nb > 0)
 	{
-		res[len--] = base[nb % radix];
+		res[--len] = base[nb % radix];
 		nb /= radix;
 	}
 }
