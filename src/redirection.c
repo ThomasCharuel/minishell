@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:34:15 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/22 11:35:25 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/23 13:46:15 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,26 @@ static t_redirection_type	get_redirection_type(const char **cursor)
 	return (type);
 }
 
+t_command_status	handle_redirection_file(t_state *state, const char **cursor,
+		char **file)
+{
+	t_command_status	status;
+
+	status = handle_word(NULL, cursor, file, &get_next_token);
+	if (status)
+		return (status);
+	status = handle_word(state, (const char **)file, file, &handle_env_var);
+	if (status)
+		return (ft_free_str(file), status);
+	status = handle_word(NULL, (const char **)file, file, &remove_quotes);
+	if (status)
+		return (ft_free_str(file), status);
+	if (access(*file, R_OK) == -1)
+		return (print_error(*file, ": No such file or directory", NULL),
+			ft_free_str(file), COMMAND_REDIRECTION_ERROR);
+	return (COMMAND_SUCCESS);
+}
+
 // OK
 t_command_status	handle_redirection(t_state *state, const char **cursor,
 		t_command *command)
@@ -73,13 +93,7 @@ t_command_status	handle_redirection(t_state *state, const char **cursor,
 		(*cursor)++;
 	if (!**cursor || ft_is_char_in_set(**cursor, "<>"))
 		return (print_error("syntax error", NULL), COMMAND_PARSING_ERROR);
-	status = handle_word(NULL, cursor, &file, &get_next_token);
-	if (status)
-		return (status);
-	status = handle_word(state, (const char **)&file, &file, &handle_env_var);
-	if (status)
-		return (status);
-	status = handle_word(NULL, (const char **)&file, &file, &remove_quotes);
+	status = handle_redirection_file(state, cursor, &file);
 	if (status)
 		return (status);
 	redirection = redirection_create(file, type);
