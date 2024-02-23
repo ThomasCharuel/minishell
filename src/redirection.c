@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:34:15 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/23 13:46:15 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/23 17:13:06 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static t_redirection_type	get_redirection_type(const char **cursor)
 }
 
 t_command_status	handle_redirection_file(t_state *state, const char **cursor,
-		char **file)
+		char **file, t_redirection_type type)
 {
 	t_command_status	status;
 
@@ -73,7 +73,7 @@ t_command_status	handle_redirection_file(t_state *state, const char **cursor,
 	status = handle_word(NULL, (const char **)file, file, &remove_quotes);
 	if (status)
 		return (ft_free_str(file), status);
-	if (access(*file, R_OK) == -1)
+	if (type == READ && access(*file, R_OK) == -1)
 		return (print_error(*file, ": No such file or directory", NULL),
 			ft_free_str(file), COMMAND_REDIRECTION_ERROR);
 	return (COMMAND_SUCCESS);
@@ -93,7 +93,7 @@ t_command_status	handle_redirection(t_state *state, const char **cursor,
 		(*cursor)++;
 	if (!**cursor || ft_is_char_in_set(**cursor, "<>"))
 		return (print_error("syntax error", NULL), COMMAND_PARSING_ERROR);
-	status = handle_redirection_file(state, cursor, &file);
+	status = handle_redirection_file(state, cursor, &file, type);
 	if (status)
 		return (status);
 	redirection = redirection_create(file, type);
