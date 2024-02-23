@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:38:57 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/23 14:45:59 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/23 15:04:05 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ t_command_status	handle_env_var(t_state *state, const char **ptr,
 
 	while (*ptr && **ptr)
 	{
-		if (**ptr == '$' && ft_is_char_in_set(*(*ptr + 1), "=+|&\\,.;:!@%#^"))
+		if (**ptr == '$' && (ft_is_char_in_set(*(*ptr + 1), " =+|&\\,.;:!@%#^")
+				|| !*(*ptr + 1)))
 			status = get_next_word(ptr, &word, " ", false);
 		else if (**ptr == '$')
 		{
