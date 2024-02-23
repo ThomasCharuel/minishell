@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
 /*   Updated: 2024/02/23 14:09:09 by tcharuel         ###   ########.fr       */
@@ -143,10 +143,13 @@ void							command_destroy(void *ptr);
 t_command_status				command_parse(t_state *state,
 									t_command *command);
 
+// heredoc.c
+t_command_status				write_heredoc(t_heredoc *heredoc);
+
 // heredocs.c
 t_command_status				handle_heredocs(t_state *state,
 									const char **ptr, t_list **words);
-
+t_command_status				write_heredoc_decorator(t_heredoc *heredoc);
 // pipe.c
 t_pipe							*pipe_create(void);
 
@@ -167,7 +170,7 @@ t_command_status				handle_redirections(t_node *node);
 
 // signals.c
 void							signal_init(void);
-
+void							signal_init_heredoc(void);
 // subshell.c
 t_command_status				handle_subshell(t_state *state,
 									t_command *command, const char **cursor);

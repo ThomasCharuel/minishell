@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:13:26 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/22 11:33:24 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/23 14:09:03 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,14 @@ void	heredoc_destroy(void *ptr)
 	}
 }
 
-t_return_status	write_heredoc(t_heredoc *heredoc)
+t_command_status	write_heredoc(t_heredoc *heredoc)
 {
 	char	*line;
 	int		fd;
 
 	fd = open(heredoc->file, O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR);
 	if (fd < 0)
-		return (perror(heredoc->file), ERROR);
+		return (perror(heredoc->file), COMMAND_ERROR);
 	line = readline(">");
 	while (line && ft_strcmp(line, heredoc->eof))
 	{
@@ -85,7 +85,9 @@ t_return_status	write_heredoc(t_heredoc *heredoc)
 	}
 	ft_free_str(&line);
 	close(fd);
-	return (SUCCESS);
+	if (g_signal_code != SIGINT)
+		return (COMMAND_SUCCESS);
+	return (COMMAND_SIGINT);
 }
 
 t_command_status	handle_heredoc(t_state *state, const char **cursor,
@@ -112,7 +114,8 @@ t_command_status	handle_heredoc(t_state *state, const char **cursor,
 	*res = ft_strsjoin("<", heredoc->file, NULL);
 	if (!*res)
 		return (COMMAND_ERROR);
-	if (!write_heredoc(heredoc))
-		return (COMMAND_ERROR);
+	status = write_heredoc_decorator(heredoc);
+	if (status)
+		return (ft_free_str(res), status);
 	return (COMMAND_SUCCESS);
 }
