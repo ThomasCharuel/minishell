@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 16:28:47 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/19 18:15:56 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/23 14:11:45 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,23 @@ t_command_status	handle_heredocs(t_state *state, const char **ptr,
 			return (ft_free_str(&word), COMMAND_ERROR);
 	}
 	return (COMMAND_SUCCESS);
+}
+
+t_command_status	write_heredoc_decorator(t_heredoc *heredoc)
+{
+	int					fd_stdin;
+	t_command_status	status;
+
+	signal_init_heredoc();
+	fd_stdin = dup(STDIN_FILENO);
+	status = write_heredoc(heredoc);
+	if (status == COMMAND_SIGINT)
+	{
+		g_signal_code = 0;
+		dup2(fd_stdin, STDIN_FILENO);
+		unlink(heredoc->file);
+	}
+	close(fd_stdin);
+	signal_init();
+	return (status);
 }

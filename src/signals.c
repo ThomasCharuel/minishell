@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 18:50:39 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 10:32:42 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/23 13:48:15 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	sig_handler_heredoc(int signum)
+{
+	g_signal_code = signum;
+	ft_printf("^C");
+	close(STDIN_FILENO);
+}
 
 static void	sig_handler(int signum)
 {
@@ -43,4 +50,14 @@ void	signal_init(void)
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGTERM, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
+}
+
+void	signal_init_heredoc(void)
+{
+	struct sigaction sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sa.sa_handler = &sig_handler_heredoc;
+	sigaction(SIGINT, &sa, NULL);
 }
