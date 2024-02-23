@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:38:57 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/22 11:55:41 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/23 14:35:06 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_command_status	get_var_value(t_state *state, const char **ptr, char **word)
 	if (**ptr == '?')
 		return (handle_exit_value_var(state, ptr, word));
 	if (!ft_isalpha(**ptr) && **ptr != '_')
-		return (handle_empty_var(word));
+		return ((*ptr)++, handle_empty_var(word));
 	i = 0;
 	while (ft_isalnum((*ptr)[i]) || (*ptr)[i] == '_')
 		i++;
@@ -66,9 +66,7 @@ t_command_status	handle_env_var(t_state *state, const char **ptr,
 
 	while (*ptr && **ptr)
 	{
-		// C'est faux ca, pourquoi get_next_word de espace
-		if (**ptr == '$' && ft_is_char_in_set(*(*ptr + 1),
-				"=_+*()[]{}|&\\,.;:!@#^\"\'"))
+		if (**ptr == '$' && ft_is_char_in_set(*(*ptr + 1), "=+|&\\,.;:!@%#^"))
 			status = get_next_word(ptr, &word, " ", false);
 		else if (**ptr == '$')
 		{
