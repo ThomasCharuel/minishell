@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 16:16:15 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 19:22:00 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/23 14:09:07 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,9 @@ static t_command_status	command_line_parse(t_state *state)
 	if (status)
 		return (status);
 	status = check_subcommand(state->readline);
+	if (status)
+		return (status);
+	status = check_empty_parenthesis(state->readline);
 	if (status)
 		return (status);
 	str = state->readline;

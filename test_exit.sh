@@ -50,6 +50,7 @@ for instruction in "${instructions[@]}"; do
 	if [ "$shell" == "minishell" ]; then
 		./minishell "$instruction"
 	elif [ "$shell" == "valgrind" ]; then
+		echo "Running instruction: $instruction"
 		valgrind --leak-check=full --show-leak-kinds=all -s --suppressions=readline.supp --track-origins=yes ./minishell "$instruction"
 	else
 		echo "Running instruction: $instruction"

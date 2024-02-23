@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:03:54 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/20 19:19:43 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/23 11:46:15 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@ static t_command_status	get_next_subcommand(t_state *state, const char **ptr,
 {
 	t_command_status	status;
 	char				*word;
-	bool				parenthesis;
+	int					parenthesis_count;
 
 	(void)state;
-	parenthesis = false;
+	parenthesis_count = 0;
 	while (*ptr && **ptr)
 	{
-		if (!parenthesis && (!ft_strncmp(*ptr, "||", 2) || !ft_strncmp(*ptr,
-					"&&", 2)))
+		if (!parenthesis_count && (!ft_strncmp(*ptr, "||", 2)
+				|| !ft_strncmp(*ptr, "&&", 2)))
 			break ;
 		if (**ptr == '(')
-			parenthesis = true;
+			parenthesis_count++;
 		else if (**ptr == ')')
-			parenthesis = false;
+			parenthesis_count--;
 		if (ft_is_char_in_set(**ptr, "\'\""))
 			status = get_next_word_char(ptr, &word, **ptr, true);
 		else

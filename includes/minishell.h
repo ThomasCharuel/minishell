@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:06:18 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/23 13:59:01 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/23 14:09:09 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define COMMAND_TOO_MANY_ARGUMENTS 1
 # define COMMAND_REDIRECTION_ERROR 1
 # define COMMAND_PARSING_ERROR 2
+# define COMMAND_NOT_EXECUTABLE 126
 # define COMMAND_NOT_FOUND 127
 # define COMMAND_SIGINT 130
 # define COMMAND_SIGQUIT 131
@@ -134,6 +135,7 @@ t_command_status				command_exec(t_state *state, t_node *node);
 const char						*move_to_next_char(const char **ptr, char c);
 t_command_status				command_line_execute(t_state *state);
 t_command_status				check_subcommand(const char *l);
+t_command_status				check_empty_parenthesis(const char *line);
 
 // command.c
 t_command						*command_create(const char *command_str);
