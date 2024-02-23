@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:41:51 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/22 11:30:25 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/23 13:52:00 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,12 @@ static t_command_status	handle_path_command(t_command *command)
 		|| command_str[ft_strlen(command_str) - 1] == '.')
 		return (print_error(command_str, ": is a directory", NULL),
 			COMMAND_ISDIRECTORY);
-	if (access(command_str, R_OK) || access(command_str, X_OK))
+	if (access(command_str, R_OK) == -1)
 		return (print_error(command_str, ": No such file or directory", NULL),
 			COMMAND_NOT_FOUND);
+	if (access(command_str, X_OK) == -1)
+		return (print_error(command_str, ": Permission denied", NULL),
+			COMMAND_NOT_EXECUTABLE);
 	return (COMMAND_SUCCESS);
 }
 
