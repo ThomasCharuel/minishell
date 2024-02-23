@@ -6,7 +6,7 @@
 /*   By: tcharuel <tcharuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:38:57 by tcharuel          #+#    #+#             */
-/*   Updated: 2024/02/23 14:35:06 by tcharuel         ###   ########.fr       */
+/*   Updated: 2024/02/23 14:45:59 by tcharuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,11 @@ t_command_status	get_var_value(t_state *state, const char **ptr, char **word)
 	if (**ptr == '?')
 		return (handle_exit_value_var(state, ptr, word));
 	if (!ft_isalpha(**ptr) && **ptr != '_')
-		return ((*ptr)++, handle_empty_var(word));
+	{
+		if (**ptr != '"')
+			(*ptr)++;
+		return (handle_empty_var(word));
+	}
 	i = 0;
 	while (ft_isalnum((*ptr)[i]) || (*ptr)[i] == '_')
 		i++;
